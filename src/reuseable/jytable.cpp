@@ -1,6 +1,6 @@
 #include "jytable.h"
 
-JYTable::JYTable( const QStringList& head ) : AbstractTable()
+JYTable::JYTable( const QStringList& head ) : AbstractTable<qreal>()
 {
     if ( head.isEmpty() )
         qFatal( "JYTable: creating null size table" );
@@ -15,7 +15,8 @@ JYTable::~JYTable()
 
 QVector<qreal> JYTable::getColumn( const QString& name ) const
 {
-    return this->getColumn( this->head.indexOf( name ) );
+    int i = this->head.indexOf( name );
+    return this->getColumn( i );
 }
 
 QVector<qreal> JYTable::getColumn( int x ) const
@@ -45,7 +46,7 @@ JYTable& JYTable::operator<< ( const QList<qreal>& list )
 JYTable& JYTable::operator<< ( const QStringList& list )
 {
     QList<qreal> n_list;
-    for ( QString str, list )
+    foreach( QString str, list )
         n_list << str.toDouble();
 
     return *this << n_list;

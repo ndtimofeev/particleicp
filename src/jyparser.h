@@ -6,26 +6,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QVector>
-
-class JYTable
-{
-
-public:
-    JYTable( const QStringList& head );
-    virtual ~JYTable();
-
-    const QVector<qreal>* getColumn( const QString& name ) const;
-    const QString&        getColumnName( int i ) const;
-    int                   getSize() const;
-
-    JYTable& operator<< ( const QStringList& list );
-    JYTable& operator=  ( const JYTable& table );
-
-private:
-    int                    size;
-    QStringList            head;
-    QList<QVector<qreal>*> table;
-};
+#include "jytable.h"
 
 class JYParser : public QObject
 {
