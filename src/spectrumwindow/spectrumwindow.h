@@ -34,14 +34,14 @@ private slots:
     void start();
 
 private:
-    QMap<Settings,qreal> settings;
-    QMap<QString,qreal>  report;
-    Polygon*             data_all;
-    Polygon*             data;
-    QwtPlot*             plot;
-    QwtPlotCurve*        curve;
-    DispensationWindow*  dispensationwindow;
-    ReportWindow*        reportwindow;
+    QMap<Settings,qreal>   settings;
+    QMap<QString,QVariant> report;
+    Polygon*               data_all;
+    Polygon*               data;
+    QwtPlot*               plot;
+    QwtPlotCurve*          curve;
+    DispensationWindow*    dispensationwindow;
+    ReportWindow*          reportwindow;
 };
 
 #endif // SPECTRUMWINDOW_H

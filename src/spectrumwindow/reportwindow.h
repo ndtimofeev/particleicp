@@ -9,11 +9,11 @@ class ReportWindow : public QMdiSubWindow
     Q_OBJECT
 
 public:
-    ReportWindow( const QMap<QString,qreal>& report, QWidget* parent = 0 );
+    ReportWindow( const QMap<QString,QVariant>& report, QWidget* parent = 0 );
     virtual ~ReportWindow();
 
 protected:
-    QString map2tring( const QMap<QString,qreal>& map ) const;
+    QString map2tring( const QMap<QString,QVariant>& map ) const;
 
 private:
     QTextEdit* text;

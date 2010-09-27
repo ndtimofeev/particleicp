@@ -70,11 +70,11 @@ void SpectrumWindow::start()
     foreach( qreal val, *sig->getY() )
     {
         val -= this->settings[MaxNoise];
-        this->report["SigmaI"] += val;
+        this->report["SigmaI"] = this->report["SigmaI"].toDouble() + val;
         bool check = false;
         for ( int  i = 0; i < pol.size(); i++ )
         {
-            if ( qAbs( val - pol.at(i).x() ) < 0.02*val )
+            if ( qAbs( val - pol.at(i).x() ) < 0.02 * val )
             {
                 check = true;
                 pol[i].ry()++;
