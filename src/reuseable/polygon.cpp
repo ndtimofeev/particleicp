@@ -13,6 +13,12 @@ Polygon::Polygon( const QVector<qreal>* x, const QVector<qreal>* y )
     this->y = new QVector<qreal>( *y );
 }
 
+Polygon::Polygon( const QVector<qreal>& x, const QVector<qreal>& y )
+{
+    this->x = new QVector<qreal>( x );
+    this->y = new QVector<qreal>( y );
+}
+
 Polygon::Polygon( const Polygon& pol )
 {
     *this = pol;

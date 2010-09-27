@@ -11,6 +11,7 @@ class Polygon
 public:
     Polygon();
     Polygon( const QVector<qreal>* x, const QVector<qreal>* y );
+    Polygon( const QVector<qreal>& x, const QVector<qreal>& y );
     Polygon( const Polygon& pol );
     virtual ~Polygon();
 

@@ -17,7 +17,8 @@ SpectrumWindow::SpectrumWindow( const QString& path,
     this->setWindowTitle( path );
     this->plot = new QwtPlot( this );
     this->setWidget( this->plot );
-    this->data_all = new Polygon( &table.getColumn( "X" ), &table.getColumn( "Al1" ) );
+    qDebug() << table.getColumn( "X" );
+    this->data_all = new Polygon( table.getColumn( "X" ), table.getColumn( "Al1" ) );
     this->data = this->data_all;
     this->settings[UpTime] = data->getX()->last();
     this->settings[DownTime] = data->getX()->first();
