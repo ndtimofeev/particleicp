@@ -48,10 +48,14 @@ JYTable& JYTable::operator<< ( const QList<qreal>& list )
 
 JYTable& JYTable::operator<< ( const QStringList& list )
 {
-    QList<qreal> n_list;
-    foreach( QString str, list )
-        n_list << str.toDouble();
+    if ( list.size() != this->wight )
+        qFatal( "JYTable: added bad row" );
 
-    return *this << n_list;
+    for ( int i = 0; i < this->wight - 1; i++ )
+        this->table[Position( i, this->hight )] = list.at(i).toDouble();
+
+    this->hight++;
+
+    return *this;
 }
 

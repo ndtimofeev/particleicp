@@ -15,7 +15,8 @@ enum Settings {
     UpTime,
     MinTime,
     DownTime,
-    MaxNoise
+    MaxNoise,
+    AverageNoise
 };
 
 class SpectrumWindow : public QMdiSubWindow

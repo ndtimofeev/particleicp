@@ -17,9 +17,7 @@ SpectrumWindow::SpectrumWindow( const QString& path,
     this->setWindowTitle( path );
     this->plot = new QwtPlot( this );
     this->setWidget( this->plot );
-    qDebug() << "Start";
-    table.getColumn( "X" );
-    qDebug() << "Start";
+    qDebug() << table.getColumn( "X" ).size();
     this->data_all = new Polygon( table.getColumn( "X" ), table.getColumn( "Al1" ) );
     this->data = this->data_all;
     this->settings[UpTime] = data->getX()->last();
@@ -27,6 +25,7 @@ SpectrumWindow::SpectrumWindow( const QString& path,
     this->settings[MaxTime] = data->getX()->last();
     this->settings[MinTime] = data->getX()->first();
     this->settings[MaxNoise] = 0.0;
+    this->settings[AverageNoise] = 0.0;
 
     this->curve = new QwtPlotCurve();
     this->curve->attach( this->plot );
@@ -72,7 +71,7 @@ void SpectrumWindow::start()
     QVector<PointF> pol;
     foreach( qreal val, *sig->getY() )
     {
-        val -= this->settings[MaxNoise];
+        val -= this->settings[AverageNoise];
         this->report["SigmaI"] = this->report["SigmaI"].toDouble() + val;
         bool check = false;
         for ( int  i = 0; i < pol.size(); i++ )

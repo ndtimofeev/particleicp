@@ -9,6 +9,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QDebug>
+#include <QTime>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include "mainwindow.h"
@@ -69,8 +70,11 @@ void MainWindow::fileRead(QString & path)
     QFile file(path);
     file.open(QIODevice::ReadOnly);
     QTextStream stream(&file);
+    qDebug() << QTime::currentTime();
+    JYParser parser( &stream, this );
+    qDebug() << QTime::currentTime();
     SpectrumWindow *sw =
-           new SpectrumWindow( path, JYParser(&stream, this).getTable(), this );
+           new SpectrumWindow( path, parser.getTable(), this );
     this->mdiArea->addSubWindow(sw);
     sw->showMaximized();
 }
