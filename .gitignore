@@ -1,5 +1,7 @@
 *.[oa]
 *~
+particleicp
+ui_*.h
 moc_*.cpp
 Makefile
 *.so*

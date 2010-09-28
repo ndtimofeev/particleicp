@@ -23,8 +23,8 @@ private:
     QMap<Settings,qreal> settings;
 
 private slots:
-    void set_max_time( int val );
-    void set_min_time( int val );
+    void set_up_time( int val );
+    void set_down_time( int val );
     void set_max_noise( double val );
     void set_average_noise( double val );
 };

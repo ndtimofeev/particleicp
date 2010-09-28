@@ -2,62 +2,26 @@
 #include <QFormLayout>
 #include <QDialogButtonBox>
 #include "spectrumsettingsdialog.h"
+#include "ui_spectrumsettingsdialog.h"
 
 SpectrumSettingsDialog::SpectrumSettingsDialog( const QMap<Settings,qreal>& map,
                                                 SpectrumWindow* parent ) :
     QDialog( parent )
 {
     this->settings = map;
-    this->setModal( true );
 
-    QFormLayout* lay = new QFormLayout( this );
+    Ui::Dialog ui;
+    ui.setupUi( this );
 
-    QDoubleSpinBox* max_noise_spin = new QDoubleSpinBox();
-    max_noise_spin->setValue( this->settings[MaxNoise] );
-    max_noise_spin->setDecimals( 3 );
-    max_noise_spin->setSingleStep( 0.001 );
-    lay->addRow( tr( "Max noise" ), max_noise_spin );
-    connect( max_noise_spin, SIGNAL( valueChanged( double ) ),
-             this, SLOT( set_max_noise( double ) ) );
+    ui.maxNoiseDoubleSpinBox->setValue( this->settings[MaxNoise] );
 
-    QDoubleSpinBox* average_noise_spin = new QDoubleSpinBox();
-    average_noise_spin->setValue( this->settings[AverageNoise] );
-    average_noise_spin->setDecimals( 3 );
-    average_noise_spin->setSingleStep( 0.001 );
-    lay->addRow( tr( "Max noise" ), average_noise_spin );
-    connect( average_noise_spin, SIGNAL( valueChanged( double ) ),
-             this, SLOT( set_average_noise( double ) ) );
+    ui.averageNoiseDoubleSpinBox->setValue( this->settings[AverageNoise] );
 
-    QSpinBox* maxspin = new QSpinBox();
-    maxspin->setRange( this->settings[MinTime], this->settings[MaxTime] );
-    maxspin->setValue( this->settings[UpTime] );
-    maxspin->setSingleStep( 100 );
-    maxspin->setSuffix( " sec" );
-    connect( maxspin, SIGNAL( valueChanged( int ) ),
-             this, SLOT( set_max_time( int ) ) );
+    ui.upTimeSpinBox->setRange( this->settings[MinTime], this->settings[MaxTime] );
+    ui.upTimeSpinBox->setValue( this->settings[UpTime] );
 
-    QSpinBox* minspin = new QSpinBox();
-    minspin->setRange( this->settings[MinTime], this->settings[MaxTime] );
-    minspin->setValue( this->settings[DownTime] );
-    minspin->setSingleStep( 100 );
-    minspin->setSuffix( " sec" );
-    connect( minspin, SIGNAL( valueChanged( int ) ),
-             this, SLOT( set_min_time( int ) ) );
-
-    QHBoxLayout* spinslayout = new QHBoxLayout( this );
-    spinslayout->addWidget( minspin );
-    spinslayout->addWidget( maxspin );
-
-    lay->addRow( tr( "Time range" ), spinslayout );
-
-    QDialogButtonBox* buttonbox = new QDialogButtonBox( QDialogButtonBox::Ok |
-                                                        QDialogButtonBox::Cancel,
-                                                        Qt::Horizontal,
-                                                        this );
-
-    connect( buttonbox, SIGNAL( accepted() ), this, SLOT( accept() ) );
-    connect( buttonbox, SIGNAL( rejected() ), this, SLOT( reject() ) );
-    lay->addRow( buttonbox );
+    ui.downTimeSpinBox->setRange( this->settings[MinTime], this->settings[MaxTime] );
+    ui.downTimeSpinBox->setValue( this->settings[DownTime] );
 }
 
 SpectrumSettingsDialog::~SpectrumSettingsDialog()
@@ -84,12 +48,12 @@ SpectrumSettingsDialog::getSettings( const QMap<Settings,qreal>& map,
     return settings;
 }
 
-void SpectrumSettingsDialog::set_max_time( int val )
+void SpectrumSettingsDialog::set_up_time( int val )
 {
     this->settings[UpTime] = val;
 }
 
-void SpectrumSettingsDialog::set_min_time( int val )
+void SpectrumSettingsDialog::set_down_time( int val )
 {
     this->settings[DownTime] = val;
 }
