@@ -14,6 +14,7 @@ JYParser::JYParser( QTextStream* stream, QObject* parent  ) : QObject( parent )
 
 JYParser::~JYParser()
 {
+    delete this->table;
 }
 
 const JYTable& JYParser::getTable() const

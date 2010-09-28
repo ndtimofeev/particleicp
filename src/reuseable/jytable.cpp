@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "jytable.h"
 
 JYTable::JYTable( const QStringList& head ) : AbstractTable<qreal>()
@@ -39,6 +40,8 @@ JYTable& JYTable::operator<< ( const QList<qreal>& list )
 
     for ( int i = 0; i < this->wight - 1; i++ )
         this->table[Position( i, this->hight )] = list.at(i);
+
+    this->hight++;
 
     return *this;
 }

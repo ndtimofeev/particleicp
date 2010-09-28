@@ -4,4 +4,3 @@ moc_*.cpp
 Makefile
 particleicp
 *.so*
-*.a
