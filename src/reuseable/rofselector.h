@@ -28,7 +28,8 @@ class ROFSelector : public QMenu
     Q_OBJECT
 
 public:
-    ROFSelector( const QStringList* history, QWidget* parent = 0 ); 
+    ROFSelector( QWidget* parent = 0 );
+    ROFSelector( const QStringList* history, QWidget* parent = 0 );
     ROFSelector( const QStringList* history, const QString &title, QWidget* parent = 0 );
     virtual ~ROFSelector();
 

@@ -17,36 +17,24 @@
 #include "rofselector.h"
 #include "jyparser.h"
 #include "qtwindowlistmenu.h"
+#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget * parent):QMainWindow(parent)
 {
     this->history = QSettings("PsiLab","AlICP").value("RecentOpenFiles").toStringList();
 
-    // File
-    QMenu *menuFile = this->menuBar()->addMenu(tr("&File"));
-    menuFile->addAction(tr("&Open..."), this, SLOT(fileSelect()), QKeySequence::Open);
+    Ui::MainWindow ui;
+    ui.setupUi( this );
 
-    ROFSelector *rofmenu = new ROFSelector(&this->history, tr("Open recent..."), this);
-    rofmenu->setMaxStrNum(100);
-    connect(rofmenu, SIGNAL(selectedFile(QString &)), this, SLOT(fileRead(QString &)));
-    menuFile->addMenu(rofmenu);
-
-    menuFile->addAction(tr("E&xit"), qApp, SLOT(closeAllWindows()), QKeySequence::Quit);
+    ui.menu_Recent_Files->setMaxStrNum(5);
+    connect( ui.menu_Recent_Files, SIGNAL( selectedFile( QString & ) ),
+             this, SLOT( fileRead( QString & ) ) );
 
     // Window
     this->mdiArea = new QMdiArea();
-    this->setCentralWidget(this->mdiArea);
+    this->setCentralWidget( this->mdiArea );
 
-    QtWindowListMenu *winMenu = new QtWindowListMenu(this->menuBar());
-    winMenu->attachToMdiArea(this->mdiArea);
-    this->menuBar()->addMenu(winMenu);
-
-    // Help
-    QMenu *menuHelp = this->menuBar()->addMenu(tr("&Help"));
-    menuHelp->addAction(tr("&About"), this, SLOT(about()));
-    menuHelp->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
-
-
+    ui.menuWindow->attachToMdiArea( this->mdiArea );
 }
 
 MainWindow::~MainWindow()

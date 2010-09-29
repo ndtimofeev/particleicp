@@ -18,6 +18,14 @@ void ROFAction::emit_engine()
     emit triggered( *this->path );
 }
 
+ROFSelector::ROFSelector( QWidget* parent ) : QMenu( parent )
+{
+    connect( this, SIGNAL( aboutToShow() ), this, SLOT( update() ) );
+    this->empty = new QAction( "empty", this );
+    this->empty->setDisabled( true );
+    this->addAction( this->empty );
+}
+
 ROFSelector::ROFSelector( const QStringList* history, QWidget* parent ) :
     QMenu( parent )
 {
@@ -67,7 +75,7 @@ void ROFSelector::update()
             ROFAction* act = new ROFAction( path, this );
             connect( act, SIGNAL( triggered( QString& ) ),
                      this, SIGNAL( selectedFile( QString& ) ) );
-            
+
             this->addAction( act );
         }
     }
