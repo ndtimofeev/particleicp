@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget * parent):QMainWindow(parent)
     ui.setupUi( this );
 
     ui.menu_Recent_Files->setMaxStrNum(5);
+    ui.menu_Recent_Files->disable();
     connect( ui.menu_Recent_Files, SIGNAL( selectedFile( QString & ) ),
              this, SLOT( fileRead( QString & ) ) );
 
