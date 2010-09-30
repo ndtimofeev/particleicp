@@ -20,7 +20,7 @@ void ROFAction::emit_engine()
 
 ROFSelector::ROFSelector( QWidget* parent ) : QMenu( parent )
 {
-    connect( this, SIGNAL( aboutToShow() ), this, SLOT( update() ) );
+//    connect( this, SIGNAL( aboutToShow() ), this, SLOT( update() ) );
     this->empty = new QAction( "empty", this );
     this->empty->setDisabled( true );
     this->addAction( this->empty );
@@ -29,7 +29,7 @@ ROFSelector::ROFSelector( QWidget* parent ) : QMenu( parent )
 ROFSelector::ROFSelector( const QStringList* history, QWidget* parent ) :
     QMenu( parent )
 {
-    connect( this, SIGNAL( aboutToShow() ), this, SLOT( update() ) );
+//    connect( this, SIGNAL( aboutToShow() ), this, SLOT( update() ) );
     this->history = history;
     this->empty = new QAction( "empty", this );
     this->empty->setDisabled( true );
@@ -39,7 +39,7 @@ ROFSelector::ROFSelector( const QStringList* history, QWidget* parent ) :
 ROFSelector::ROFSelector( const QStringList* history, const QString &title, QWidget* parent ) :
     QMenu( title, parent )
 {
-    connect( this, SIGNAL( aboutToShow() ), this, SLOT( update() ) );
+//    connect( this, SIGNAL( aboutToShow() ), this, SLOT( update() ) );
     this->history = history;
     this->empty = new QAction( "empty", this );
     this->empty->setDisabled( true );

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>249</width>
-    <height>118</height>
+    <width>248</width>
+    <height>165</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -31,82 +31,94 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::ExpandingFieldsGrow</enum>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="maxNoiseLabel">
-       <property name="text">
-        <string>Max noise</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QDoubleSpinBox" name="maxNoiseDoubleSpinBox">
-       <property name="suffix">
-        <string/>
-       </property>
-       <property name="decimals">
-        <number>4</number>
-       </property>
-       <property name="singleStep">
-        <double>0.001000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="averageNoiseLabel">
-       <property name="text">
-        <string>Average noise</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QDoubleSpinBox" name="averageNoiseDoubleSpinBox">
-       <property name="suffix">
-        <string/>
-       </property>
-       <property name="decimals">
-        <number>4</number>
-       </property>
-       <property name="singleStep">
-        <double>0.001000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="timeRangeLabel">
-       <property name="text">
-        <string>Time range</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QSpinBox" name="downTimeSpinBox">
-         <property name="suffix">
-          <string> sec</string>
-         </property>
-         <property name="singleStep">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="upTimeSpinBox">
-         <property name="suffix">
-          <string> sec</string>
-         </property>
-         <property name="singleStep">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="maxNoiseLabel">
+        <property name="text">
+         <string>Max noise</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="maxNoiseDoubleSpinBox">
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="singleStep">
+         <double>0.001000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="averageNoiseLabel">
+        <property name="text">
+         <string>Average noise</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="averageNoiseDoubleSpinBox">
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="singleStep">
+         <double>0.001000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="timeRangeLabel">
+        <property name="text">
+         <string>Time range</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QSpinBox" name="downTimeSpinBox">
+          <property name="suffix">
+           <string> sec</string>
+          </property>
+          <property name="singleStep">
+           <number>100</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="upTimeSpinBox">
+          <property name="suffix">
+           <string> sec</string>
+          </property>
+          <property name="singleStep">
+           <number>100</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -158,70 +170,6 @@
     <hint type="destinationlabel">
      <x>248</x>
      <y>117</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>averageNoiseDoubleSpinBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Dialog</receiver>
-   <slot>set_average_noise(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>43</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>58</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>maxNoiseDoubleSpinBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Dialog</receiver>
-   <slot>set_max_noise(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>16</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>58</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>downTimeSpinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>Dialog</receiver>
-   <slot>set_down_time(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>132</x>
-     <y>71</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>58</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>upTimeSpinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>Dialog</receiver>
-   <slot>set_up_time(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>207</x>
-     <y>71</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>58</y>
     </hint>
    </hints>
   </connection>

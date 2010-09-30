@@ -27,15 +27,15 @@ MainWindow::MainWindow(QWidget * parent):QMainWindow(parent)
     ui.setupUi( this );
 
     ui.menu_Recent_Files->setMaxStrNum(5);
-    ui.menu_Recent_Files->disable();
+//  ui.menu_Recent_Files->disable()
     connect( ui.menu_Recent_Files, SIGNAL( selectedFile( QString & ) ),
              this, SLOT( fileRead( QString & ) ) );
 
     // Window
-    this->mdiArea = new QMdiArea();
-    this->setCentralWidget( this->mdiArea );
+//    this->mdiArea = new QMdiArea();
+//    this->setCentralWidget( this->mdiArea );
 
-    ui.menuWindow->attachToMdiArea( this->mdiArea );
+    ui.menuWindow->attachToMdiArea( ui.centralwidget );
 }
 
 MainWindow::~MainWindow()

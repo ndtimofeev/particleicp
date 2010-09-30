@@ -6,21 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>425</height>
+    <width>619</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMdiArea" name="centralwidget">
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>590</width>
-     <height>21</height>
+     <width>619</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -33,8 +34,8 @@
      </property>
     </widget>
     <addaction name="actionOpen"/>
-    <addaction name="separator"/>
     <addaction name="menu_Recent_Files"/>
+    <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
    <widget class="QtWindowListMenu" name="menuWindow">
