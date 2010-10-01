@@ -1,28 +1,25 @@
-#ifndef MAINWINDOW
-#define MAINWINDOW
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include <QMdiArea>
 #include <QMainWindow>
-#include <QMenuBar>
-#include <QAction>
-#include <QMenu>
+#include <QWidget>
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow( QWidget *parent = 0 );
-    ~MainWindow();
-    QStringList history;
+    MainWindow( QWidget* parent = 0 );
+    virtual ~MainWindow();
 
-private:
-    QMdiArea*   mdiArea;
+signals:
+    void fileSelected( const QString& path );
 
-private slots:
-    void fileSelect();
-    void fileRead( QString& path );
-
+protected slots:
+    void selectFile();
+    void openFile( const QString& path );
+    void aboutQt();
 };
 
-#endif // MAINWINDOW
+#endif /* MAINWINDOW_H */
+

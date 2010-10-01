@@ -1,27 +1,10 @@
-#ifndef RECENTFILESMENU_H
-#define RECENTFILESMENU_H
+#ifndef ROFSELECTOR_H
+#define ROFSELECTOR_H
 
 #include <QMenu>
-#include <QAction>
-
-class ROFAction : public QAction
-{
-    Q_OBJECT
-
-public:
-    ROFAction( QString& path, QObject* parent );
-    virtual ~ROFAction();
-
-signals:
-    void triggered( QString &path );
-
-private:
-    QString* path;
-
-private slots:
-    void emit_engine();
-};
-
+#include <QList>
+#include <QString>
+#include <QWidget>
 
 class ROFSelector : public QMenu
 {
@@ -29,23 +12,19 @@ class ROFSelector : public QMenu
 
 public:
     ROFSelector( QWidget* parent = 0 );
-    ROFSelector( const QStringList* history, QWidget* parent = 0 );
-    ROFSelector( const QStringList* history, const QString &title, QWidget* parent = 0 );
     virtual ~ROFSelector();
 
-    int  getMaxStrNum() const;
-    void setMaxStrNum( int i );
+public slots:
+    void addFile( const QString& path );
+    void clear();
 
 signals:
-    void selectedFile( QString& path );
+    fileSelected( const QString& path );
 
-private slots:
-    void update();
-
-private:
-    const QStringList*  history;
-    QAction*            empty;
-    int                 max_str_num;
+protected:
+    int             max_count;
+    QList<QString*> history;
 };
 
-#endif // RECENTFILESMENU_H
+#endif /* ROFSELECTOR_H */
+
