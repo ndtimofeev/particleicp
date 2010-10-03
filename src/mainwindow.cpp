@@ -3,26 +3,29 @@
 #include <QSettings>
 #include <QFileDialog>
 #include "mainwindow.h"
+#include "settings.h"
 #include "parsersettingsdialog.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
 {
-    QSettings settings("PsiLab","ParticleICP");
-    this->restoreGeometry( settings.value("MainWindowGeometry").toByteArray() );
+//    QSettings settings("PsiLab","ParticleICP");
+    Settings* settings = Settings::instance();
+    this->restoreGeometry( settings->value("MainWindowGeometry").toByteArray() );
 
     Ui::MainWindow ui;
     ui.setupUi( this );
     this->rofptr = ui.menu_Recent_Files;
-    this->rofptr->restoreState( settings.value("RecentFiles").toStringList() );
+    this->rofptr->restoreState( settings->value("RecentFiles").toStringList() );
     this->rofptr->setMax(5);
 }
 
 MainWindow::~MainWindow()
 {
-    QSettings settings("PsiLab","ParticleICP");
-    settings.setValue( "MainWindowGeometry", this->saveGeometry() );
-    settings.setValue( "RecentFiles", this->rofptr->saveState() );
+    Settings* settings = Settings::instance();
+//    QSettings settings("PsiLab","ParticleICP");
+    settings->setValue( "MainWindowGeometry", this->saveGeometry() );
+    settings->setValue( "RecentFiles", this->rofptr->saveState() );
 
 }
 
