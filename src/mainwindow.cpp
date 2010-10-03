@@ -15,15 +15,15 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
     this->rofptr = ui.menu_Recent_Files;
     this->rofptr->restoreState( settings.value("RecentFiles").toStringList() );
     this->rofptr->setMax(5);
-    qDebug() << this->rofptr->saveState();
-    qFatal( "exit" );
+//    qDebug() << this->rofptr->saveState();
+//    qFatal( "exit" );
 }
 
 MainWindow::~MainWindow()
 {
     QSettings settings("PsiLab","ParticleICP");
     settings.setValue( "MainWindowGeometry", this->saveGeometry() );
-//    settings.setValue( "RecentFiles", this->rofptr->saveState() );
+    settings.setValue( "RecentFiles", this->rofptr->saveState() );
 
 }
 
@@ -38,6 +38,7 @@ void MainWindow::selectFile()
 
 void MainWindow::openFile( const QString& path )
 {
+    qDebug() << path;
     emit fileOpened( path );
 }
 

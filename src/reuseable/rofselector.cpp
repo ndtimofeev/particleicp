@@ -18,7 +18,7 @@ int ROFSelector::max() const
     return this->history->length();
 }
 
-const QStringList& ROFSelector::saveState() const
+QStringList ROFSelector::saveState() const
 {
     return this->history->mid(0);
 }

@@ -18,9 +18,9 @@ public:
     ROFSelector( QWidget* parent = 0 );
     virtual ~ROFSelector();
 
-    int                max() const;
-    const QStringList& saveState() const;
-    void               restoreState( const QStringList& list );
+    int         max() const;
+    QStringList saveState() const;
+    void        restoreState( const QStringList& list );
 
 public slots:
     void addFile( QString path );
