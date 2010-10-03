@@ -1,29 +1,38 @@
 #ifndef ROFSELECTOR_H
 #define ROFSELECTOR_H
 
+#include <QAction>
 #include <QMenu>
-#include <QList>
 #include <QString>
 #include <QWidget>
+#include "history.h"
 
 class ROFSelector : public QMenu
 {
     Q_OBJECT
 
+signals:
+    void fileSelected( QString path );
+
 public:
     ROFSelector( QWidget* parent = 0 );
     virtual ~ROFSelector();
 
-public slots:
-    void addFile( const QString& path );
-    void clear();
+    int                max() const;
+    const QStringList& saveState() const;
+    void               restoreState( const QStringList& list );
 
-signals:
-    fileSelected( const QString& path );
+public slots:
+    void addFile( QString path );
+    void clearHistory();
+    void setMax( int num );
 
 protected:
-    int             max_count;
-    QList<QString*> history;
+    History<QString>* history;
+
+protected slots:
+    void redrawMenu();
+    void sendSignal( QAction* act );
 };
 
 #endif /* ROFSELECTOR_H */

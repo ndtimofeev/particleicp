@@ -3,17 +3,21 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include "rofselector.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+signals:
+    void fileOpened( QString path );
+
 public:
     MainWindow( QWidget* parent = 0 );
     virtual ~MainWindow();
 
-signals:
-    void fileSelected( const QString& path );
+protected:
+    ROFSelector* rofptr;
 
 protected slots:
     void selectFile();

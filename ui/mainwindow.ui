@@ -20,15 +20,20 @@
      <x>0</x>
      <y>0</y>
      <width>801</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="ROFSelector" name="menu_Recent_Files">
+     <property name="title">
+      <string>&amp;Recent Files...</string>
+     </property>
+    </widget>
     <addaction name="action_Open"/>
-    <addaction name="action_Recent_Files"/>
+    <addaction name="menu_Recent_Files"/>
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
@@ -54,11 +59,6 @@
     <string>&amp;Open</string>
    </property>
   </action>
-  <action name="action_Recent_Files">
-   <property name="text">
-    <string>&amp;Recent Files...</string>
-   </property>
-  </action>
   <action name="action_Exit">
    <property name="text">
     <string>&amp;Exit</string>
@@ -75,6 +75,19 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ROFSelector</class>
+   <extends>QMenu</extends>
+   <header location="global">rofselector.h</header>
+   <slots>
+    <signal>fileSelected(QString)</signal>
+    <slot>setMax(int)</slot>
+    <slot>clearHistory()</slot>
+    <slot>addFile(QString)</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -116,8 +129,40 @@
    <slot>aboutQt()</slot>
    <hints>
     <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
      <x>400</x>
      <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>fileOpened(QString)</signal>
+   <receiver>menu_Recent_Files</receiver>
+   <slot>addFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>94</x>
+     <y>28</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menu_Recent_Files</sender>
+   <signal>fileSelected(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>
@@ -127,7 +172,9 @@
   </connection>
  </connections>
  <slots>
+  <signal>fileOpened(QString)</signal>
   <slot>selectFile()</slot>
   <slot>aboutQt()</slot>
+  <slot>openFile(QString)</slot>
  </slots>
 </ui>
