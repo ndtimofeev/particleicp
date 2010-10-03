@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QFileDialog>
 #include "mainwindow.h"
+#include "parsersettingsdialog.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
@@ -15,8 +16,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
     this->rofptr = ui.menu_Recent_Files;
     this->rofptr->restoreState( settings.value("RecentFiles").toStringList() );
     this->rofptr->setMax(5);
-//    qDebug() << this->rofptr->saveState();
-//    qFatal( "exit" );
 }
 
 MainWindow::~MainWindow()
@@ -38,8 +37,10 @@ void MainWindow::selectFile()
 
 void MainWindow::openFile( const QString& path )
 {
-    qDebug() << path;
-    emit fileOpened( path );
+    QStringList head = ParserSettingsDialog::getSettings( path, this/*QSettings("PsiLab", "ParticleICP") */);
+
+    if ( ! head.isEmpty() )
+        emit fileOpened( path );
 }
 
 void MainWindow::aboutQt()
