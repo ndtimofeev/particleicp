@@ -10,21 +10,28 @@
 #include "dispensationwindow.h"
 #include "reportwindow.h"
 
-enum Settings {
-    MaxTime,
-    UpTime,
-    MinTime,
-    DownTime,
-    MaxNoise,
-    AverageNoise
-};
+namespace Spectrum {
+
+    enum Settings {
+        UpTime,
+        DownTime,
+        MaxNoise,
+        AverageNoise
+    };
+
+    enum Limits {
+        MinTime,
+        MaxTime//,
+//        MaxNoise
+    };
+}
 
 class SpectrumWindow : public QMdiSubWindow
 {
     Q_OBJECT
 
 public:
-    SpectrumWindow( const QString& path, const JYTable& table, QWidget* parent = 0 );
+    SpectrumWindow( const QString& path, const QStringList& head, QWidget* parent = 0 );
     virtual ~SpectrumWindow();
 
 protected:
@@ -35,7 +42,7 @@ private slots:
     void start();
 
 private:
-    QMap<Settings,qreal>   settings;
+    QMap<Spectrum::Settings,qreal>   settings;
     QMap<QString,QVariant> report;
     Polygon*               data_all;
     Polygon*               data;

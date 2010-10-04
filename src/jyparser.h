@@ -14,6 +14,7 @@ class JYParser : public QObject
 
 public:
     JYParser( QTextStream* stream, QObject* parent = 0 );
+    JYParser( const QStringList& head, QTextStream* stream, QObject* parent = 0 );
     virtual ~JYParser();
 
     const JYTable& getTable() const;

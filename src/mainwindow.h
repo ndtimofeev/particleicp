@@ -23,6 +23,9 @@ protected slots:
     void selectFile();
     void openFile( const QString& path );
     void aboutQt();
+    void aboutQwt();
+    void aboutGMP();
+    void about();
 };
 
 #endif /* MAINWINDOW_H */

@@ -1,15 +1,19 @@
 #include <QString>
+#include <QTime>
+#include <QFile>
+#include <QIODevice>
+#include <QTextStream>
 #include <QDebug>
-#include <QSettings>
 #include <QFileDialog>
 #include "mainwindow.h"
+#include "spectrumwindow.h"
 #include "settings.h"
 #include "parsersettingsdialog.h"
 #include "ui_mainwindow.h"
+#include "jyparser.h"
 
 MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
 {
-//    QSettings settings("PsiLab","ParticleICP");
     Settings* settings = Settings::instance();
     this->restoreGeometry( settings->value("MainWindowGeometry").toByteArray() );
 
@@ -23,7 +27,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
 MainWindow::~MainWindow()
 {
     Settings* settings = Settings::instance();
-//    QSettings settings("PsiLab","ParticleICP");
     settings->setValue( "MainWindowGeometry", this->saveGeometry() );
     settings->setValue( "RecentFiles", this->rofptr->saveState() );
 
@@ -40,10 +43,16 @@ void MainWindow::selectFile()
 
 void MainWindow::openFile( const QString& path )
 {
-    QStringList head = ParserSettingsDialog::getSettings( path, this/*QSettings("PsiLab", "ParticleICP") */);
+    QStringList head =
+        ParserSettingsDialog::getSettings( path, this, Settings::instance() );
 
     if ( ! head.isEmpty() )
+    {
+        SpectrumWindow* sw = new SpectrumWindow( path,/* parser.getTable()*/ head, this );
+        sw->show();
+
         emit fileOpened( path );
+    }
 }
 
 void MainWindow::aboutQt()
@@ -51,3 +60,17 @@ void MainWindow::aboutQt()
     qApp->aboutQt();
 }
 
+void MainWindow::aboutQwt()
+{
+    qDebug() << "aboutQwt";
+}
+
+void MainWindow::aboutGMP()
+{
+    qDebug() << "aboutGMP";
+}
+
+void MainWindow::about()
+{
+    qDebug() << "about";
+}

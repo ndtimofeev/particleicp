@@ -5,8 +5,8 @@
 #include <QString>
 #include <QWidget>
 #include <QButtonGroup>
-#include <QSettings>
 #include <QAbstractButton>
+#include "settings.h"
 
 class ParserSettingsDialog : public QDialog
 {
@@ -16,7 +16,7 @@ public:
     ParserSettingsDialog( const QString& path, QWidget* parent = 0 );
     virtual ~ParserSettingsDialog();
 
-    static QStringList getSettings( const QString& path, QWidget* parent /*, QSettings& settings*/ );
+    static QStringList getSettings( const QString& path, QWidget* parent, Settings* settings = 0 );
     void               restoreState( const QStringList& list );
     QStringList        saveState() const;
 

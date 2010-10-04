@@ -48,6 +48,8 @@
     </property>
     <addaction name="action_About"/>
     <addaction name="actionAbout_Qt"/>
+    <addaction name="actionAbout_Q_wt"/>
+    <addaction name="actionAbout_GMP"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Window"/>
@@ -72,6 +74,16 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="actionAbout_Q_wt">
+   <property name="text">
+    <string>About Q&amp;wt</string>
+   </property>
+  </action>
+  <action name="actionAbout_GMP">
+   <property name="text">
+    <string>About &amp;GMP</string>
    </property>
   </action>
  </widget>
@@ -170,11 +182,62 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAbout_Q_wt</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutQwt()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAbout_GMP</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutGMP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_About</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>about()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>fileOpened(QString)</signal>
   <slot>selectFile()</slot>
   <slot>aboutQt()</slot>
   <slot>openFile(QString)</slot>
+  <slot>aboutQwt()</slot>
+  <slot>aboutGMP()</slot>
+  <slot>about()</slot>
  </slots>
 </ui>

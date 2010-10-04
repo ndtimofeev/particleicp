@@ -23,6 +23,7 @@ ParserSettingsDialog::ParserSettingsDialog( const QString& path, QWidget* parent
     QTextStream stream(&file);
     QStringList head = stream.readLine().split("\t");
     *this->list << head.takeFirst();
+    qSort( head );
     foreach( QString tag, head )
     {
         QCheckBox* cb = new QCheckBox( tag );
@@ -44,7 +45,10 @@ void ParserSettingsDialog::restoreState( const QStringList& list )
 {
     foreach( QAbstractButton* bt, this->group->buttons() )
         if ( fp::elem( bt->text(), list ) )
+        {
             bt->setChecked( true );
+            *this->list << bt->text();
+        }
 }
 
 QStringList ParserSettingsDialog::saveState() const
@@ -65,19 +69,18 @@ void ParserSettingsDialog::stateCatcher( QAbstractButton* bt )
         *this->list << bt->text();
 }
 
-QStringList ParserSettingsDialog::getSettings( const QString& path, QWidget* parent /*, QSettings& settings*/ )
+QStringList ParserSettingsDialog::getSettings( const QString& path, QWidget* parent, Settings* settings )
 {
-//    QSettings setting("PsiLab","ParticleICP");
     QStringList value;
     ParserSettingsDialog dlg( path, parent );
-//  if ( settings != NULL )
-//        dlg.restoreState( settings.value( path ).toStringList() );
+    if ( settings )
+        dlg.restoreState( settings->value( path ).toStringList() );
 
     if ( dlg.exec() == QDialog::Accepted )
     {
         value = dlg.getReturn();
-//      if ( settings != NULL )
-//            settings.setValue( path, dlg.saveState() );
+        if ( settings )
+            settings->setValue( path, dlg.saveState() );
     }
 
     return value;
