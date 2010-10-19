@@ -1,25 +1,18 @@
+#include <QStringList>
+#include <QVector>
 #include "jyparser.h"
 #include "falgorithms.h"
 
-JYParser::JYParser( QTextStream* stream, QObject* parent  ) : QObject( parent )
+JYTable JYParser( const QSet<QString>& head, const QTextStream& stream  )
 {
-    if ( ! stream->device()->isReadable() )
+    if ( ! stream.device()->isReadable() )
         qFatal( "JYParser: input stream is not readable" );
 
-    this->table = new JYTable( stream->readLine().split("\t") );
+    if ( head.size() < 2 )
+        qFatal( "JYParser: table must have two or more columns" );
 
-    for ( QString str = stream->readLine(); str != ""; str = stream->readLine() )
-        *this->table << str.split("\t");
-}
-
-
-JYParser::JYParser( const QStringList& head, QTextStream* stream, QObject* parent  ) :
-    QObject( parent )
-{
-    if ( ! stream->device()->isReadable() )
-        qFatal( "JYParser: input stream is not readable" );
-
-    QStringList list = stream->readLine().split("\t");
+    QTextStream  c_stream( stream.device() );
+    QStringList  list = c_stream.readLine().split("\t");
     QVector<int> index;
 
     foreach( QString tag, head )
@@ -27,18 +20,11 @@ JYParser::JYParser( const QStringList& head, QTextStream* stream, QObject* paren
 
     qSort( index );
 
-    this->table = new JYTable( fp::rebuild( list, index ) );
+    JYTable table( fp::rebuild( list, index ) );
 
-    for ( QString str = stream->readLine(); str != ""; str = stream->readLine() )
-        *this->table << fp::rebuild( str.split("\t"), index );
+    for ( QString str = c_stream.readLine(); str != ""; str = c_stream.readLine() )
+        table << fp::rebuild( str.split("\t"), index );
+
+    return table;
 }
 
-JYParser::~JYParser()
-{
-    delete this->table;
-}
-
-const JYTable& JYParser::getTable() const
-{
-    return *this->table;
-}

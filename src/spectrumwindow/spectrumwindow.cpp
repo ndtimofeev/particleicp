@@ -6,6 +6,7 @@
 #include <QContextMenuEvent>
 #include "spectrumwindow.h"
 #include "pointf.h"
+#include <qwt_legend.h>
 //#include "spectrumsettingsdialog.h"
 #include "dispensationwindow.h"
 #include "reportwindow.h"
@@ -22,6 +23,8 @@ SpectrumWindow::SpectrumWindow( const QString& path, const QStringList& head, QW
 //    JYParser parser( path, head );
 //    file.close();
 
+//    QwtLegend* legend = new QwtLegend( this );
+//    this->plot->insertLegend( legend );
     this->plot = new QwtPlot( this );
     this->setWidget( this->plot );
 //    qDebug() << parser.getTable.getColumn( "X" );

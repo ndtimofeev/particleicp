@@ -13,32 +13,56 @@ class AbstractTable
 {
 public:
     AbstractTable();
-    virtual ~AbstractTable();
+    AbstractTable( const AbstractTable& other );
+    virtual ~AbstractTable() = 0;
 
     void               setValue( int x, int y, const T& value );
     void               removeValue( int x, int y );
     void               clear();
     bool               isEmpty() const;
+    int                getWight() const;
+    int                getHight() const;
     virtual const T    getValue( int x, int y ) const;
     virtual QVector<T> getColumn( int x ) const;
     virtual QVector<T> getRow( int y ) const;
 
+    AbstractTable& operator= ( const AbstractTable& other );
+
 protected:
-    QMap<Position,T> table;
-    int              wight;
-    int              hight;
+    QMap<Position,T>* table;
+    int               wight;
+    int               hight;
 };
 
 template <typename T>
-AbstractTable<T>::AbstractTable()
+AbstractTable<T>::AbstractTable() : wight( 0 ), hight( 0 )
 {
-    this->wight = 0;
-    this->hight = 0;
+    this->table = new QMap<Position,T>;
+}
+
+template <typename T>
+AbstractTable<T>::AbstractTable( const AbstractTable& other )
+{
+    if ( this == &other )
+        return;
+
+    this->wight = other.getWight();
+    this->hight = other.getHight();
+
+    QMap<Position,T>* tmp = this->table;
+    this->table = new QMap<Position,T>;
+    for ( int i = 0; i < wight; i++ )
+    {
+        for ( int j = 0; j < hight; j++ )
+        {
+        }
+    }
 }
 
 template <typename T>
 AbstractTable<T>::~AbstractTable()
 {
+    delete this->table;
 }
 
 template <typename T>

@@ -10,17 +10,22 @@ class SpectrumSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    SpectrumSettingsDialog( const QMap<Settings,qreal>& map,
+    SpectrumSettingsDialog( const QMap<Spectrum::Settings,qreal>& settings,
+                            const QMap<Spectrum::Limits,qreal>&   limits,
                             SpectrumWindow* ptr );
+
     virtual ~SpectrumSettingsDialog();
 
-    const QMap<Settings,qreal>& getReturn() const;
+    const  QMap<Spectrum::Settings,qreal>& getReturn() const;
 
-    static QMap<Settings,qreal> getSettings( const QMap<Settings,qreal>& map,
-                                             SpectrumWindow* ptr );
+    static QMap<Spectrum::Settings,qreal>
+    getSettings( const QMap<Spectrum::Settings,qreal>& settings,
+                 const QMap<Spectrum::Limits,qreal>&   limits,
+                 SpectrumWindow* ptr );
 
 private:
-    QMap<Settings,qreal> settings;
+    QMap<Spectrum::Settings,qreal> settings;
+    QMap<Spectrum::Limits,qreal>   limits;
 
 private slots:
     void set_up_time( int val );

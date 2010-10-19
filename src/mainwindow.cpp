@@ -43,13 +43,21 @@ void MainWindow::selectFile()
 
 void MainWindow::openFile( const QString& path )
 {
-    QStringList head =
-        ParserSettingsDialog::getSettings( path, this, Settings::instance() );
+    QFile file( path );
 
-    if ( ! head.isEmpty() )
+    if ( ! file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+        return;
+
+    QTextStream input( &file );
+
+    QSet<QString> head =
+        ParserSettingsDialog::getSettings( input, path, this, Settings::instance() );
+
+    if ( head.size() > 1 )
     {
-        SpectrumWindow* sw = new SpectrumWindow( path,/* parser.getTable()*/ head, this );
-        sw->show();
+        JYParser( head, input );
+//        SpectrumWindow* sw = new SpectrumWindow( path,/* parser.getTable()*/ head, this );
+//        sw->show();
 
         emit fileOpened( path );
     }

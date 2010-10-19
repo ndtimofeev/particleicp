@@ -7,23 +7,23 @@
 #include <QButtonGroup>
 #include <QAbstractButton>
 #include "settings.h"
+#include <QTextStream>
 
 class ParserSettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    ParserSettingsDialog( const QString& path, QWidget* parent = 0 );
+    ParserSettingsDialog( const QTextStream& stream, QWidget* parent = 0 );
     virtual ~ParserSettingsDialog();
 
-    static QStringList getSettings( const QString& path, QWidget* parent, Settings* settings = 0 );
-    void               restoreState( const QStringList& list );
-    QStringList        saveState() const;
+    static QSet<QString> getSettings( QTextStream& stream, const QString& path, QWidget* parent, Settings* settings = 0 );
+    void                 restoreState( const QSet<QString>& list );
+    const QSet<QString>& getState() const;
 
 protected:
-    QButtonGroup*      group;
-    QStringList*       list;
-    const QStringList& getReturn() const;
+    QButtonGroup*        group;
+    QSet<QString>*       list;
 
 protected slots:
     void stateCatcher( QAbstractButton* bt );

@@ -1,70 +1,73 @@
 #include <QSpinBox>
 #include <QFormLayout>
 #include <QDialogButtonBox>
+#include "spectrumwindow.h"
 #include "spectrumsettingsdialog.h"
 #include "ui_spectrumsettingsdialog.h"
 
-SpectrumSettingsDialog::SpectrumSettingsDialog( const QMap<Settings,qreal>& map,
+SpectrumSettingsDialog::SpectrumSettingsDialog( const QMap<Spectrum::Settings,qreal>& settings,
+                                                const QMap<Spectrum::Limits,qreal>&   limits,
                                                 SpectrumWindow* parent ) :
-    QDialog( parent )
+    QDialog( parent ),
+    settings( settings ),
+    limits( limits )
 {
-    this->settings = map;
-
     Ui::Dialog ui;
     ui.setupUi( this );
 
-    ui.maxNoiseDoubleSpinBox->setValue( this->settings[MaxNoise] );
+    ui.maxNoiseDoubleSpinBox->setValue( this->settings[Spectrum::MaxNoise] );
 
-    ui.averageNoiseDoubleSpinBox->setValue( this->settings[AverageNoise] );
+    ui.averageNoiseDoubleSpinBox->setValue( this->settings[Spectrum::AverageNoise] );
 
-    ui.upTimeSpinBox->setRange( this->settings[MinTime], this->settings[MaxTime] );
-    ui.upTimeSpinBox->setValue( this->settings[UpTime] );
+    ui.upTimeSpinBox->setRange( this->limits[Spectrum::MinTime], this->limits[Spectrum::MaxTime] );
+    ui.upTimeSpinBox->setValue( this->settings[Spectrum::UpTime] );
 
-    ui.downTimeSpinBox->setRange( this->settings[MinTime], this->settings[MaxTime] );
-    ui.downTimeSpinBox->setValue( this->settings[DownTime] );
+    ui.downTimeSpinBox->setRange( this->limits[Spectrum::MinTime], this->limits[Spectrum::MaxTime] );
+    ui.downTimeSpinBox->setValue( this->settings[Spectrum::DownTime] );
 }
 
 SpectrumSettingsDialog::~SpectrumSettingsDialog()
 {
 }
 
-const QMap<Settings,qreal>& SpectrumSettingsDialog::getReturn() const
+const QMap<Spectrum::Settings,qreal>& SpectrumSettingsDialog::getReturn() const
 {
     return this->settings;
 }
 
-QMap<Settings,qreal>
-SpectrumSettingsDialog::getSettings( const QMap<Settings,qreal>& map,
+QMap<Spectrum::Settings,qreal>
+SpectrumSettingsDialog::getSettings( const QMap<Spectrum::Settings,qreal>& settings,
+                                     const QMap<Spectrum::Limits,qreal>&   limits,
                                      SpectrumWindow* ptr )
 {
-    QMap<Settings,qreal> settings;
-    SpectrumSettingsDialog dlg( map, ptr );
+    QMap<Spectrum::Settings,qreal> result;
+    SpectrumSettingsDialog dlg( settings, limits, ptr );
 
     if ( dlg.exec() == QDialog::Accepted )
-        settings = dlg.getReturn();
+        result = dlg.getReturn();
     else
-        settings = dlg.getReturn();
+        result = dlg.getReturn();
 
     return settings;
 }
 
 void SpectrumSettingsDialog::set_up_time( int val )
 {
-    this->settings[UpTime] = val;
+    this->settings[Spectrum::UpTime] = val;
 }
 
 void SpectrumSettingsDialog::set_down_time( int val )
 {
-    this->settings[DownTime] = val;
+    this->settings[Spectrum::DownTime] = val;
 }
 
 void SpectrumSettingsDialog::set_max_noise( double val )
 {
-    this->settings[MaxNoise] = val;
+    this->settings[Spectrum::MaxNoise] = val;
 }
 
 void SpectrumSettingsDialog::set_average_noise( double val )
 {
-    this->settings[AverageNoise] = val;
+    this->settings[Spectrum::AverageNoise] = val;
 }
 
