@@ -48,16 +48,22 @@ void MainWindow::openFile( const QString& path )
     if ( ! file.open( QIODevice::ReadOnly | QIODevice::Text ) )
         return;
 
-    QTextStream input( &file );
+    QTextStream stream( &file );
 
     QSet<QString> head =
-        ParserSettingsDialog::getSettings( input, path, this, Settings::instance() );
+        ParserSettingsDialog::getSettings( stream, path, this, Settings::instance() );
 
     if ( head.size() > 1 )
     {
-        JYParser( head, input );
-//        SpectrumWindow* sw = new SpectrumWindow( path,/* parser.getTable()*/ head, this );
-//        sw->show();
+        QFile file( path );
+
+        if ( ! file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+            return;
+
+        QTextStream stream( &file );
+
+        SpectrumWindow* sw = new SpectrumWindow( JYParser( head, stream ), path, head, this );
+        sw->show();
 
         emit fileOpened( path );
     }

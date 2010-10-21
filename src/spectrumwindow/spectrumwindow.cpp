@@ -1,4 +1,6 @@
 #include <QDebug>
+#include <QPointF>
+#include <QPolygonF>
 #include <QMdiArea>
 #include <QtAlgorithms>
 #include <QMenu>
@@ -7,27 +9,43 @@
 #include "spectrumwindow.h"
 #include "pointf.h"
 #include <qwt_legend.h>
+#include <qwt_legend_item.h>
 //#include "spectrumsettingsdialog.h"
 #include "dispensationwindow.h"
 #include "reportwindow.h"
+#include "falgorithms.h"
 
-SpectrumWindow::SpectrumWindow( const QString& path, const QStringList& head, QWidget* parent ) :
+SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent ) :
     QMdiSubWindow( parent )
 {
-    //Set window title
     this->setWindowTitle( path );
+    QwtLegend* legend = new QwtLegend;
+    legend->setItemMode( QwtLegend::CheckableItem );
 
-//    QFile file( path );
-//    file.open( QIODevice::ReadOnly );
-//    QTextStream stream( &file );
-//    JYParser parser( path, head );
-//    file.close();
+    QSet<QString> set = head;
+    set.remove( "X" );
 
-//    QwtLegend* legend = new QwtLegend( this );
-//    this->plot->insertLegend( legend );
     this->plot = new QwtPlot( this );
+    this->plot->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
+    this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec" );
+    this->plot->insertLegend( legend, QwtPlot::RightLegend );
     this->setWidget( this->plot );
-//    qDebug() << parser.getTable.getColumn( "X" );
+
+    foreach( QString str, set )
+    {
+
+        QwtPlotCurve* curve = new QwtPlotCurve( str );
+        curve->attach( this->plot );
+        curve->setData( table.getColumn( "X" )->data(), table.getColumn( str )->data(), table.getHeight() );
+    }
+
+    foreach( QWidget* w, legend->legendItems() )
+        ((QwtLegendItem*)w)->setChecked( true );
+
+    connect( this->plot, SIGNAL( legendChecked( QwtPlotItem*, bool ) ),
+             this,       SLOT( toggleCurve( QwtPlotItem*, bool ) ) );
+
+
 //    this->data_all = new Polygon( table.getColumn( "X" ), table.getColumn( "Al1" ) );
 //    this->data = this->data_all;
 //  this->settings[UpTime] = data->getX()->last();
@@ -69,7 +87,7 @@ void SpectrumWindow::setSettings()
 //                             this->data->getY()->data(),
 //                             this->data->getSize() );
 
-    this->plot->replot();
+//    this->plot->replot();
 }
 
 void SpectrumWindow::start()
@@ -114,3 +132,8 @@ void SpectrumWindow::start()
 //    this->reportwindow->show();//Maximized();
 }
 
+void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
+{
+    curve->setVisible( on );
+    this->plot->replot();
+}

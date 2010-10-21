@@ -4,7 +4,7 @@
 #include "parsersettingsdialog.h"
 #include "ui_parsersettingsdialog.h"
 
-ParserSettingsDialog::ParserSettingsDialog( const QTextStream& stream, QWidget* parent ) :
+ParserSettingsDialog::ParserSettingsDialog( QTextStream& stream, QWidget* parent ) :
     QDialog( parent )
 {
     Ui::Dialog ui;
@@ -18,7 +18,7 @@ ParserSettingsDialog::ParserSettingsDialog( const QTextStream& stream, QWidget* 
 
     this->list = new QSet<QString>;
 
-    QStringList head = QTextStream( stream.device() ).readLine().split("\t");
+    QStringList head = stream.readLine().split("\t");
 
     *this->list << head.takeFirst();
 
@@ -66,7 +66,8 @@ void ParserSettingsDialog::stateCatcher( QAbstractButton* bt )
         *this->list << bt->text();
 }
 
-QSet<QString> ParserSettingsDialog::getSettings( QTextStream& stream, const QString& path, QWidget* parent, Settings* settings )
+QSet<QString>
+ParserSettingsDialog::getSettings( QTextStream& stream, const QString& path, QWidget* parent, Settings* settings )
 {
     QSet<QString> value;
     ParserSettingsDialog dlg( stream, parent );

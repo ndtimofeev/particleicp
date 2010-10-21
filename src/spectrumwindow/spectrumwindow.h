@@ -5,7 +5,7 @@
 #include <QMdiSubWindow>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
-#include "jyparser.h"
+#include "vectortable.h"
 #include "polygon.h"
 #include "dispensationwindow.h"
 #include "reportwindow.h"
@@ -31,7 +31,7 @@ class SpectrumWindow : public QMdiSubWindow
     Q_OBJECT
 
 public:
-    SpectrumWindow( const QString& path, const QStringList& head, QWidget* parent = 0 );
+    SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent = 0 );
     virtual ~SpectrumWindow();
 
 protected:
@@ -40,6 +40,7 @@ protected:
 private slots:
     void setSettings();
     void start();
+    void toggleCurve( QwtPlotItem* curve, bool on );
 
 private:
     QMap<Spectrum::Settings,qreal>   settings;

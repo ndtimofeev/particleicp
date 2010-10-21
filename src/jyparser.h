@@ -4,8 +4,8 @@
 #include <QTextStream>
 #include <QString>
 #include <QSet>
-#include "jytable.h"
+#include "vectortable.h"
 
-JYTable JYParser( const QSet<QString>& head, const QTextStream& stream );
+VectorTable JYParser( const QSet<QString>& head, QTextStream& stream );
 
 #endif // JYPARSER_H

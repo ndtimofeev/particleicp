@@ -14,7 +14,7 @@ class ParserSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    ParserSettingsDialog( const QTextStream& stream, QWidget* parent = 0 );
+    ParserSettingsDialog( QTextStream& stream, QWidget* parent = 0 );
     virtual ~ParserSettingsDialog();
 
     static QSet<QString> getSettings( QTextStream& stream, const QString& path, QWidget* parent, Settings* settings = 0 );
