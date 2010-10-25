@@ -19,6 +19,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
 
     Ui::MainWindow ui;
     ui.setupUi( this );
+    this->mdiarea = ui.centralwidget;
+//    this->mdiarea->setViewMode( QMdiArea::TabbedView );
     this->rofptr = ui.menu_Recent_Files;
     this->rofptr->restoreState( settings->value("RecentFiles").toStringList() );
     this->rofptr->setMax(5);
@@ -63,6 +65,8 @@ void MainWindow::openFile( const QString& path )
         QTextStream stream( &file );
 
         SpectrumWindow* sw = new SpectrumWindow( JYParser( head, stream ), path, head, this );
+        this->mdiarea->addSubWindow( sw );
+        sw->resize( 600, 400 );
         sw->show();
 
         emit fileOpened( path );

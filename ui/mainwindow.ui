@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>801</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -37,7 +37,7 @@
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
-   <widget class="QMenu" name="menu_Window">
+   <widget class="QtWindowListMenu" name="menu_Window">
     <property name="title">
      <string>&amp;Window</string>
     </property>
@@ -98,6 +98,11 @@
     <slot>clearHistory()</slot>
     <slot>addFile(QString)</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>QtWindowListMenu</class>
+   <extends>QMenu</extends>
+   <header location="global">qtwindowlistmenu.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

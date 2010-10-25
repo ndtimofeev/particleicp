@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include <QMdiArea>
 #include "rofselector.h"
 
 class MainWindow : public QMainWindow
@@ -18,6 +19,7 @@ public:
 
 protected:
     ROFSelector* rofptr;
+    QMdiArea*    mdiarea;
 
 protected slots:
     void selectFile();

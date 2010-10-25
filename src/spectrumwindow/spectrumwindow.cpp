@@ -1,49 +1,42 @@
 #include <QDebug>
-#include <QPointF>
-#include <QPolygonF>
+#include <QMenu>
+#include <QPrintDialog>
+#include <QPrinter>
 #include <QMdiArea>
 #include <QtAlgorithms>
-#include <QMenu>
-#include <QTextEdit>
 #include <QContextMenuEvent>
 #include "spectrumwindow.h"
-#include "pointf.h"
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
-//#include "spectrumsettingsdialog.h"
-#include "dispensationwindow.h"
-#include "reportwindow.h"
-#include "falgorithms.h"
 
 SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent ) :
-    QMdiSubWindow( parent )
+    QwtPlot( parent )
 {
     this->setWindowTitle( path );
+    this->setAttribute(Qt::WA_DeleteOnClose);
     QwtLegend* legend = new QwtLegend;
     legend->setItemMode( QwtLegend::CheckableItem );
 
     QSet<QString> set = head;
     set.remove( "X" );
 
-    this->plot = new QwtPlot( this );
-    this->plot->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
-    this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec" );
-    this->plot->insertLegend( legend, QwtPlot::RightLegend );
-    this->setWidget( this->plot );
+    this->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
+    this->setAxisTitle( QwtPlot::xBottom, "t, sec" );
+    this->insertLegend( legend, QwtPlot::RightLegend );
 
     foreach( QString str, set )
     {
 
         QwtPlotCurve* curve = new QwtPlotCurve( str );
-        curve->attach( this->plot );
-        curve->setData( table.getColumn( "X" )->data(), table.getColumn( str )->data(), table.getHeight() );
+        curve->attach( this );
+        curve->setSamples( table.getColumn( "X" )->data(), table.getColumn( str )->data(), table.getHeight() );
     }
 
     foreach( QWidget* w, legend->legendItems() )
         ((QwtLegendItem*)w)->setChecked( true );
 
-    connect( this->plot, SIGNAL( legendChecked( QwtPlotItem*, bool ) ),
-             this,       SLOT( toggleCurve( QwtPlotItem*, bool ) ) );
+    connect( this, SIGNAL( legendChecked( QwtPlotItem*, bool ) ),
+             this, SLOT( toggleCurve( QwtPlotItem*, bool ) ) );
 
 
 //    this->data_all = new Polygon( table.getColumn( "X" ), table.getColumn( "Al1" ) );
@@ -72,8 +65,9 @@ SpectrumWindow::~SpectrumWindow()
 void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 {
     QMenu* contextMenu = new QMenu( this );
-//    contextMenu->addAction( tr( "&Settings" ), this, SLOT( setSettings() ) ) ;
-//    contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
+    contextMenu->addAction( tr( "P&rint" ), this, SLOT( printdlg() ) );
+    contextMenu->addAction( tr( "&Settings" ), this, SLOT( setSettings() ) ) ;
+    contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
     contextMenu->exec( event->globalPos() );
 }
 
@@ -135,5 +129,16 @@ void SpectrumWindow::start()
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
 {
     curve->setVisible( on );
-    this->plot->replot();
+    this->replot();
+}
+
+void SpectrumWindow::printdlg()
+{
+//    QPrinter printer;
+
+//    QPrintDialog *dialog = new QPrintDialog(&printer, this);
+//    dialog->setWindowTitle(tr("Print Document"));
+//    if (dialog->exec() != QDialog::Accepted)
+//        return;
+//    this->print( printer );
 }

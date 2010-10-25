@@ -6,9 +6,6 @@
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include "vectortable.h"
-#include "polygon.h"
-#include "dispensationwindow.h"
-#include "reportwindow.h"
 
 namespace Spectrum {
 
@@ -26,7 +23,7 @@ namespace Spectrum {
     };
 }
 
-class SpectrumWindow : public QMdiSubWindow
+class SpectrumWindow : public QwtPlot
 {
     Q_OBJECT
 
@@ -40,17 +37,12 @@ protected:
 private slots:
     void setSettings();
     void start();
+    void printdlg();
     void toggleCurve( QwtPlotItem* curve, bool on );
 
 private:
-    QMap<Spectrum::Settings,qreal>   settings;
-    QMap<QString,QVariant> report;
-    Polygon*               data_all;
-    Polygon*               data;
-    QwtPlot*               plot;
-    QwtPlotCurve*          curve;
-    DispensationWindow*    dispensationwindow;
-    ReportWindow*          reportwindow;
+    QMap<Spectrum::Settings,qreal> settings;
+    QMap<QString,QVariant>         report;
 };
 
 #endif // SPECTRUMWINDOW_H
