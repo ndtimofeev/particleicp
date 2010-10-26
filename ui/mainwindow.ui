@@ -37,7 +37,7 @@
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
-   <widget class="QtWindowListMenu" name="menu_Window">
+   <widget class="WindowMenu" name="menu_Window">
     <property name="title">
      <string>&amp;Window</string>
     </property>
@@ -100,9 +100,9 @@
    </slots>
   </customwidget>
   <customwidget>
-   <class>QtWindowListMenu</class>
+   <class>WindowMenu</class>
    <extends>QMenu</extends>
-   <header location="global">qtwindowlistmenu.h</header>
+   <header location="global">windowmenu.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
