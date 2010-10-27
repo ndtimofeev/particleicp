@@ -18,6 +18,9 @@ protected:
 
     DMenuPrivate* d_ptr;
 
+protected slots:
+    virtual void redrawMenu();
+
 private:
     Q_DECLARE_PRIVATE(DMenu)
 };
