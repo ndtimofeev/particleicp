@@ -4,17 +4,21 @@
 #include <QObject>
 #include "dmenu.h"
 
-class DMenuPrivate : public QObject
+class DMenuPrivate
 {
-    Q_OBJECT
     Q_DECLARE_PUBLIC(DMenu)
 public:
     DMenuPrivate();
     virtual ~DMenuPrivate();
 
-    DMenu* q_ptr;
+    void     init();
+    void     redrawMenu();
+    QString  nullActionText() const;
+    void     setNullActionText( const QString& str );
 
-    void redrawMenu();
+    DMenu*   q_ptr;
+    QAction* nullAction;
+    QString  nullText;
 };
 
 #endif /* DMENU_P_H */

@@ -2,11 +2,11 @@
 #define WINDOWMENU_H
 
 #include <QWidget>
-#include <QMenu>
 #include <QMdiArea>
 #include <QPointer>
+#include "dmenu.h"
 
-class WindowMenu : public QMenu
+class WindowMenu : public DMenu
 {
     Q_OBJECT
 
@@ -17,9 +17,6 @@ public:
 
     const QMdiArea* area() const;
     void            setArea( QMdiArea* area );
-
-protected:
-    void init();
 
 private:
     QPointer<QMdiArea> area_v;
