@@ -19,7 +19,7 @@ public:
     void            setArea( QMdiArea* area );
 
 protected:
-    void redrawMenu();
+    virtual void redrawMenu();
 
 private:
     QPointer<QMdiArea> area_v;

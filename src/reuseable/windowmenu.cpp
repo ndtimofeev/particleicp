@@ -1,4 +1,5 @@
 #include <QAction>
+#include <QMdiSubWindow>
 #include "windowmenu.h"
 
 WindowMenu::WindowMenu( QWidget* parent ) :
@@ -29,7 +30,7 @@ void WindowMenu::redrawMenu()
 {
     this->removeAllActions();
     if ( this->area_v && this->area_v->currentSubWindow() )
-        this->addAction( "hjhjh" );
+        this->addAction( "shaded", this->area_v->currentSubWindow(), SLOT( showShaded() ) );
     else
         this->addAction( this->nullAction() );
 }

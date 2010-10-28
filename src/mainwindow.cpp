@@ -20,6 +20,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent )
     Ui::MainWindow ui;
     ui.setupUi( this );
     this->mdiarea = ui.centralwidget;
+    ui.menu_Window->setArea( this->mdiarea );
 //    this->mdiarea->setViewMode( QMdiArea::TabbedView );
     this->rofptr = ui.menu_Recent_Files;
     this->rofptr->restoreState( settings->value("RecentFiles").toStringList() );
