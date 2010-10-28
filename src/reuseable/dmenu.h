@@ -16,11 +16,15 @@ public:
     DMenu( QWidget* parent = 0 );
     virtual ~DMenu();
 
-    QString nullActionText() const;
-    void    setNullActionText( const QString& str );
+    QString  nullActionText() const;
+    void     setNullActionText( const QString& str );
+
+    QAction* nullAction() const;
 
 protected:
     DMenu( DMenuPrivate &d, QWidget* parent = 0 );
+
+    void removeAllActions();
 
     DMenuPrivate* d_ptr;
 

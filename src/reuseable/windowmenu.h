@@ -18,6 +18,9 @@ public:
     const QMdiArea* area() const;
     void            setArea( QMdiArea* area );
 
+protected:
+    void redrawMenu();
+
 private:
     QPointer<QMdiArea> area_v;
 };

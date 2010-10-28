@@ -25,3 +25,11 @@ void WindowMenu::setArea( QMdiArea* area )
     this->area_v = area;
 }
 
+void WindowMenu::redrawMenu()
+{
+    this->removeAllActions();
+    if ( this->area_v && this->area_v->currentSubWindow() )
+        this->addAction( "hjhjh" );
+    else
+        this->addAction( this->nullAction() );
+}

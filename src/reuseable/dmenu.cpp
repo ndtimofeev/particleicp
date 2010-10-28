@@ -26,12 +26,24 @@ void DMenu::setNullActionText( const QString& str )
     d->setNullActionText( str );
 }
 
+QAction* DMenu::nullAction() const
+{
+    Q_D(const DMenu);
+    return d->nullAction();
+}
+
 DMenu::DMenu( DMenuPrivate &pimpl, QWidget* parent ) :
     QMenu( parent ), d_ptr( &pimpl )
 {
     Q_D(DMenu);
     d->q_ptr = this;
     d->init();
+}
+
+void DMenu::removeAllActions()
+{
+    Q_D(DMenu);
+    d->removeAllActions();
 }
 
 void DMenu::redrawMenu()

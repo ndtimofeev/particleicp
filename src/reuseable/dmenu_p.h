@@ -7,6 +7,7 @@
 class DMenuPrivate
 {
     Q_DECLARE_PUBLIC(DMenu)
+
 public:
     DMenuPrivate();
     virtual ~DMenuPrivate();
@@ -15,9 +16,11 @@ public:
     void     redrawMenu();
     QString  nullActionText() const;
     void     setNullActionText( const QString& str );
+    QAction* nullAction() const;
+    void     removeAllActions();
 
     DMenu*   q_ptr;
-    QAction* nullAction;
+    QAction* nullAction_ptr;
     QString  nullText;
 };
 
