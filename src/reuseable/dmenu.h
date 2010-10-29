@@ -24,12 +24,12 @@ public:
 protected:
     DMenu( DMenuPrivate &d, QWidget* parent = 0 );
 
-    void removeAllActions();
+    virtual void redrawMenu();
 
     DMenuPrivate* d_ptr;
 
 protected slots:
-    virtual void redrawMenu();
+    void updateMenu();
 
 private:
     Q_DECLARE_PRIVATE(DMenu)

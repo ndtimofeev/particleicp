@@ -13,7 +13,7 @@ DMenuPrivate::~DMenuPrivate()
 void DMenuPrivate::init()
 {
     Q_Q(DMenu);
-    q->connect( q, SIGNAL( aboutToShow() ), q, SLOT( redrawMenu() ) );
+    q->connect( q, SIGNAL( aboutToShow() ), q, SLOT( updateMenu() ) );
     this->nullAction_ptr = new QAction( nullText, q );
     this->nullAction_ptr->setEnabled( false );
 }
@@ -21,7 +21,6 @@ void DMenuPrivate::init()
 void DMenuPrivate::redrawMenu()
 {
     Q_Q(DMenu);
-    q->removeAllActions();
     q->addAction( this->nullAction_ptr );
 }
 
@@ -40,9 +39,14 @@ QAction* DMenuPrivate::nullAction() const
     return this->nullAction_ptr;
 }
 
-void DMenuPrivate::removeAllActions()
+void DMenuPrivate::updateMenu()
 {
     Q_Q(DMenu);
+
     foreach( QAction* ptr, q->actions() )
-        q->removeAction( ptr );
+        if ( ptr == this->nullAction_ptr )
+            q->removeAction( ptr );
+
+    q->clear();
+    q->redrawMenu();
 }

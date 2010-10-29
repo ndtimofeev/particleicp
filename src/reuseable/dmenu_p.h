@@ -17,7 +17,7 @@ public:
     QString  nullActionText() const;
     void     setNullActionText( const QString& str );
     QAction* nullAction() const;
-    void     removeAllActions();
+    void     updateMenu();
 
     DMenu*   q_ptr;
     QAction* nullAction_ptr;

@@ -67,8 +67,9 @@ void MainWindow::openFile( const QString& path )
 
         SpectrumWindow* sw = new SpectrumWindow( JYParser( head, stream ), path, head, this );
         this->mdiarea->addSubWindow( sw );
-        sw->resize( 600, 400 );
         sw->show();
+        sw->showMaximized();
+        sw->showNormal();
 
         emit fileOpened( path );
     }

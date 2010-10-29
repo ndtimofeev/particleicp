@@ -1,6 +1,7 @@
 #ifndef WINDOWMENU_H
 #define WINDOWMENU_H
 
+#include <QActionGroup>
 #include <QWidget>
 #include <QMdiArea>
 #include <QPointer>
@@ -23,6 +24,7 @@ protected:
 
 private:
     QPointer<QMdiArea> area_v;
+    QActionGroup*      group;
 };
 
 #endif /* WINDOWMENU_H */

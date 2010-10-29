@@ -40,14 +40,14 @@ DMenu::DMenu( DMenuPrivate &pimpl, QWidget* parent ) :
     d->init();
 }
 
-void DMenu::removeAllActions()
-{
-    Q_D(DMenu);
-    d->removeAllActions();
-}
-
 void DMenu::redrawMenu()
 {
     Q_D(DMenu);
     d->redrawMenu();
+}
+
+void DMenu::updateMenu()
+{
+    Q_D(DMenu);
+    d->updateMenu();
 }
