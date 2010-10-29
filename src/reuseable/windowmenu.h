@@ -25,6 +25,9 @@ protected:
 private:
     QPointer<QMdiArea> area_v;
     QActionGroup*      group;
+
+private slots:
+    void windowSelectCatcher( QAction* act );
 };
 
 #endif /* WINDOWMENU_H */

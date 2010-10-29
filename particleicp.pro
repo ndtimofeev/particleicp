@@ -5,12 +5,11 @@
 CONFIG += qt debug qwt silent warn_on
 TEMPLATE = app
 TARGET = 
-DEPENDPATH += . 3rdparty src ui src/reuseable src/spectrumwindow
-INCLUDEPATH += . 3rdparty src/reuseable src src/spectrumwindow
+DEPENDPATH += . src ui src/reuseable src/spectrumwindow
+INCLUDEPATH += . src/reuseable src src/spectrumwindow
 
 # Input
-HEADERS += 3rdparty/qtwindowlistmenu.h \
-           src/jyparser.h \
+HEADERS += src/jyparser.h \
            src/mainwindow.h \
            src/parsersettingsdialog.h \
            src/reuseable/dmenu.h \
@@ -30,8 +29,7 @@ HEADERS += 3rdparty/qtwindowlistmenu.h \
 FORMS += ui/mainwindow.ui \
          ui/parsersettingsdialog.ui \
          ui/spectrumsettingsdialog.ui
-SOURCES += 3rdparty/qtwindowlistmenu.cpp \
-           src/jyparser.cpp \
+SOURCES += src/jyparser.cpp \
            src/main.cpp \
            src/mainwindow.cpp \
            src/parsersettingsdialog.cpp \

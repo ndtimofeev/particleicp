@@ -37,24 +37,38 @@ void WindowMenu::redrawMenu()
         this->addAction(tr("&Close"), this->area_v, SLOT(closeActiveSubWindow()), QKeySequence::Close);
         if ( this->area_v->subWindowList().size() > 1 )
             this->addAction(tr("Close &All"), this->area_v, SLOT(closeAllSubWindows()));
+
         this->addSeparator();
+
         this->addAction(tr("&Tile"), this->area_v, SLOT(tileSubWindows()));
         this->addAction(tr("Ca&scade"), this->area_v, SLOT(cascadeSubWindows()));
+
         if ( this->area_v->subWindowList().size() > 1 )
         {
             this->addSeparator();
+
             this->addAction(tr("&Next"), this->area_v, SLOT(activateNextSubWindow()));
             this->addAction(tr("&Previous"), this->area_v, SLOT(activatePreviousSubWindow()));
+
             foreach( QMdiSubWindow* ptr, this->area_v->subWindowList() )
             {
                 QAction* act = this->addAction( ptr->widget()->windowTitle() );
+                act->setData( ptr );
+                act->setCheckable( true );
                 this->group->addAction( act );
-                if ( ptr == this->area_v->activeSubWindow() )
-                    act->setChecked( true );
+                act->setChecked( ptr == this->area_v->activeSubWindow() );
             }
 
+            connect(this->group, SIGNAL(triggered(QAction*)), this, SLOT(windowSelectCatcher(QAction*)));
         }
     }
     else
         this->addAction( this->nullAction() );
+}
+
+void WindowMenu::windowSelectCatcher( QAction* act )
+{
+    if ( act && act )
+        return;
+
 }
