@@ -2,10 +2,15 @@
 #define WINDOWMENU_H
 
 #include <QActionGroup>
+#include <QAction>
+#include <QMdiSubWindow>
+#include <QMap>
 #include <QWidget>
 #include <QMdiArea>
 #include <QPointer>
 #include "dmenu.h"
+
+class WindowMenuPrivate;
 
 class WindowMenu : public DMenu
 {
@@ -20,14 +25,14 @@ public:
     void            setArea( QMdiArea* area );
 
 protected:
+    WindowMenu( WindowMenuPrivate &d_ptr, QWidget* parent = 0 );
+
     virtual void redrawMenu();
 
-private:
-    QPointer<QMdiArea> area_v;
-    QActionGroup*      group;
+    WindowMenuPrivate* windowmenu_ptr;
 
-private slots:
-    void windowSelectCatcher( QAction* act );
+private:
+    Q_DECLARE_PRIVATE_D(windowmenu_ptr,WindowMenu);
 };
 
 #endif /* WINDOWMENU_H */

@@ -2,7 +2,7 @@
 #include "dmenu_p.h"
 
 DMenu::DMenu( QWidget* parent ) :
-    QMenu( parent ), d_ptr( new DMenuPrivate )
+    QMenu( parent ), dmenu_ptr( new DMenuPrivate )
 {
     Q_D(DMenu);
     d->q_ptr = this;
@@ -11,7 +11,7 @@ DMenu::DMenu( QWidget* parent ) :
 
 DMenu::~DMenu()
 {
-    delete this->d_ptr;
+    delete this->dmenu_ptr;
 }
 
 QString DMenu::nullActionText() const
@@ -33,7 +33,7 @@ QAction* DMenu::nullAction() const
 }
 
 DMenu::DMenu( DMenuPrivate &pimpl, QWidget* parent ) :
-    QMenu( parent ), d_ptr( &pimpl )
+    QMenu( parent ), dmenu_ptr( &pimpl )
 {
     Q_D(DMenu);
     d->q_ptr = this;

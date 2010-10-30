@@ -26,13 +26,13 @@ protected:
 
     virtual void redrawMenu();
 
-    DMenuPrivate* d_ptr;
+    DMenuPrivate* dmenu_ptr;
 
 protected slots:
     void updateMenu();
 
 private:
-    Q_DECLARE_PRIVATE(DMenu)
+    Q_DECLARE_PRIVATE_D(dmenu_ptr,DMenu)
 };
 
 #endif /* DMENU_H */
