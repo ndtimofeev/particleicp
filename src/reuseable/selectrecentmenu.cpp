@@ -6,6 +6,7 @@ SelectRecentMenu::SelectRecentMenu( QWidget* parent ) :
 {
     Q_D(SelectRecentMenu);
     d->q_ptr = this;
+    d->init();
 }
 
 SelectRecentMenu::SelectRecentMenu( SelectRecentMenuPrivate &d_ptr, QWidget* parent ) :
@@ -13,6 +14,7 @@ SelectRecentMenu::SelectRecentMenu( SelectRecentMenuPrivate &d_ptr, QWidget* par
 {
     Q_D(SelectRecentMenu);
     d->q_ptr = this;
+    d->init();
 }
 
 SelectRecentMenu::~SelectRecentMenu()
@@ -60,10 +62,5 @@ void SelectRecentMenu::redrawMenu()
 {
     Q_D(SelectRecentMenu);
     d->redrawMenu();
-}
-
-void SelectRecentMenu::emitElementSelectedSignal( const QString& str )
-{
-    emit elementSelected( str );
 }
 

@@ -1,8 +1,9 @@
 #include "selectrecentmenu_p.h"
 
 SelectRecentMenuPrivate::SelectRecentMenuPrivate() :
-    history( new History<QString>(0) )
+    QObject(), history( new History<QString>(0) )
 {
+    this->group = new QActionGroup( this );
 }
 
 SelectRecentMenuPrivate::~SelectRecentMenuPrivate()
@@ -13,7 +14,8 @@ SelectRecentMenuPrivate::~SelectRecentMenuPrivate()
 void SelectRecentMenuPrivate::init()
 {
     Q_Q(SelectRecentMenu);
-    this->group = new QActionGroup( q );
+    connect( this->group, SIGNAL(triggered(QAction*)), this, SLOT(emitElementSelectedSignal(QAction*)));
+    connect( this, SIGNAL(elementSelected_p(QString)), q, SIGNAL(elementSelected(QString)));
 }
 
 int SelectRecentMenuPrivate::max() const
@@ -65,7 +67,12 @@ void SelectRecentMenuPrivate::redrawMenu()
 
         q->addActions( this->group->actions() );
         q->addSeparator();
-        q->addAction( QObject::tr("&Clear List"), q, SLOT( clearHistory() ) );
+        q->addAction( tr("&Clear List"), q, SLOT( removeAllElements() ) );
     }
 }
 
+void SelectRecentMenuPrivate::emitElementSelectedSignal( QAction* act )
+{
+    if ( act )
+        emit elementSelected_p( act->data().toString() );
+}

@@ -20,14 +20,14 @@
      <x>0</x>
      <y>0</y>
      <width>801</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <widget class="ROFSelector" name="menu_Recent_Files">
+    <widget class="SelectRecentMenu" name="menu_Recent_Files">
      <property name="title">
       <string>Open &amp;Recent</string>
      </property>
@@ -89,20 +89,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ROFSelector</class>
-   <extends>QMenu</extends>
-   <header location="global">rofselector.h</header>
-   <slots>
-    <signal>fileSelected(QString)</signal>
-    <slot>setMax(int)</slot>
-    <slot>clearHistory()</slot>
-    <slot>addFile(QString)</slot>
-   </slots>
-  </customwidget>
-  <customwidget>
    <class>WindowMenu</class>
    <extends>QMenu</extends>
    <header location="global">windowmenu.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SelectRecentMenu</class>
+   <extends>QMenu</extends>
+   <header location="global">selectrecentmenu.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

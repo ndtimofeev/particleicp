@@ -5,10 +5,13 @@
 #include "selectrecentmenu.h"
 #include "history.h"
 
-class SelectRecentMenuPrivate
+class SelectRecentMenuPrivate : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PUBLIC(SelectRecentMenu)
+
+signals:
+    void elementSelected_p( QString str );
 
 public:
     SelectRecentMenuPrivate();
@@ -30,6 +33,7 @@ public:
     SelectRecentMenu* q_ptr;
 
 public slots:
+    void emitElementSelectedSignal( QAction* act );
 
 };
 

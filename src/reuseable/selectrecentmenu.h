@@ -33,7 +33,6 @@ protected:
     SelectRecentMenu( SelectRecentMenuPrivate &d_ptr, QWidget* parent = 0 );
 
     virtual void redrawMenu();
-    void         emitElementSelectedSignal( const QString& str );
 
     SelectRecentMenuPrivate* selectrecentmenu;
 

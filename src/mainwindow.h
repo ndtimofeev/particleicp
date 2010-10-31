@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QMdiArea>
-#include "rofselector.h"
+#include "selectrecentmenu.h"
 
 class MainWindow : public QMainWindow
 {
@@ -18,7 +18,7 @@ public:
     virtual ~MainWindow();
 
 protected:
-    ROFSelector* rofptr;
+    SelectRecentMenu* rofptr;
     QMdiArea*    mdiarea;
 
 protected slots:
