@@ -58,11 +58,10 @@ void ROFSelector::redrawMenu()
         int i = 1;
 
         foreach( QString str, *this->history )
-            this->addAction( QString( "&" ) += QString::number(i++).append( " " )
-                    += str )->setData( str );
+            this->addAction(QString("&%1 %2").arg(i++).arg(str))->setData( str );
 
         this->addSeparator();
-        this->addAction( tr("&Clear"), this, SLOT( clearHistory() ) );
+        this->addAction( tr("&Clear List"), this, SLOT( clearHistory() ) );
     }
 }
 
