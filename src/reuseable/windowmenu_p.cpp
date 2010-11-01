@@ -46,12 +46,14 @@ void WindowMenuPrivate::redrawMenu()
             q->addAction(tr("&Next"), this->area_v, SLOT(activateNextSubWindow()));
             q->addAction(tr("&Previous"), this->area_v, SLOT(activatePreviousSubWindow()));
 
+            int i = 1;
+
             foreach( QMdiSubWindow* ptr, this->area_v->subWindowList() )
             {
-                QAction* act = q->addAction( ptr->widget()->windowTitle() );
+                QAction* act = q->addAction( QString("&%1 %2").arg(i++).arg(ptr->widget()->windowTitle()) );
                 act->setCheckable( true );
-                this->group->addAction( act );
                 act->setChecked( ptr == this->area_v->activeSubWindow() );
+                this->group->addAction( act );
                 this->window_list[act] = ptr;
             }
 

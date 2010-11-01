@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>801</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -97,6 +97,11 @@
    <class>SelectRecentMenu</class>
    <extends>QMenu</extends>
    <header location="global">selectrecentmenu.h</header>
+   <slots>
+    <signal>elementSelected(QString)</signal>
+    <slot>addElement(QString)</slot>
+    <slot>removeAllElements()</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -190,6 +195,38 @@
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>fileOpened(QString)</signal>
+   <receiver>menu_Recent_Files</receiver>
+   <slot>addElement(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>28</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menu_Recent_Files</sender>
+   <signal>elementSelected(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>80</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>

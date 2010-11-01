@@ -63,9 +63,12 @@ void SelectRecentMenuPrivate::redrawMenu()
         int i = 1;
 
         foreach( QString str, *this->history )
-            this->group->addAction(QString("&%1 %2").arg(i++).arg(str))->setData( str );
+        {
+            QAction* action = q->addAction(QString("&%1 %2").arg(i++).arg(str));
+            action->setData( str );
+            this->group->addAction( action );
+        }
 
-        q->addActions( this->group->actions() );
         q->addSeparator();
         q->addAction( tr("&Clear List"), q, SLOT( removeAllElements() ) );
     }
