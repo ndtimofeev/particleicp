@@ -5,9 +5,10 @@
 #include <QMdiArea>
 #include <QtAlgorithms>
 #include <QContextMenuEvent>
-#include "spectrumwindow.h"
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
+#include "spectrumwindow.h"
+#include "spectrumsettingsdialog.h"
 
 SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent ) :
     QwtPlot( parent )
@@ -32,27 +33,35 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
         curve->setSamples( table.getColumn( "X" )->data(), table.getColumn( str )->data(), table.getHeight() );
     }
 
+// Очень некрасиво!
     foreach( QWidget* w, legend->legendItems() )
         ((QwtLegendItem*)w)->setChecked( true );
 
     connect( this, SIGNAL( legendChecked( QwtPlotItem*, bool ) ),
              this, SLOT( toggleCurve( QwtPlotItem*, bool ) ) );
 
+    this->limits[Spectrum::MinTime] = table.getColumn("X")->first();
+    this->limits[Spectrum::MaxTime] = table.getColumn("X")->last();
+
+    this->settings[Spectrum::UpTime] = this->limits[Spectrum::MaxTime];
+    this->settings[Spectrum::DownTime] = this->limits[Spectrum::MinTime];
+    this->settings[Spectrum::HistogramStep] = 0.0;
+
+    QMap<QString,QVariant> list;
+    QMap<QString,QVariant> map;
+    foreach( QString str, set )
+    {
+        list[str] = true;
+        map[str] = 0.0;
+    }
+
+    this->settings[Spectrum::MaxNoise] = map;
+    this->settings[Spectrum::AverageNoise] = map;
+    this->settings[Spectrum::CurveSettings] = list;
+
 
 //    this->data_all = new Polygon( table.getColumn( "X" ), table.getColumn( "Al1" ) );
 //    this->data = this->data_all;
-//  this->settings[UpTime] = data->getX()->last();
-//  this->settings[DownTime] = data->getX()->first();
-//  this->settings[MaxTime] = data->getX()->last();
-//  this->settings[MinTime] = data->getX()->first();
-//  this->settings[MaxNoise] = 0.0;
-//  this->settings[AverageNoise] = 0.0;
-
-//    this->curve = new QwtPlotCurve();
-//    this->curve->attach( this->plot );
-//    this->curve->setRawData( data->getX()->data(),
-//                             data->getY()->data(),
-//                             data->getSize() );
 
 //    this->dispensationwindow = NULL;
 //    this->reportwindow = NULL;
@@ -73,7 +82,7 @@ void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 
 void SpectrumWindow::setSettings()
 {
-//    this->settings = SpectrumSettingsDialog::getSettings( this->settings, this );
+    this->settings = SpectrumSettingsDialog::getSettings( this->settings, this->limits, this );
 //    this->data = this->data_all->getInterval( this->settings[DownTime],
 //                                              this->settings[UpTime] );
 

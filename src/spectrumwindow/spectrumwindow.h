@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QMdiSubWindow>
+#include <QVector>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include "vectortable.h"
@@ -10,10 +11,12 @@
 namespace Spectrum {
 
     enum Settings {
-        UpTime,
         DownTime,
+        UpTime,
         MaxNoise,
-        AverageNoise
+        AverageNoise,
+        HistogramStep,
+        CurveSettings
     };
 
     enum Limits {
@@ -21,6 +24,15 @@ namespace Spectrum {
         MaxTime//,
 //        MaxNoise
     };
+}
+
+namespace Curve {
+
+    enum Settings {
+        MaxNoise,
+        AverageNoise
+    };
+
 }
 
 class SpectrumWindow : public QwtPlot
@@ -41,8 +53,9 @@ private slots:
     void toggleCurve( QwtPlotItem* curve, bool on );
 
 private:
-    QMap<Spectrum::Settings,qreal> settings;
-    QMap<QString,QVariant>         report;
+    QMap<Spectrum::Settings,QVariant> settings;
+    QMap<Spectrum::Limits,QVariant>   limits;
+    QMap<QString,QVariant>            report;
 };
 
 #endif // SPECTRUMWINDOW_H

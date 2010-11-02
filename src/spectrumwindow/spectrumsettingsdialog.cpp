@@ -1,54 +1,60 @@
-#include <QSpinBox>
-#include <QFormLayout>
-#include <QDialogButtonBox>
-#include "spectrumwindow.h"
+#include <QDebug>
+#include <QCheckBox>
 #include "spectrumsettingsdialog.h"
 #include "ui_spectrumsettingsdialog.h"
 
-SpectrumSettingsDialog::SpectrumSettingsDialog( const QMap<Spectrum::Settings,qreal>& settings,
-                                                const QMap<Spectrum::Limits,qreal>&   limits,
+SpectrumSettingsDialog::SpectrumSettingsDialog( const QMap<Spectrum::Settings,QVariant>& settings,
+                                                const QMap<Spectrum::Limits,QVariant>&   limits,
                                                 SpectrumWindow* parent ) :
     QDialog( parent ),
     settings( settings ),
     limits( limits )
 {
-    Ui::Dialog ui;
+    Ui::SpectrumSettingsDialog ui;
     ui.setupUi( this );
 
-    ui.maxNoiseDoubleSpinBox->setValue( this->settings[Spectrum::MaxNoise] );
+    ui.upTimeSpinBox->setRange( limits[Spectrum::MinTime].toInt(), limits[Spectrum::MaxTime].toInt() );
+    ui.upTimeSpinBox->setValue( settings[Spectrum::UpTime].toInt() );
 
-    ui.averageNoiseDoubleSpinBox->setValue( this->settings[Spectrum::AverageNoise] );
+    ui.downTimeSpinBox->setRange( limits[Spectrum::MinTime].toInt(), limits[Spectrum::MaxTime].toInt() );
+    ui.downTimeSpinBox->setValue( settings[Spectrum::DownTime].toInt() );
 
-    ui.upTimeSpinBox->setRange( this->limits[Spectrum::MinTime], this->limits[Spectrum::MaxTime] );
-    ui.upTimeSpinBox->setValue( this->settings[Spectrum::UpTime] );
+    foreach( QString str, settings[Spectrum::CurveSettings].toMap().keys() )
+    {
+        QCheckBox* cb = new QCheckBox( str, this );
 
-    ui.downTimeSpinBox->setRange( this->limits[Spectrum::MinTime], this->limits[Spectrum::MaxTime] );
-    ui.downTimeSpinBox->setValue( this->settings[Spectrum::DownTime] );
+        if ( settings[Spectrum::CurveSettings].toMap().value( str ).toBool() )
+            cb->setCheckState( Qt::Checked );
+
+        ui.verticalLayout_4->addWidget( cb );
+    }
+
+    ui.verticalLayout_4->addStretch();
 }
 
 SpectrumSettingsDialog::~SpectrumSettingsDialog()
 {
 }
 
-const QMap<Spectrum::Settings,qreal>& SpectrumSettingsDialog::getReturn() const
+const QMap<Spectrum::Settings,QVariant>& SpectrumSettingsDialog::getReturn() const
 {
     return this->settings;
 }
 
-QMap<Spectrum::Settings,qreal>
-SpectrumSettingsDialog::getSettings( const QMap<Spectrum::Settings,qreal>& settings,
-                                     const QMap<Spectrum::Limits,qreal>&   limits,
+QMap<Spectrum::Settings,QVariant>
+SpectrumSettingsDialog::getSettings( const QMap<Spectrum::Settings,QVariant>& settings,
+                                     const QMap<Spectrum::Limits,QVariant>&   limits,
                                      SpectrumWindow* ptr )
 {
-    QMap<Spectrum::Settings,qreal> result;
+    QMap<Spectrum::Settings,QVariant> result;
     SpectrumSettingsDialog dlg( settings, limits, ptr );
 
     if ( dlg.exec() == QDialog::Accepted )
         result = dlg.getReturn();
     else
-        result = dlg.getReturn();
+        result = settings;
 
-    return settings;
+    return result;
 }
 
 void SpectrumSettingsDialog::set_up_time( int val )
@@ -69,5 +75,10 @@ void SpectrumSettingsDialog::set_max_noise( double val )
 void SpectrumSettingsDialog::set_average_noise( double val )
 {
     this->settings[Spectrum::AverageNoise] = val;
+}
+
+void SpectrumSettingsDialog::set_histogram_step( double val )
+{
+    this->settings[Spectrum::HistogramStep] = val;
 }
 
