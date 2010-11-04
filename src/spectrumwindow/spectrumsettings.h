@@ -1,6 +1,7 @@
 #ifndef SPECTRUMSETTINGS_H
 #define SPECTRUMSETTINGS_H
 
+#include <QAbstractButton>
 #include <QMap>
 #include <QWizardPage>
 #include <QWizard>
@@ -21,7 +22,7 @@ public:
     void init();
 
 private slots:
-    void pageEdit( int i );
+    void stateChanged( QAbstractButton* bt );
 
 private:
     QWizard*                          parent;

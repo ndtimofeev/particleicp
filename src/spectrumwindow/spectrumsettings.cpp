@@ -47,11 +47,3 @@ void SpectrumSettings::stateChanged( QAbstractButton* bt )
 {
 }
 
-void SpectrumSettings::pageEdit( int i )
-{
-//  if ( i == Qt::Unchecked )
-//      this->parent->removePage( );
-//  else if ( i == Qt::Checked )
-//      this->parent->setPage( );
-}
-
