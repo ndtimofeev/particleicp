@@ -47,7 +47,6 @@ protected:
     void contextMenuEvent( QContextMenuEvent* event );
 
 private slots:
-    void setSettings();
     void start();
     void printdlg();
     void toggleCurve( QwtPlotItem* curve, bool on );

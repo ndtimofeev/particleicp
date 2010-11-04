@@ -8,7 +8,7 @@
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
 #include "spectrumwindow.h"
-#include "spectrumsettingsdialog.h"
+#include "spectrumsettingswizard.h"
 
 SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent ) :
     QwtPlot( parent )
@@ -75,26 +75,14 @@ void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 {
     QMenu* contextMenu = new QMenu( this );
     contextMenu->addAction( tr( "P&rint" ), this, SLOT( printdlg() ) );
-    contextMenu->addAction( tr( "&Settings" ), this, SLOT( setSettings() ) ) ;
     contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
     contextMenu->exec( event->globalPos() );
 }
 
-void SpectrumWindow::setSettings()
-{
-    this->settings = SpectrumSettingsDialog::getSettings( this->settings, this->limits, this );
-//    this->data = this->data_all->getInterval( this->settings[DownTime],
-//                                              this->settings[UpTime] );
-
-//    this->curve->setRawData( this->data->getX()->data(),
-//                             this->data->getY()->data(),
-//                             this->data->getSize() );
-
-//    this->plot->replot();
-}
-
 void SpectrumWindow::start()
 {
+    SpectrumSettingsWizard* wiz = new SpectrumSettingsWizard( this->settings, this->limits, this );
+    wiz->show();
 //    Polygon* sig = this->data->getMoreThen( this->settings[MaxNoise] );
 //    this->report["Frequency"] = sig->getSize() /
 //                        ( this->settings[UpTime] - this->settings[DownTime] );
