@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "curvesettings.h"
 #include "ui_curvesettings.h"
 
@@ -10,5 +11,6 @@ CurveSettings::CurveSettings( const QString& str, QWizard* parent ) : QWizardPag
 
 CurveSettings::~CurveSettings()
 {
+    qDebug() << "I has killed!";
 }
 

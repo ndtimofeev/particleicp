@@ -5,11 +5,15 @@
 #include <QWizardPage>
 #include <QWizard>
 #include <QVBoxLayout>
+#include <QAbstractButton>
 #include "spectrumwindow.h"
 
 class SpectrumSettings : public QWizardPage
 {
     Q_OBJECT
+
+signals:
+    void pageStateChanged( QString pageName );
 
 public:
     SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& settings,
@@ -21,7 +25,7 @@ public:
     void init();
 
 private slots:
-    void pageEdit( int i );
+    void stateChanged( QAbstractButton* bt );
 
 private:
     QWizard*                          parent;

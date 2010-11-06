@@ -22,6 +22,8 @@ SpectrumSettings::SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& set
 
     QButtonGroup* group = new QButtonGroup( this );
 
+    group->setExclusive( false );
+
     foreach( QString str, settings[Spectrum::CurveSettings].toMap().keys() )
     {
         QCheckBox* cb = new QCheckBox( str, this );
@@ -45,13 +47,6 @@ SpectrumSettings::~SpectrumSettings()
 
 void SpectrumSettings::stateChanged( QAbstractButton* bt )
 {
-}
-
-void SpectrumSettings::pageEdit( int i )
-{
-//  if ( i == Qt::Unchecked )
-//      this->parent->removePage( );
-//  else if ( i == Qt::Checked )
-//      this->parent->setPage( );
+    emit pageStateChanged( bt->text() );
 }
 

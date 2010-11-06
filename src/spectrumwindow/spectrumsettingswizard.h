@@ -5,6 +5,7 @@
 #include <QString>
 #include <QWizard>
 #include <QWidget>
+#include <QVariant>
 #include "spectrumwindow.h"
 
 class SpectrumSettingsWizard : public QWizard
@@ -18,10 +19,14 @@ public:
 
     virtual ~SpectrumSettingsWizard();
 
+private slots:
+    void pageEdit( const QString& pageName );
+
 private:
     int getPageId( const QString& str ) const;
 
-    QStringList pages;
+    QStringList            pages;
+    QMap<QString,QVariant> curves;
 };
 
 #endif /* SPECTRUMSETTINGSWIZARD_H */

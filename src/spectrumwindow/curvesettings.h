@@ -9,7 +9,7 @@ class CurveSettings : public QWizardPage
     Q_OBJECT
 
 public:
-    CurveSettings( const QString& str, QWizard* parent );
+    CurveSettings( const QString& str, QWizard* parent = 0 );
     virtual ~CurveSettings();
 };
 
