@@ -1,6 +1,7 @@
 #ifndef SPECTRUMSETTINGS_H
 #define SPECTRUMSETTINGS_H
 
+#include <QAbstractButton>
 #include <QMap>
 #include <QWizardPage>
 #include <QWizard>
