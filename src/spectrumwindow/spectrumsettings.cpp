@@ -8,7 +8,6 @@ SpectrumSettings::SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& set
                                     const QMap<Spectrum::Limits,QVariant>& limits,
                                     QWizard* parent ) :
     QWizardPage( parent ),
-    parent( parent ),
     settings( settings )
 {
     Ui::SpectrumSettings ui;
@@ -47,6 +46,7 @@ SpectrumSettings::~SpectrumSettings()
 
 void SpectrumSettings::stateChanged( QAbstractButton* bt )
 {
-    emit pageStateChanged( bt->text() );
+    if ( bt->isCheckable() )
+        emit pageStateChanged( bt->text(), bt->isChecked() );
 }
 

@@ -14,7 +14,7 @@ class SpectrumSettings : public QWizardPage
     Q_OBJECT
 
 signals:
-    void pageStateChanged( QString pageName );
+    void pageStateChanged( QString pageName, bool state );
 
 public:
     SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& settings,
@@ -29,7 +29,6 @@ private slots:
     void stateChanged( QAbstractButton* bt );
 
 private:
-    QWizard*                          parent;
     QMap<Spectrum::Settings,QVariant> settings;
 };
 

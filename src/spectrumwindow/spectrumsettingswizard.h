@@ -20,10 +20,11 @@ public:
     virtual ~SpectrumSettingsWizard();
 
 private slots:
-    void pageEdit( const QString& pageName );
+    void wizardEdit( const QString& pageName, bool state );
 
 private:
     int getPageId( const QString& str ) const;
+    void deletePage( int id );
 
     QStringList            pages;
     QMap<QString,QVariant> curves;

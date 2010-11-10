@@ -18,27 +18,37 @@ SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<Spectrum::Settings,QV
         if ( settings[Spectrum::CurveSettings].toMap().value( str ).toBool() )
             this->setPage( this->getPageId( str ), new CurveSettings( str, this ) );
 
-    connect( this->page( 0 ), SIGNAL( pageStateChanged( QString ) ), this, SLOT( pageEdit( QString ) ) );
+    connect( this->page( 0 ), SIGNAL( pageStateChanged( QString, bool ) ), this, SLOT( wizardEdit( QString, bool ) ) );
 }
 
 SpectrumSettingsWizard::~SpectrumSettingsWizard()
 {
 }
 
-void SpectrumSettingsWizard::pageEdit( const QString& pageName )
+void SpectrumSettingsWizard::wizardEdit( const QString& pageName, bool state )
 {
-    if ( this->curves.value( pageName ).toBool() )
-        this->removePage( this->getPageId( pageName ) );
+    if ( state )
+        this->deletePage( this->getPageId( pageName ) );
     else
+    {
         this->setPage( this->getPageId( pageName ), new CurveSettings( pageName, this ) );
+        this->setPage( this->pages.size() + 1, new CurveSettings( "hack", this ) );
+        this->deletePage( this->pages.size() + 1 );
+    }
 
-    this->curves[pageName] = this->curves[pageName].toBool() ? false : true;
+    this->curves[pageName] = state;
 
-    this->setPage( this->pages.size() + 1, new CurveSettings( "hack", this ) );
-    this->removePage( this->pages.size() + 1 );
 }
 
 int SpectrumSettingsWizard::getPageId( const QString& str ) const
 {
     return this->pages.indexOf( str ) + 1;
 }
+
+void SpectrumSettingsWizard::deletePage( int id )
+{
+    QWizardPage* wp_ptr = this->page( id );
+    this->removePage( id );
+    delete wp_ptr;
+}
+
