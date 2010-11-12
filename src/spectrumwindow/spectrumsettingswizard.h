@@ -20,6 +20,7 @@ public:
 
 private slots:
     void wizardEdit( const QString& pageName, bool state );
+    void saveState();
 
 private:
     int  getPageId( const QString& str ) const;

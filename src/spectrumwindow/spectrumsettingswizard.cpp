@@ -21,6 +21,9 @@ SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<QString,QVariant>& se
     connect( this->page( 0 ), SIGNAL( pageStateChanged( QString, bool ) ),
              this,            SLOT( wizardEdit( QString, bool ) ) );
 
+    connect( this->button( QWizard::FinishButton ), SIGNAL( clicked() ),
+             this, SLOT( saveState() ) );
+
     this->button( QWizard::FinishButton )->hide();
 }
 
@@ -42,6 +45,22 @@ void SpectrumSettingsWizard::wizardEdit( const QString& pageName, bool state )
     this->settings[QString("%1_State").arg(pageName)] = state;
 
     this->button( QWizard::FinishButton )->hide();
+}
+
+void SpectrumSettingsWizard::saveState()
+{
+    this->settings["UpTime"] = this->field("UpTime");
+    this->settings["DownTime"] = this->field("DownTime");
+
+    foreach( QString str, this->settings["Curves"].toStringList() )
+    {
+        this->settings[QString("%1_State").arg(str)] = this->field(QString("%1_State").arg(str));
+        this->settings[QString("%1_AverageNoise").arg(str)] = this->field(QString("%1_AverageNoise").arg(str));
+        this->settings[QString("%1_MaxNoise").arg(str)] = this->field(QString("%1_MaxNoise").arg(str));
+        this->settings[QString("%1_DeltaEpsilon").arg(str)] = this->field(QString("%1_DeltaEpsilon").arg(str));
+    }
+
+    qDebug() << this->settings;
 }
 
 int SpectrumSettingsWizard::getPageId( const QString& str ) const
