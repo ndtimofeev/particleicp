@@ -18,6 +18,8 @@ SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<Spectrum::Settings,QV
         if ( settings[Spectrum::CurveSettings].toMap().value( str ).toBool() )
             this->setPage( this->getPageId( str ), new CurveSettings( str, this ) );
 
+    this->button( QWizard::FinishButton )->hide();
+
     connect( this->page( 0 ), SIGNAL( pageStateChanged( QString, bool ) ), this, SLOT( wizardEdit( QString, bool ) ) );
 }
 
@@ -28,16 +30,19 @@ SpectrumSettingsWizard::~SpectrumSettingsWizard()
 void SpectrumSettingsWizard::wizardEdit( const QString& pageName, bool state )
 {
     if ( state )
+    {
         this->deletePage( this->getPageId( pageName ) );
+    }
     else
     {
         this->setPage( this->getPageId( pageName ), new CurveSettings( pageName, this ) );
-        this->setPage( this->pages.size() + 1, new CurveSettings( "hack", this ) );
+        this->setPage( this->pages.size() + 1, new QWizardPage( this ) );
         this->deletePage( this->pages.size() + 1 );
     }
 
     this->curves[pageName] = state;
 
+    this->button( QWizard::FinishButton )->hide();
 }
 
 int SpectrumSettingsWizard::getPageId( const QString& str ) const

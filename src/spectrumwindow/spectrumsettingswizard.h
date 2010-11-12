@@ -23,7 +23,7 @@ private slots:
     void wizardEdit( const QString& pageName, bool state );
 
 private:
-    int getPageId( const QString& str ) const;
+    int  getPageId( const QString& str ) const;
     void deletePage( int id );
 
     QStringList            pages;

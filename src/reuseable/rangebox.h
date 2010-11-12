@@ -11,6 +11,8 @@
 class RangeBox : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY( double max READ maxValue WRITE setMaxValue )
+    Q_PROPERTY( double min READ minValue WRITE setMinValue )
 
 signals:
     void maxValueChanged( double val );

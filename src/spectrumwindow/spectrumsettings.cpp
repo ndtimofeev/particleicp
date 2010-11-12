@@ -37,6 +37,9 @@ SpectrumSettings::SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& set
 
     ui.checkBoxLayout->addStretch();
 
+    this->registerField( "UpTime",   ui.timeRangeWidget, "max", SIGNAL(maxValueChanged(double)));
+    this->registerField( "DownTime", ui.timeRangeWidget, "min", SIGNAL(minValueChanged(double)));
+
     connect( group, SIGNAL( buttonPressed( QAbstractButton* ) ), this, SLOT( stateChanged( QAbstractButton* ) ) );
 }
 
