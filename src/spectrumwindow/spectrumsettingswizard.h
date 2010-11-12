@@ -6,15 +6,14 @@
 #include <QWizard>
 #include <QWidget>
 #include <QVariant>
-#include "spectrumwindow.h"
 
 class SpectrumSettingsWizard : public QWizard
 {
     Q_OBJECT
 
 public:
-    SpectrumSettingsWizard( const QMap<Spectrum::Settings,QVariant>& settings,
-                            const QMap<Spectrum::Limits,QVariant>& limits,
+    SpectrumSettingsWizard( const QMap<QString,QVariant>& settings,
+                            const QMap<QString,QVariant>& limits,
                             QWidget* parent );
 
     virtual ~SpectrumSettingsWizard();
@@ -27,7 +26,7 @@ private:
     void deletePage( int id );
 
     QStringList            pages;
-    QMap<QString,QVariant> curves;
+    QMap<QString,QVariant> settings;
 };
 
 #endif /* SPECTRUMSETTINGSWIZARD_H */

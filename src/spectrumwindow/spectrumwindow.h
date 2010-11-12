@@ -8,33 +8,6 @@
 #include <qwt_plot_curve.h>
 #include "vectortable.h"
 
-namespace Spectrum {
-
-    enum Settings {
-        DownTime,
-        UpTime,
-        MaxNoise,
-        AverageNoise,
-        HistogramStep,
-        CurveSettings
-    };
-
-    enum Limits {
-        MinTime,
-        MaxTime//,
-//        MaxNoise
-    };
-}
-
-namespace Curve {
-
-    enum Settings {
-        MaxNoise,
-        AverageNoise
-    };
-
-}
-
 class SpectrumWindow : public QwtPlot
 {
     Q_OBJECT
@@ -52,9 +25,9 @@ private slots:
     void toggleCurve( QwtPlotItem* curve, bool on );
 
 private:
-    QMap<Spectrum::Settings,QVariant> settings;
-    QMap<Spectrum::Limits,QVariant>   limits;
-    QMap<QString,QVariant>            report;
+    QMap<QString,QVariant> settings;
+    QMap<QString,QVariant> limits;
+    QMap<QString,QVariant> report;
 };
 
 #endif // SPECTRUMWINDOW_H

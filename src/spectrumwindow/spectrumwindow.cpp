@@ -40,25 +40,22 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
     connect( this, SIGNAL( legendChecked( QwtPlotItem*, bool ) ),
              this, SLOT( toggleCurve( QwtPlotItem*, bool ) ) );
 
-    this->limits[Spectrum::MinTime] = table.getColumn("X")->first();
-    this->limits[Spectrum::MaxTime] = table.getColumn("X")->last();
+    this->limits["MinTime"] = table.getColumn("X")->first();
+    this->limits["MaxTime"] = table.getColumn("X")->last();
 
-    this->settings[Spectrum::UpTime] = this->limits[Spectrum::MaxTime];
-    this->settings[Spectrum::DownTime] = this->limits[Spectrum::MinTime];
-    this->settings[Spectrum::HistogramStep] = 0.0;
+    this->settings["UpTime"] = this->limits["MaxTime"];
+    this->settings["DownTime"] = this->limits["MinTime"];
+    QStringList list = set.values();
+    this->settings["Curves"] = list;
 
-    QMap<QString,QVariant> list;
     QMap<QString,QVariant> map;
     foreach( QString str, set )
     {
-        list[str] = true;
-        map[str] = 0.0;
+        this->settings[QString("%1_MaxNoise").arg(str)] = 0.0;
+        this->settings[QString("%1_AverageNoise").arg(str)] = 0.0;
+        this->settings[QString("%1_DeltaEpsilon").arg(str)] = 0.0;
+        this->settings[QString("%1_State").arg(str)] = true;
     }
-
-    this->settings[Spectrum::MaxNoise] = map;
-    this->settings[Spectrum::AverageNoise] = map;
-    this->settings[Spectrum::CurveSettings] = list;
-
 
 //    this->data_all = new Polygon( table.getColumn( "X" ), table.getColumn( "Al1" ) );
 //    this->data = this->data_all;
@@ -74,7 +71,7 @@ SpectrumWindow::~SpectrumWindow()
 void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 {
     QMenu* contextMenu = new QMenu( this );
-    contextMenu->addAction( tr( "P&rint" ), this, SLOT( printdlg() ) );
+//    contextMenu->addAction( tr( "P&rint" ), this, SLOT( printdlg() ) );
     contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
     contextMenu->exec( event->globalPos() );
 }

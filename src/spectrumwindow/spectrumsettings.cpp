@@ -4,17 +4,17 @@
 #include "curvesettings.h"
 #include "ui_spectrumsettings.h"
 
-SpectrumSettings::SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& settings,
-                                    const QMap<Spectrum::Limits,QVariant>& limits,
+SpectrumSettings::SpectrumSettings( const QMap<QString,QVariant>& settings,
+                                    const QMap<QString,QVariant>& limits,
                                     QWizard* parent ) :
     QWizardPage( parent ),
     settings( settings )
 {
     Ui::SpectrumSettings ui;
     ui.setupUi( this );
-    ui.timeRangeWidget->setRange( limits[Spectrum::MinTime].toDouble(), limits[Spectrum::MaxTime].toDouble() );
-    ui.timeRangeWidget->setMinValue( settings[Spectrum::DownTime].toDouble() );
-    ui.timeRangeWidget->setMaxValue( settings[Spectrum::UpTime].toDouble() );
+    ui.timeRangeWidget->setRange( limits["MinTime"].toDouble(), limits["MaxTime"].toDouble() );
+    ui.timeRangeWidget->setMinValue( settings["DownTime"].toDouble() );
+    ui.timeRangeWidget->setMaxValue( settings["UpTime"].toDouble() );
     ui.timeRangeWidget->setSingleStep( 100 );
     ui.timeRangeWidget->setDecimals( 1 );
     ui.timeRangeWidget->setSuffix( " sec" );
@@ -23,13 +23,13 @@ SpectrumSettings::SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& set
 
     group->setExclusive( false );
 
-    foreach( QString str, settings[Spectrum::CurveSettings].toMap().keys() )
+    foreach( QString str, settings["Curves"].toStringList() )
     {
         QCheckBox* cb = new QCheckBox( str, this );
 
         group->addButton( cb );
 
-        if ( settings[Spectrum::CurveSettings].toMap().value( str ).toBool() )
+        if ( settings[QString("%1_State").arg(str)].toBool() )
             cb->setCheckState( Qt::Checked );
 
         ui.checkBoxLayout->addWidget( cb );

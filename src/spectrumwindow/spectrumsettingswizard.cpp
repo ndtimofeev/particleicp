@@ -3,24 +3,25 @@
 #include "spectrumsettings.h"
 #include "curvesettings.h"
 
-SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<Spectrum::Settings,QVariant>& settings,
-                                                const QMap<Spectrum::Limits,QVariant>& limits,
+SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<QString,QVariant>& settings,
+                                                const QMap<QString,QVariant>& limits,
                                                 QWidget* parent ) :
     QWizard( parent ),
-    pages( settings[Spectrum::CurveSettings].toMap().keys() ),
-    curves( settings[Spectrum::CurveSettings].toMap() )
+    pages( settings["Curves"].toStringList() ),
+    settings( settings )
 {
     this->setModal( true );
-    this->setOptions( QWizard::NoBackButtonOnStartPage );
+    this->setOptions( QWizard::NoBackButtonOnStartPage | QWizard::HaveHelpButton );
     this->addPage( new SpectrumSettings( settings, limits, this ) );
 
     foreach( QString str, this->pages )
-        if ( settings[Spectrum::CurveSettings].toMap().value( str ).toBool() )
+        if ( settings[QString("%1_State").arg(str)].toBool() )
             this->setPage( this->getPageId( str ), new CurveSettings( str, this ) );
 
-    this->button( QWizard::FinishButton )->hide();
+    connect( this->page( 0 ), SIGNAL( pageStateChanged( QString, bool ) ),
+             this,            SLOT( wizardEdit( QString, bool ) ) );
 
-    connect( this->page( 0 ), SIGNAL( pageStateChanged( QString, bool ) ), this, SLOT( wizardEdit( QString, bool ) ) );
+    this->button( QWizard::FinishButton )->hide();
 }
 
 SpectrumSettingsWizard::~SpectrumSettingsWizard()
@@ -30,9 +31,7 @@ SpectrumSettingsWizard::~SpectrumSettingsWizard()
 void SpectrumSettingsWizard::wizardEdit( const QString& pageName, bool state )
 {
     if ( state )
-    {
         this->deletePage( this->getPageId( pageName ) );
-    }
     else
     {
         this->setPage( this->getPageId( pageName ), new CurveSettings( pageName, this ) );
@@ -40,7 +39,7 @@ void SpectrumSettingsWizard::wizardEdit( const QString& pageName, bool state )
         this->deletePage( this->pages.size() + 1 );
     }
 
-    this->curves[pageName] = state;
+    this->settings[QString("%1_State").arg(pageName)] = state;
 
     this->button( QWizard::FinishButton )->hide();
 }

@@ -17,8 +17,8 @@ signals:
     void pageStateChanged( QString pageName, bool state );
 
 public:
-    SpectrumSettings( const QMap<Spectrum::Settings,QVariant>& settings,
-                      const QMap<Spectrum::Limits,QVariant>& limits,
+    SpectrumSettings( const QMap<QString,QVariant>& settings,
+                      const QMap<QString,QVariant>& limits,
                       QWizard* parent );
 
     virtual ~SpectrumSettings();
@@ -29,7 +29,7 @@ private slots:
     void stateChanged( QAbstractButton* bt );
 
 private:
-    QMap<Spectrum::Settings,QVariant> settings;
+    QMap<QString,QVariant> settings;
 };
 
 #endif /* SPECTRUMSETTINGS_H */
