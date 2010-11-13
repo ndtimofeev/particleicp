@@ -16,10 +16,10 @@ SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<QString,QVariant>& se
 
     foreach( QString str, this->pages )
         if ( settings[QString("%1_State").arg(str)].toBool() )
-            this->setPage( this->getPageId( str ), new CurveSettings( str, this ) );
+            this->setPage( this->getPageId( str ), new CurveSettings( str, settings, this ) );
 
-    connect( this->page( 0 ), SIGNAL( pageStateChanged( QString, bool ) ),
-             this,            SLOT( wizardEdit( QString, bool ) ) );
+    connect( this->page( 0 ), SIGNAL( pageStateChanged( QString ) ),
+             this,            SLOT( wizardEdit( QString ) ) );
 
     connect( this->button( QWizard::FinishButton ), SIGNAL( clicked() ),
              this, SLOT( saveState() ) );
@@ -31,18 +31,52 @@ SpectrumSettingsWizard::~SpectrumSettingsWizard()
 {
 }
 
-void SpectrumSettingsWizard::wizardEdit( const QString& pageName, bool state )
+QMap<QString,QVariant>
+SpectrumSettingsWizard::getSpectrumSettings( const QMap<QString,QVariant>& settings,
+                                             const QMap<QString,QVariant>& limits,
+                                             QWidget* parent )
 {
+    QMap<QString,QVariant> value = settings;
+    SpectrumSettingsWizard dlg( settings, limits, parent );
+
+    if ( dlg.exec() == QDialog::Accepted )
+        value = dlg.getState();
+
+    return value;
+}
+
+QMap<QString,QVariant> SpectrumSettingsWizard::getState() const
+{
+    return this->settings;
+}
+
+void SpectrumSettingsWizard::wizardEdit( const QString& pageName )
+{
+    bool state = this->settings[QString("%1_State").arg(pageName)].toBool();
+
     if ( state )
+    {
+        this->settings[QString("%1_AverageNoise").arg(pageName)] =
+                        this->field(QString("%1_AverageNoise").arg(pageName));
+
+        this->settings[QString("%1_MaxNoise").arg(pageName)] =
+                        this->field(QString("%1_MaxNoise").arg(pageName));
+
+        this->settings[QString("%1_DeltaEpsilon").arg(pageName)] =
+                        this->field(QString("%1_DeltaEpsilon").arg(pageName));
+
         this->deletePage( this->getPageId( pageName ) );
+    }
     else
     {
-        this->setPage( this->getPageId( pageName ), new CurveSettings( pageName, this ) );
+        this->setPage( this->getPageId( pageName ),
+                       new CurveSettings( pageName, settings, this ) );
+
         this->setPage( this->pages.size() + 1, new QWizardPage( this ) );
         this->deletePage( this->pages.size() + 1 );
     }
 
-    this->settings[QString("%1_State").arg(pageName)] = state;
+    this->settings[QString("%1_State").arg(pageName)] = state ? false : true;
 
     this->button( QWizard::FinishButton )->hide();
 }
@@ -54,13 +88,18 @@ void SpectrumSettingsWizard::saveState()
 
     foreach( QString str, this->settings["Curves"].toStringList() )
     {
-        this->settings[QString("%1_State").arg(str)] = this->field(QString("%1_State").arg(str));
-        this->settings[QString("%1_AverageNoise").arg(str)] = this->field(QString("%1_AverageNoise").arg(str));
-        this->settings[QString("%1_MaxNoise").arg(str)] = this->field(QString("%1_MaxNoise").arg(str));
-        this->settings[QString("%1_DeltaEpsilon").arg(str)] = this->field(QString("%1_DeltaEpsilon").arg(str));
-    }
+        if ( this->settings[QString("%1_State").arg(str)].toBool() )
+        {
+            this->settings[QString("%1_AverageNoise").arg(str)] =
+                            this->field(QString("%1_AverageNoise").arg(str));
 
-    qDebug() << this->settings;
+            this->settings[QString("%1_MaxNoise").arg(str)] =
+                            this->field(QString("%1_MaxNoise").arg(str));
+
+            this->settings[QString("%1_DeltaEpsilon").arg(str)] =
+                            this->field(QString("%1_DeltaEpsilon").arg(str));
+        }
+    }
 }
 
 int SpectrumSettingsWizard::getPageId( const QString& str ) const

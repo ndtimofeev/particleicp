@@ -14,7 +14,7 @@ class SpectrumSettings : public QWizardPage
     Q_OBJECT
 
 signals:
-    void pageStateChanged( QString pageName, bool state );
+    void pageStateChanged( QString pageName );
 
 public:
     SpectrumSettings( const QMap<QString,QVariant>& settings,

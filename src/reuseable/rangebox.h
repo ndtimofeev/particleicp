@@ -37,6 +37,8 @@ public:
     QString suffix() const;
     double  maxValue() const;
     double  minValue() const;
+    QDoubleSpinBox* min_ptr;
+    QDoubleSpinBox* max_ptr;
 
 public slots:
     void setMaxValue( double max );
@@ -46,9 +48,7 @@ private slots:
     void setMinimumForMax( double min );
     void setMaximumForMin( double max );
 
-private:
-    QDoubleSpinBox* min_ptr;
-    QDoubleSpinBox* max_ptr;
+//private:
 };
 
 #endif /* RANGEBOX_H */

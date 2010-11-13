@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "rangebox.h"
 
 RangeBox::RangeBox( QWidget* parent ) : QWidget( parent )
@@ -10,11 +11,17 @@ RangeBox::RangeBox( QWidget* parent ) : QWidget( parent )
     this->max_ptr = new QDoubleSpinBox;
     layout->addWidget( this->max_ptr );
 
-    connect( this->min_ptr, SIGNAL( valueChanged( double ) ), this, SLOT( setMinimumForMax( double ) ) );
-    connect( this->max_ptr, SIGNAL( valueChanged( double ) ), this, SLOT( setMaximumForMin( double ) ) );
+    connect( this->min_ptr, SIGNAL( valueChanged( double ) ),
+             this,          SLOT( setMinimumForMax( double ) ) );
 
-    connect( this->max_ptr, SIGNAL( valueChanged( double ) ), this, SIGNAL( maxValueChanged( double ) ) );
-    connect( this->min_ptr, SIGNAL( valueChanged( double ) ), this, SIGNAL( minValueChanged( double ) ) );
+    connect( this->max_ptr, SIGNAL( valueChanged( double ) ),
+             this,          SLOT( setMaximumForMin( double ) ) );
+
+    connect( this->max_ptr, SIGNAL( valueChanged( double ) ),
+             this,          SIGNAL( maxValueChanged( double ) ) );
+
+    connect( this->min_ptr, SIGNAL( valueChanged( double ) ),
+             this,          SIGNAL( minValueChanged( double ) ) );
 }
 
 RangeBox::~RangeBox()
@@ -110,6 +117,7 @@ void RangeBox::setMaxValue( double max )
 
 void RangeBox::setMinValue( double min )
 {
+    qDebug() << min;
     this->min_ptr->setValue( min );
 }
 

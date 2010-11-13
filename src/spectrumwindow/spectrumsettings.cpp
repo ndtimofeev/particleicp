@@ -1,4 +1,5 @@
 #include <QCheckBox>
+#include <QDebug>
 #include <QButtonGroup>
 #include "spectrumsettings.h"
 #include "curvesettings.h"
@@ -12,12 +13,20 @@ SpectrumSettings::SpectrumSettings( const QMap<QString,QVariant>& settings,
 {
     Ui::SpectrumSettings ui;
     ui.setupUi( this );
-    ui.timeRangeWidget->setRange( limits["MinTime"].toDouble(), limits["MaxTime"].toDouble() );
-    ui.timeRangeWidget->setMinValue( settings["DownTime"].toDouble() );
-    ui.timeRangeWidget->setMaxValue( settings["UpTime"].toDouble() );
+
     ui.timeRangeWidget->setSingleStep( 100 );
     ui.timeRangeWidget->setDecimals( 1 );
     ui.timeRangeWidget->setSuffix( " sec" );
+
+    ui.timeRangeWidget->setRange( limits["MinTime"].toDouble(),
+                                  limits["MaxTime"].toDouble() );
+
+//  ui.timeRangeWidget->setMinValue( settings["DownTime"].toDouble() );
+//  ui.timeRangeWidget->setMaxValue( settings["UpTime"].toDouble() );
+    ui.timeRangeWidget->min_ptr->setValue( settings["DownTime"].toDouble() );
+    qDebug() << ui.timeRangeWidget->min_ptr->minimum() << ui.timeRangeWidget->min_ptr->value();
+    ui.timeRangeWidget->max_ptr->setValue( settings["UpTime"].toDouble() );
+
 
     QButtonGroup* group = new QButtonGroup( this );
 
@@ -37,10 +46,14 @@ SpectrumSettings::SpectrumSettings( const QMap<QString,QVariant>& settings,
 
     ui.checkBoxLayout->addStretch();
 
-    this->registerField( "UpTime",   ui.timeRangeWidget, "max", SIGNAL(maxValueChanged(double)));
-    this->registerField( "DownTime", ui.timeRangeWidget, "min", SIGNAL(minValueChanged(double)));
+    this->registerField( "UpTime",   ui.timeRangeWidget,
+                         "max",      SIGNAL(maxValueChanged(double)));
 
-    connect( group, SIGNAL( buttonPressed( QAbstractButton* ) ), this, SLOT( stateChanged( QAbstractButton* ) ) );
+    this->registerField( "DownTime", ui.timeRangeWidget,
+                         "min",      SIGNAL(minValueChanged(double)));
+
+    connect( group, SIGNAL( buttonPressed( QAbstractButton* ) ),
+             this,  SLOT( stateChanged( QAbstractButton* ) ) );
 }
 
 SpectrumSettings::~SpectrumSettings()
@@ -50,6 +63,6 @@ SpectrumSettings::~SpectrumSettings()
 void SpectrumSettings::stateChanged( QAbstractButton* bt )
 {
     if ( bt->isCheckable() )
-        emit pageStateChanged( bt->text(), bt->isChecked() );
+        emit pageStateChanged( bt->text() );
 }
 

@@ -78,8 +78,8 @@ void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 
 void SpectrumWindow::start()
 {
-    SpectrumSettingsWizard* wiz = new SpectrumSettingsWizard( this->settings, this->limits, this );
-    wiz->show();
+    this->settings = SpectrumSettingsWizard::getSpectrumSettings( this->settings, this->limits, this );
+    qDebug() << this->settings["UpTime"] << this->settings["DownTime"];
 //    Polygon* sig = this->data->getMoreThen( this->settings[MaxNoise] );
 //    this->report["Frequency"] = sig->getSize() /
 //                        ( this->settings[UpTime] - this->settings[DownTime] );

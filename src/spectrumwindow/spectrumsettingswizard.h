@@ -18,8 +18,15 @@ public:
 
     virtual ~SpectrumSettingsWizard();
 
+    static QMap<QString,QVariant>
+    getSpectrumSettings( const QMap<QString,QVariant>& settings,
+                         const QMap<QString,QVariant>& limits,
+                         QWidget* parent );
+
+    QMap<QString,QVariant> getState() const;
+
 private slots:
-    void wizardEdit( const QString& pageName, bool state );
+    void wizardEdit( const QString& pageName );
     void saveState();
 
 private:
