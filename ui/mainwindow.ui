@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>801</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -37,6 +37,11 @@
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
+   <widget class="EditMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+   </widget>
    <widget class="WindowMenu" name="menu_Window">
     <property name="title">
      <string>&amp;Window</string>
@@ -52,6 +57,7 @@
     <addaction name="actionAbout_GMP"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
    <addaction name="menu_Window"/>
    <addaction name="menu_Help"/>
   </widget>
@@ -105,6 +111,11 @@
     <slot>addElement(QString)</slot>
     <slot>removeAllElements()</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>EditMenu</class>
+   <extends>QMenu</extends>
+   <header location="global">editmenu.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -198,6 +209,38 @@
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>fileOpened(QString)</signal>
+   <receiver>menu_Recent_Files</receiver>
+   <slot>addElement(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>92</x>
+     <y>22</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menu_Recent_Files</sender>
+   <signal>elementSelected(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>92</x>
+     <y>22</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>

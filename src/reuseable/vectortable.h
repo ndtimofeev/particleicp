@@ -18,10 +18,14 @@ public:
     QVector<double>        getRow( int i ) const;
     const QVector<double>* getColumn( const QString& str ) const;
     const QStringList&     getTags() const;
-    void                   addRow( const QStringList& row );
+    virtual VectorTable    mid( int pos, int length = -1 ) const;
+    virtual void           addRow( const QStringList& row );
+    virtual void           addRow( const QVector<double>& row );
 
     VectorTable& operator = ( const VectorTable& table );
     VectorTable& operator << ( const QStringList& table );
+    VectorTable& operator << ( const QVector<double>& table );
+
 
 private:
     int                            width;

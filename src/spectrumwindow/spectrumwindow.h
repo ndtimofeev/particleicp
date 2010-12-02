@@ -2,6 +2,7 @@
 #define SPECTRUMWINDOW_H
 
 #include <QMap>
+#include <QMenu>
 #include <QMdiSubWindow>
 #include <QVector>
 #include <qwt_plot.h>
@@ -22,12 +23,15 @@ protected:
 private slots:
     void start();
     void printdlg();
+    void exportImage();
     void toggleCurve( QwtPlotItem* curve, bool on );
 
 private:
     QMap<QString,QVariant> settings;
     QMap<QString,QVariant> limits;
     QMap<QString,QVariant> report;
+    QMenu*                 contextMenu;
+    VectorTable*           table;
 };
 
 #endif // SPECTRUMWINDOW_H

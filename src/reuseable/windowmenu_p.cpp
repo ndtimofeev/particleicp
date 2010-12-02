@@ -1,7 +1,8 @@
 #include "windowmenu_p.h"
 #include <QDebug>
 
-WindowMenuPrivate::WindowMenuPrivate( QMdiArea* area ) : QObject(), area_v( area )
+WindowMenuPrivate::WindowMenuPrivate( QMdiArea* area ) :
+    QObject(), area_v( area )
 {
 }
 
@@ -30,9 +31,12 @@ void WindowMenuPrivate::redrawMenu()
     Q_Q(WindowMenu);
     if ( this->area_v && this->area_v->currentSubWindow() )
     {
-        q->addAction(tr("&Close"), this->area_v, SLOT(closeActiveSubWindow()), QKeySequence::Close);
+        q->addAction( tr("&Close"), this->area_v,
+                      SLOT( closeActiveSubWindow() ), QKeySequence::Close );
+
         if ( this->area_v->subWindowList().size() > 1 )
-            q->addAction(tr("Close &All"), this->area_v, SLOT(closeAllSubWindows()));
+            q->addAction( tr("Close &All"), this->area_v,
+                          SLOT( closeAllSubWindows() ) );
 
         q->addSeparator();
 
@@ -43,21 +47,27 @@ void WindowMenuPrivate::redrawMenu()
         {
             q->addSeparator();
 
-            q->addAction(tr("&Next"), this->area_v, SLOT(activateNextSubWindow()));
-            q->addAction(tr("&Previous"), this->area_v, SLOT(activatePreviousSubWindow()));
+            q->addAction( tr("&Next"), this->area_v,
+                          SLOT( activateNextSubWindow() ) );
+
+            q->addAction( tr("&Previous"), this->area_v,
+                          SLOT( activatePreviousSubWindow() ) );
 
             int i = 1;
 
             foreach( QMdiSubWindow* ptr, this->area_v->subWindowList() )
             {
-                QAction* act = q->addAction( QString("&%1 %2").arg(i++).arg(ptr->widget()->windowTitle()) );
+                QAction* act = q->addAction(
+                    QString("&%1 %2").arg(i++).arg(ptr->widget()->windowTitle()));
+
                 act->setCheckable( true );
                 act->setChecked( ptr == this->area_v->activeSubWindow() );
                 this->group->addAction( act );
                 this->window_list[act] = ptr;
             }
 
-            connect(this->group, SIGNAL(triggered(QAction*)), this, SLOT(windowSelectCatcher(QAction*)));
+            connect( this->group, SIGNAL(triggered(QAction*)),
+                     this,        SLOT(windowSelectCatcher(QAction*)) );
         }
     }
     else

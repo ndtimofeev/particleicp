@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "selectrecentmenu_p.h"
 
 SelectRecentMenuPrivate::SelectRecentMenuPrivate() :
@@ -14,8 +15,11 @@ SelectRecentMenuPrivate::~SelectRecentMenuPrivate()
 void SelectRecentMenuPrivate::init()
 {
     Q_Q(SelectRecentMenu);
-    connect( this->group, SIGNAL(triggered(QAction*)), this, SLOT(emitElementSelectedSignal(QAction*)));
-    connect( this, SIGNAL(elementSelected_p(QString)), q, SIGNAL(elementSelected(QString)));
+    connect( this->group, SIGNAL(triggered(QAction*)),
+             this,        SLOT(emitElementSelectedSignal(QAction*)) );
+
+    connect( this, SIGNAL(elementSelected_p(QString)),
+             q,    SIGNAL(elementSelected(QString)) );
 }
 
 int SelectRecentMenuPrivate::max() const

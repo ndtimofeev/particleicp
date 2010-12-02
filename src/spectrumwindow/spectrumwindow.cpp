@@ -1,4 +1,6 @@
 #include <QDebug>
+#include <QFileDialog>
+#include <QPixmap>
 #include <QMenu>
 #include <QPrintDialog>
 #include <QPrinter>
@@ -7,11 +9,12 @@
 #include <QContextMenuEvent>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
+#include "cuttable.h"
 #include "spectrumwindow.h"
 #include "spectrumsettingswizard.h"
 
 SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent ) :
-    QwtPlot( parent )
+    QwtPlot( parent ), table( new VectorTable( table ) )
 {
     this->setWindowTitle( path );
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -27,7 +30,6 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
 
     foreach( QString str, set )
     {
-
         QwtPlotCurve* curve = new QwtPlotCurve( str );
         curve->attach( this );
         curve->setSamples( table.getColumn( "X" )->data(), table.getColumn( str )->data(), table.getHeight() );
@@ -57,67 +59,36 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
         this->settings[QString("%1_State").arg(str)] = true;
     }
 
-//    this->data_all = new Polygon( table.getColumn( "X" ), table.getColumn( "Al1" ) );
-//    this->data = this->data_all;
+    this->contextMenu = new QMenu( this );
+    this->contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
+    this->contextMenu->addAction(
+                        tr( "&Export image" ), this, SLOT( exportImage() ) );
 
-//    this->dispensationwindow = NULL;
-//    this->reportwindow = NULL;
+    this->addActions( this->contextMenu->actions() );
 }
 
 SpectrumWindow::~SpectrumWindow()
 {
+    delete this->table;
 }
 
 void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 {
-    QMenu* contextMenu = new QMenu( this );
-//    contextMenu->addAction( tr( "P&rint" ), this, SLOT( printdlg() ) );
-    contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
-    contextMenu->exec( event->globalPos() );
+    this->contextMenu->exec( event->globalPos() );
 }
 
 void SpectrumWindow::start()
 {
-    this->settings = SpectrumSettingsWizard::getSpectrumSettings( this->settings, this->limits, this );
-    qDebug() << this->settings["UpTime"] << this->settings["DownTime"];
-//    Polygon* sig = this->data->getMoreThen( this->settings[MaxNoise] );
-//    this->report["Frequency"] = sig->getSize() /
-//                        ( this->settings[UpTime] - this->settings[DownTime] );
+    this->settings = SpectrumSettingsWizard::getSpectrumSettings(
+                                        this->settings, this->limits, this );
+    qDebug() << this->settings;
 
-  //  QVector<PointF> pol;
-//    foreach( qreal val, *sig->getY() )
-//    {
-//        val -= this->settings[AverageNoise];
-//        this->report["SigmaI"] = this->report["SigmaI"].toDouble() + val;
-//        bool check = false;
-//        for ( int  i = 0; i < pol.size(); i++ )
-//        {
-//            if ( qAbs( val - pol.at(i).x() ) < 0.02 * val )
-//            {
-//                check = true;
-//                pol[i].ry()++;
-//            }
-//        }
-//        if ( check == false )
-//            pol << PointF( val, 1.0 );
-//    }
-//    qSort( pol );
-//    Polygon graph;
-//    graph << pol;
+    VectorTable tbl = cuttable( *this->table,
+                                this->settings["DownTime"].toDouble(),
+                                this->settings["UpTime"].toDouble() );
 
-//    if ( this->dispensationwindow != NULL )
-//        delete this->dispensationwindow;
-
-//    this->dispensationwindow = new DispensationWindow( graph, this );
-//    this->mdiArea()->addSubWindow( this->dispensationwindow );
-//    this->dispensationwindow->show();//Maximized();
-
-//    if ( this->reportwindow != NULL )
-//        delete this->reportwindow;
-
-//    this->reportwindow = new ReportWindow( this->report, this );
-//    this->mdiArea()->addSubWindow( this->reportwindow );
-//    this->reportwindow->show();//Maximized();
+    SpectrumWindow* sw = new SpectrumWindow( tbl, QString("хуй"), tbl.getTags().toSet() );
+    sw->show();
 }
 
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
@@ -128,11 +99,16 @@ void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
 
 void SpectrumWindow::printdlg()
 {
-//    QPrinter printer;
+}
 
-//    QPrintDialog *dialog = new QPrintDialog(&printer, this);
-//    dialog->setWindowTitle(tr("Print Document"));
-//    if (dialog->exec() != QDialog::Accepted)
-//        return;
-//    this->print( printer );
+void SpectrumWindow::exportImage()
+{
+    QPixmap pixmap =   QPixmap::grabWidget( this, this->geometry() );
+    QString filename = QFileDialog::getSaveFileName(
+        this, tr("Save image as"), QString(), tr("PNG(*.png);;JPEG(*.jpeg)") );
+
+    if ( ! filename.isEmpty() )
+    {
+        pixmap.save( filename );
+    }
 }

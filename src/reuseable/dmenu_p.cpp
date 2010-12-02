@@ -43,9 +43,8 @@ void DMenuPrivate::updateMenu()
 {
     Q_Q(DMenu);
 
-    foreach( QAction* ptr, q->actions() )
-        if ( ptr == this->nullAction_ptr )
-            q->removeAction( ptr );
+    if ( q->actions().contains( this->nullAction_ptr ) )
+        q->removeAction( this->nullAction_ptr );
 
     q->clear();
     q->redrawMenu();
