@@ -64,6 +64,7 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
     this->contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
     this->contextMenu->addAction(
                         tr( "&Export image" ), this, SLOT( exportImage() ) );
+    this->contextMenu->addAction( tr("Export &data") );
 
     this->addActions( this->contextMenu->actions() );
 }
