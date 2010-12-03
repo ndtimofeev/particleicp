@@ -36,7 +36,7 @@ SpectrumSettingsWizard::getSpectrumSettings( const QMap<QString,QVariant>& setti
                                              const QMap<QString,QVariant>& limits,
                                              QWidget* parent )
 {
-    QMap<QString,QVariant> value = settings;
+    QMap<QString,QVariant> value;
     SpectrumSettingsWizard dlg( settings, limits, parent );
 
     if ( dlg.exec() == QDialog::Accepted )

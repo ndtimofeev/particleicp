@@ -22,44 +22,59 @@ namespace fp
     }
 
     template <typename T, class iterator>
-    T uniq( iterator first, iterator last, const T& )
+    inline void uniq( iterator first, iterator last, T& list )
     {
-        T null;
         for ( iterator i = first; i != last; i++ )
             if ( ! elem( *i, first, i ) )
-                null << *i;
-
-        return null;
+                list << *i;
     }
 
     template <typename T>
-    T uniq( const T& list )
+    inline T uniq( const T& list )
     {
-        return uniq( list.begin(), list.end(), list );
+        T result;
+        uniq( list.begin(), list.end(), result );
+        return result;
     }
 
     template <typename T, class iterator>
-    T take( int length, iterator first, iterator last, const T& )
+    inline void tail( iterator first, iterator last, T& result )
     {
-        T n_list;
-        while ( first != last && length > 0 )
-        {
-            n_list << *first;
-            first++;
-            length--;
-        }
-
-        return n_list;
+        for ( iterator i = first + 1; i != last; i++ )
+            result << *i;
     }
 
     template <typename T>
-    T take( int length, const T& list )
+    inline T tail( const T& list )
     {
-        return take( length, list.begin(), list.end(), list );
+        T result;
+        tail( list.begin(), list.end(), result );
+
+        return result;
+    }
+
+    template <typename T, class iterator>
+    inline void take( int length, iterator first, iterator last, T& result )
+    {
+        while ( first != last && length > 0 )
+        {
+            result << *first;
+            first++;
+            length--;
+        }
+    }
+
+    template <typename T>
+    inline T take( int length, const T& list )
+    {
+        T result;
+        take( length, list.begin(), list.end(), result );
+
+        return result;
     }
 
     template <class iterator>
-    iterator maximum( iterator first, iterator last )
+    inline iterator maximum( iterator first, iterator last )
     {
         iterator max = first;
         for ( iterator i = first; i != last; i++ )
@@ -70,47 +85,45 @@ namespace fp
     }
 
     template <typename T, template <typename> class C>
-    T maximum( const C<T>& list )
+    inline T maximum( const C<T>& list )
     {
         return *maximum( list.begin(), list.end() );
     }
 
     template <class iterator>
-    iterator index( iterator first, iterator last, int i )
+    inline iterator index( iterator first, iterator last, int i )
     {
-        iterator index = first;
-        while ( i-- != 0 && index++ != last )
-            ;
+        if ( last - first < i || i < 0 )
+            throw std::invalid_argument( "index: bad index" );
 
-        return index;
+        return first + i;
     }
 
     template <typename T, template <typename> class C>
-    T index( const C<T>& list, int i )
+    inline T index( const C<T>& list, int i )
     {
-        if ( list.size() - 1 < i )
+        if ( list.size() - 1 < i || i < 0 )
             throw std::invalid_argument( "index: bad index" );
 
-        return *index( list.begin(), list.end(), i );
+        return *(list.begin() + i);
     }
 
     template <typename T, class iterator, class iterator1>
-    T rebuild( iterator first, iterator last, iterator1 first1, iterator1 last1, const T& )
+    inline void rebuild( iterator first, iterator last, iterator1 first1, iterator1 last1, T& value )
     {
-        T value;
         for ( iterator1 i = first1; i != last1; i++ )
             value << *index( first, last, *i );
-
-        return value;
     }
 
     template <typename T, template <typename> class C>
-    T rebuild( const T& list, const C<int>& ilist )
+    inline T rebuild( const T& list, const C<int>& ilist )
     {
         if ( list.size() < maximum( ilist ) )
             throw std::invalid_argument( "rebuild: bad index" );
 
-        return rebuild( list.begin(), list.end(), ilist.begin(), ilist.end(), list );
+        T result;
+        rebuild( list.begin(), list.end(), ilist.begin(), ilist.end(), result );
+        return result;
     }
 }
 

@@ -9,8 +9,9 @@
 #include <QContextMenuEvent>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
-#include "cuttable.h"
+#include "edittable.h"
 #include "spectrumwindow.h"
+#include "histogramwindow.h"
 #include "spectrumsettingswizard.h"
 
 SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent ) :
@@ -79,16 +80,23 @@ void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 
 void SpectrumWindow::start()
 {
-    this->settings = SpectrumSettingsWizard::getSpectrumSettings(
-                                        this->settings, this->limits, this );
-    qDebug() << this->settings;
+    QVariantMap new_settings = SpectrumSettingsWizard::getSpectrumSettings(
+                                            this->settings, this->limits, this );
+    if ( ! new_settings.isEmpty() )
+    {
+        this->settings = new_settings;
 
-    VectorTable tbl = cuttable( *this->table,
-                                this->settings["DownTime"].toDouble(),
-                                this->settings["UpTime"].toDouble() );
+        VectorTable tbl = edt::cuttable( *this->table,
+                                         this->settings["DownTime"].toDouble(),
+                                         this->settings["UpTime"].toDouble() );
 
-    SpectrumWindow* sw = new SpectrumWindow( tbl, QString("хуй"), tbl.getTags().toSet() );
-    sw->show();
+        tbl = edt::filtertable( tbl, this->settings );
+        tbl = edt::correcttable( tbl, this->settings );
+
+        double n = tbl.getHeight() / ( this->settings["UpTime"].toDouble() - this->settings["DownTime"].toDouble() );
+        HistogramWindow* hw = new HistogramWindow( tbl, this->settings );
+        hw->show();
+    }
 }
 
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )

@@ -1,6 +1,6 @@
-#include "cuttable.h"
+#include "edittable.h"
 
-VectorTable cuttable( const VectorTable& table, double start, double finish )
+VectorTable edt::cuttable( const VectorTable& table, double start, double finish )
 {
     if ( start >= finish )
         qFatal( "cuttable: start >= finish" );
@@ -9,15 +9,15 @@ VectorTable cuttable( const VectorTable& table, double start, double finish )
 
     int pos = -1, length = -1;
 
-    for ( QVector<double>::const_iterator i = scale->begin();
-                                          i != scale->end(); i++ )
+    for ( QVector<double>::const_iterator i = scale->begin(), j = scale->end(),
+                                                            k = i; i != j; i++ )
     {
         if (( pos == -1 ) && ( *i > start ))
-            pos = i - scale->begin();
+            pos = i - k;
 
         if (( pos != -1 ) && ( *i > finish ))
         {
-            length = i - scale->begin() - pos - 1;
+            length = i - k - pos - 1;
             break;
         }
     }

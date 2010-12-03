@@ -24,7 +24,6 @@ SpectrumSettings::SpectrumSettings( const QMap<QString,QVariant>& settings,
 //  ui.timeRangeWidget->setMinValue( settings["DownTime"].toDouble() );
 //  ui.timeRangeWidget->setMaxValue( settings["UpTime"].toDouble() );
     ui.timeRangeWidget->min_ptr->setValue( settings["DownTime"].toDouble() );
-    qDebug() << ui.timeRangeWidget->min_ptr->minimum() << ui.timeRangeWidget->min_ptr->value();
     ui.timeRangeWidget->max_ptr->setValue( settings["UpTime"].toDouble() );
 
 

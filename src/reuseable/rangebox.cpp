@@ -117,7 +117,6 @@ void RangeBox::setMaxValue( double max )
 
 void RangeBox::setMinValue( double min )
 {
-    qDebug() << min;
     this->min_ptr->setValue( min );
 }
 

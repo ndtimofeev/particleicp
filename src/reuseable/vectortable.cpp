@@ -9,20 +9,21 @@ VectorTable::VectorTable( const QStringList& tags ) :
         this->table[str] = new QVector<double>;
 }
 
-VectorTable::VectorTable( const VectorTable& table )
+VectorTable::VectorTable( const VectorTable& table ) :
+    width( table.getWidth() ), height( table.getHeight() ), tags( table.getTags() )
 {
-    if ( this == &table )
-        return;
-
-    this->width  = table.getWidth();
-    this->height = table.getHeight();
-    this->tags   = table.getTags();
     QList<QVector<double>*> tmp = this->table.values();
     this->table.clear();
     foreach( QString str, tags )
         this->table[str] = new QVector<double>( *table.getColumn( str ) );
 
     qDeleteAll( tmp );
+}
+
+VectorTable::VectorTable( const QString& tag, const QVector<double>& col ) :
+    width( 1 ), height( col.size() ), tags( tag )
+{
+    this->table[tag] = new QVector<double>( col );
 }
 
 VectorTable::~VectorTable()
@@ -60,6 +61,14 @@ const QVector<double>* VectorTable::getColumn( const QString& str ) const
     return this->table[str];
 }
 
+const QVector<double>* VectorTable::getColumn( int i ) const
+{
+    if ( this->tags.size() <= i )
+        qFatal( "VectorTable: table does not contain this column" );
+
+    return this->table[this->tags.at(i)];
+}
+
 const QStringList& VectorTable::getTags() const
 {
     return this->tags;
@@ -71,7 +80,7 @@ VectorTable VectorTable::mid( int pos, int length ) const
         qFatal( "VectorTable: incorect mid" );
 
     VectorTable result( this->getTags() );
-    for ( int i = pos; i < this->height; i++ )
+    for ( int i = pos, j = this->height; i < j; i++ )
     {
         if ( length == 0 )
             break;
@@ -103,6 +112,19 @@ void VectorTable::addRow( const QVector<double>& row )
         *this->table[str] << row.at( this->tags.indexOf( str ) );
 
     this->height++;
+}
+
+void VectorTable::addColumn( const QString& tag, const QVector<double>& col )
+{
+    if ( this->height != 0 && col.size() != this->height )
+        qFatal( "VectorTable: incorect column — column's size != height" );
+
+    if ( tag.isNull() || tags.contains( tag ) )
+        qFatal( "VectorTable: incorect tag" );
+
+    this->tags << tag;
+    this->width++;
+    this->table[tag] = new QVector<double>( col );
 }
 
 VectorTable& VectorTable::operator = ( const VectorTable& table )
