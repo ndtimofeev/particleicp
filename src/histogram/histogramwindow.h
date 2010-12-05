@@ -2,10 +2,13 @@
 #define HISTOGRAMWINDOW_H
 
 #include <QWidget>
+#include <QVector>
+#include <QMap>
 #include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QVariantMap>
 #include <qwt_plot.h>
+#include <qwt_plot_histogram.h>
 #include "vectortable.h"
 
 class HistogramWindow : public QWidget
@@ -18,15 +21,21 @@ public:
 
     virtual ~HistogramWindow();
 
+protected slots:
+    void redrawPlot();
+
 private slots:
     void histogramChanged( int index );
     void deltaEpsilonChanged( double value );
 
 private:
-    QwtPlot*        plot;
-    QDoubleSpinBox* spinbox;
-    QComboBox*      combobox;
-    QStringList     tags;
+    QwtPlot*                       plot;
+    QwtPlotHistogram*              hist;
+    QDoubleSpinBox*                spinbox;
+    QComboBox*                     combobox;
+    QStringList                    tags;
+    QMap<QString,QVector<double>*> s_data;
+
 };
 
 #endif /* HISTOGRAMWINDOW_H */
