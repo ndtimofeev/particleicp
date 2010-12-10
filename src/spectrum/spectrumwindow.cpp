@@ -10,6 +10,7 @@
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
 #include "edittable.h"
+#include "rescaledialog.h"
 #include "spectrumwindow.h"
 #include "histogramwindow.h"
 #include "spectrumsettingswizard.h"
@@ -61,9 +62,13 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
     }
 
     this->contextMenu = new QMenu( this );
+    this->contextMenu->addAction( tr( "&Rescale spectrum" ), this,
+                                                        SLOT( rescalePlot() ) );
+
     this->contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
     this->contextMenu->addAction(
-                        tr( "&Export image" ), this, SLOT( exportImage() ) );
+                           tr( "&Export image" ), this, SLOT( exportImage() ) );
+
     this->contextMenu->addAction( tr("Export &data") );
 
     this->addActions( this->contextMenu->actions() );
@@ -98,6 +103,12 @@ void SpectrumWindow::start()
         HistogramWindow* hw = new HistogramWindow( tbl, this->settings );
         hw->show();
     }
+}
+
+void SpectrumWindow::rescalePlot()
+{
+    RescaleDialog* rd = new RescaleDialog( this, this );
+    rd->show();
 }
 
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )

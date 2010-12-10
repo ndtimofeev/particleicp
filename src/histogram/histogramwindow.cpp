@@ -28,7 +28,8 @@ HistogramWindow::HistogramWindow( const VectorTable& table,
     }
 
     this->redrawPlot();
-    this->spinbox->setValue( this->combobox->itemData( this->combobox->currentIndex() ).toDouble() );
+    this->spinbox->setValue( this->combobox->itemData(
+                                this->combobox->currentIndex() ).toDouble() );
 
     connect( this->combobox, SIGNAL( currentIndexChanged( int ) ),
              this,           SLOT( histogramChanged( int ) ) );
@@ -36,7 +37,7 @@ HistogramWindow::HistogramWindow( const VectorTable& table,
     connect( this->spinbox, SIGNAL( valueChanged( double ) ),
              this,          SLOT( deltaEpsilonChanged( double ) ) );
 
-    connect( this->spinbox, SIGNAL( valueChanged( double ) ),
+    connect( this->spinbox, SIGNAL( editingFinished() ),
              this,          SLOT( redrawPlot() ) );
 
     connect( this->combobox, SIGNAL( currentIndexChanged( int ) ),
@@ -49,12 +50,13 @@ HistogramWindow::~HistogramWindow()
 
 void HistogramWindow::redrawPlot()
 {
-    qDebug() << "begin";
     double deltaEpsilon =
         this->combobox->itemData( this->combobox->currentIndex() ).toDouble();
+
+    QVector<QwtIntervalSample> data;
+
     if ( deltaEpsilon )
     {
-        QVector<QwtIntervalSample> data;
         const QVector<double>* vec = this->s_data[this->combobox->currentText()];
         double s = deltaEpsilon * ( 1 + (int) vec->first() / deltaEpsilon );
         int    v = 0;
@@ -74,11 +76,11 @@ void HistogramWindow::redrawPlot()
 
         if ( v )
             data << QwtIntervalSample( v, s, s + deltaEpsilon );
-
-        hist->setSamples( data );
-        this->plot->replot();
     }
-    qDebug() << "end";
+
+    this->plot->setAxisScale( QwtPlot::xBottom, 10, 20, 5 );
+    hist->setSamples( data );
+    this->plot->replot();
 }
 
 void HistogramWindow::histogramChanged( int index )

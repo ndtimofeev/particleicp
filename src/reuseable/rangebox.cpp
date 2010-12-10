@@ -33,6 +33,11 @@ int RangeBox::decimals() const
     return this->min_ptr->decimals();
 }
 
+bool RangeBox::isEnabled() const
+{
+    return this->min_ptr->isEnabled();
+}
+
 double RangeBox::maximum() const
 {
     return this->max_ptr->maximum();
@@ -52,6 +57,18 @@ void RangeBox::setDecimals( int prec )
 {
     this->min_ptr->setDecimals( prec );
     this->max_ptr->setDecimals( prec );
+}
+
+void RangeBox::setEnabled( bool enabled )
+{
+    this->min_ptr->setEnabled( enabled );
+    this->max_ptr->setEnabled( enabled );
+}
+
+void RangeBox::setDisabled( bool disabled )
+{
+    this->min_ptr->setDisabled( disabled );
+    this->max_ptr->setDisabled( disabled );
 }
 
 void RangeBox::setMaximum( double max )

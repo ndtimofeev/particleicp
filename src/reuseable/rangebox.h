@@ -13,6 +13,7 @@ class RangeBox : public QWidget
     Q_OBJECT
     Q_PROPERTY( double max READ maxValue WRITE setMaxValue )
     Q_PROPERTY( double min READ minValue WRITE setMinValue )
+    Q_PROPERTY( bool enabled READ isEnabled WRITE setEnabled )
 
 signals:
     void maxValueChanged( double val );
@@ -23,6 +24,7 @@ public:
     virtual ~RangeBox();
 
     int     decimals() const;
+    bool    isEnabled() const;
     double  maximum() const;
     double  minimum() const;
     QString prefix() const;
@@ -37,18 +39,20 @@ public:
     QString suffix() const;
     double  maxValue() const;
     double  minValue() const;
-    QDoubleSpinBox* min_ptr;
-    QDoubleSpinBox* max_ptr;
 
 public slots:
     void setMaxValue( double max );
     void setMinValue( double min );
+    void setEnabled( bool enabled );
+    void setDisabled( bool disabled );
 
 private slots:
     void setMinimumForMax( double min );
     void setMaximumForMin( double max );
 
-//private:
+private:
+    QDoubleSpinBox* min_ptr;
+    QDoubleSpinBox* max_ptr;
 };
 
 #endif /* RANGEBOX_H */

@@ -21,11 +21,8 @@ SpectrumSettings::SpectrumSettings( const QMap<QString,QVariant>& settings,
     ui.timeRangeWidget->setRange( limits["MinTime"].toDouble(),
                                   limits["MaxTime"].toDouble() );
 
-//  ui.timeRangeWidget->setMinValue( settings["DownTime"].toDouble() );
-//  ui.timeRangeWidget->setMaxValue( settings["UpTime"].toDouble() );
-    ui.timeRangeWidget->min_ptr->setValue( settings["DownTime"].toDouble() );
-    ui.timeRangeWidget->max_ptr->setValue( settings["UpTime"].toDouble() );
-
+    ui.timeRangeWidget->setMinValue( settings["DownTime"].toDouble() );
+    ui.timeRangeWidget->setMaxValue( settings["UpTime"].toDouble() );
 
     QButtonGroup* group = new QButtonGroup( this );
 

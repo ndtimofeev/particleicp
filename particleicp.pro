@@ -20,6 +20,7 @@ HEADERS += src/editmenu.h \
            src/reuseable/falgorithms.h \
            src/reuseable/history.h \
            src/reuseable/rangebox.h \
+		   src/reuseable/rescaledialog.h \
            src/reuseable/selectrecentmenu.h \
            src/reuseable/selectrecentmenu_p.h \
            src/reuseable/settings.h \
@@ -34,6 +35,7 @@ FORMS += ui/curvesettings.ui \
          ui/mainwindow.ui \
 		 ui/histogram.ui \
          ui/parsersettingsdialog.ui \
+		 ui/rescaledialog.ui \
          ui/spectrumsettings.ui
 SOURCES += src/editmenu.cpp \
            src/jyparser.cpp \
@@ -48,6 +50,7 @@ SOURCES += src/editmenu.cpp \
            src/reuseable/dmenu_p.cpp \
            src/reuseable/history.cpp \
            src/reuseable/rangebox.cpp \
+		   src/reuseable/rescaledialog.cpp \
            src/reuseable/selectrecentmenu.cpp \
            src/reuseable/selectrecentmenu_p.cpp \
            src/reuseable/settings.cpp \
