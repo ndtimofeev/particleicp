@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "rescaledialog.h"
 #include "ui_rescaledialog.h"
 
@@ -15,7 +16,8 @@ RescaleDialog::RescaleDialog( QwtPlot* plot, QWidget* parent ) :
     connect( ui.checkBoxX, SIGNAL( toggled( bool ) ),
              ui.rangeBoxX, SLOT( setDisabled( bool ) ) );
 
-    ui.rangeBoxX->setEnabled( plot->axisAutoScale( QwtPlot::xBottom ) );
+    ui.checkBoxX->setChecked( plot->axisAutoScale( QwtPlot::xBottom ) );
+    ui.checkBoxY->setChecked( plot->axisAutoScale( QwtPlot::yLeft ) );
 }
 
 RescaleDialog::~RescaleDialog()
@@ -24,5 +26,4 @@ RescaleDialog::~RescaleDialog()
 
 QVariantMap RescaleDialog::getState()
 {
-    return;
 }

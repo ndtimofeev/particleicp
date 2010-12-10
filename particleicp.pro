@@ -4,7 +4,9 @@
 
 CONFIG += qwt debug silent warn_on
 TEMPLATE = app
-TARGET = 
+TRANSLATIONS += translations/particleicp_ru_RU.ts \
+				translations/particleicp_fr_FR.ts
+TARGET =
 DEPENDPATH += . src ui src/histogram src/math src/reuseable src/spectrum
 INCLUDEPATH += . src src/reuseable src/spectrum src/histogram src/math
 
