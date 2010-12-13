@@ -21,6 +21,7 @@ HEADERS += src/editmenu.h \
            src/reuseable/dmenu_p.h \
            src/reuseable/falgorithms.h \
            src/reuseable/history.h \
+		   src/reuseable/plotrect.h \
            src/reuseable/rangebox.h \
 		   src/reuseable/rescaledialog.h \
            src/reuseable/selectrecentmenu.h \
@@ -51,6 +52,7 @@ SOURCES += src/editmenu.cpp \
            src/reuseable/dmenu.cpp \
            src/reuseable/dmenu_p.cpp \
            src/reuseable/history.cpp \
+		   src/reuseable/plotrect.cpp \
            src/reuseable/rangebox.cpp \
 		   src/reuseable/rescaledialog.cpp \
            src/reuseable/selectrecentmenu.cpp \

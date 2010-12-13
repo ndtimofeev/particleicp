@@ -24,6 +24,7 @@ private slots:
     void start();
     void printdlg();
     void exportImage();
+    void exportData();
     void rescalePlot();
     void toggleCurve( QwtPlotItem* curve, bool on );
 

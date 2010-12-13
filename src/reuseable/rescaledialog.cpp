@@ -1,42 +1,66 @@
 #include <QDebug>
-#include <qwt_plot_dict.h>
+#include <QRectF>
+#include <qwt_plot_item.h>
 #include "rescaledialog.h"
+#include "plotrect.h"
 #include "ui_rescaledialog.h"
 
 RescaleDialog::RescaleDialog( QwtPlot* plot, QWidget* parent ) :
-    QDialog( parent )
+    QDialog( parent ), plot( plot )
 {
     Ui::RescaleDialog ui;
     ui.setupUi( this );
-    ui.rangeBoxY->setEnabled( false );
-    ui.rangeBoxX->setEnabled( false );
 
-    connect( ui.checkBoxY, SIGNAL( toggled( bool ) ),
-             ui.rangeBoxY, SLOT( setDisabled( bool ) ) );
+    this->checkBoxX = ui.checkBoxX;
+    this->checkBoxY = ui.checkBoxY;
+    this->rangeBoxX = ui.rangeBoxX;
+    this->rangeBoxY = ui.rangeBoxY;
 
-    connect( ui.checkBoxX, SIGNAL( toggled( bool ) ),
-             ui.rangeBoxX, SLOT( setDisabled( bool ) ) );
+    connect( this->checkBoxY, SIGNAL( toggled( bool ) ),
+             this->rangeBoxY, SLOT( setDisabled( bool ) ) );
 
-    ui.checkBoxX->setChecked( plot->axisAutoScale( QwtPlot::xBottom ) );
-    ui.checkBoxY->setChecked( plot->axisAutoScale( QwtPlot::yLeft ) );
+    connect( this->checkBoxX, SIGNAL( toggled( bool ) ),
+             this->rangeBoxX, SLOT( setDisabled( bool ) ) );
 
-    ui.rangeBoxX->setRange( plot->canvasMap( QwtPlot::xBottom ).s1(),
-                                    plot->canvasMap( QwtPlot::xBottom ).s2() );
+    this->checkBoxX->setChecked( plot->axisAutoScale( QwtPlot::xBottom ) );
+    this->checkBoxY->setChecked( plot->axisAutoScale( QwtPlot::yLeft ) );
 
-    ui.rangeBoxX->setMinValue( plot->canvasMap( QwtPlot::xBottom ).s1() );
-    ui.rangeBoxX->setMaxValue( plot->canvasMap( QwtPlot::xBottom ).s2() );
+    QRectF rect = plotRect( plot );
 
-    ui.rangeBoxY->setRange( plot->canvasMap( QwtPlot::yLeft ).s1(),
-                                    plot->canvasMap( QwtPlot::yLeft ).s2() );
+    this->rangeBoxX->setRange( rect.left(), rect.right() );
 
-    ui.rangeBoxY->setMinValue( plot->canvasMap( QwtPlot::yLeft ).s1() );
-    ui.rangeBoxY->setMaxValue( plot->canvasMap( QwtPlot::yLeft ).s2() );
+    this->rangeBoxX->setMinValue( plot->canvasMap( QwtPlot::xBottom ).s1() );
+    this->rangeBoxX->setMaxValue( plot->canvasMap( QwtPlot::xBottom ).s2() );
+
+    this->rangeBoxY->setRange( rect.top(), rect.bottom() );
+
+    this->rangeBoxY->setMinValue( plot->canvasMap( QwtPlot::yLeft ).s1() );
+    this->rangeBoxY->setMaxValue( plot->canvasMap( QwtPlot::yLeft ).s2() );
 }
 
 RescaleDialog::~RescaleDialog()
 {
 }
 
-QVariantMap RescaleDialog::getState()
+void RescaleDialog::setState()
 {
+    if ( this->checkBoxX->isChecked() )
+        this->plot->setAxisAutoScale( QwtPlot::xBottom );
+    else
+        this->plot->setAxisScale( QwtPlot::xBottom, this->rangeBoxX->minValue(),
+                                                this->rangeBoxX->maxValue() );
+
+    if ( this->checkBoxY->isChecked() )
+        this->plot->setAxisAutoScale( QwtPlot::yLeft );
+    else
+        this->plot->setAxisScale( QwtPlot::yLeft, this->rangeBoxY->minValue(),
+                                                this->rangeBoxY->maxValue() );
+}
+
+void RescaleDialog::rescale( QwtPlot* plot, QWidget* parent )
+{
+    RescaleDialog dlg( plot, parent );
+
+    if ( dlg.exec() == QDialog::Accepted )
+        dlg.setState();
 }

@@ -3,6 +3,7 @@
 #include <qwt_plot_curve.h>
 #include <qwt_interval.h>
 #include <qwt_series_data.h>
+#include "rescaledialog.h"
 #include "histogramwindow.h"
 #include "falgorithms.h"
 #include "ui_histogram.h"
@@ -42,10 +43,30 @@ HistogramWindow::HistogramWindow( const VectorTable& table,
 
     connect( this->combobox, SIGNAL( currentIndexChanged( int ) ),
              this,           SLOT( redrawPlot() ) );
+
+    this->contextMenu = new QMenu( this );
+    this->contextMenu->addAction( tr("&Rescale spectrum"), this,
+                                                           SLOT(rescalePlot()));
+
+    this->contextMenu->addAction( tr("&Export image") );
+    this->contextMenu->addAction( tr("Export &data") );
+
+    this->addActions( this->contextMenu->actions() );
 }
 
 HistogramWindow::~HistogramWindow()
 {
+}
+
+void HistogramWindow::rescalePlot()
+{
+    RescaleDialog::rescale( this->plot, this );
+    this->plot->replot();
+}
+
+void HistogramWindow::contextMenuEvent( QContextMenuEvent* event )
+{
+    this->contextMenu->exec( event->globalPos() );
 }
 
 void HistogramWindow::redrawPlot()
@@ -78,7 +99,6 @@ void HistogramWindow::redrawPlot()
             data << QwtIntervalSample( v, s, s + deltaEpsilon );
     }
 
-    this->plot->setAxisScale( QwtPlot::xBottom, 10, 20, 5 );
     hist->setSamples( data );
     this->plot->replot();
 }

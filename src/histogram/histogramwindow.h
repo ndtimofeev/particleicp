@@ -2,8 +2,10 @@
 #define HISTOGRAMWINDOW_H
 
 #include <QWidget>
+#include <QContextMenuEvent>
 #include <QVector>
 #include <QMap>
+#include <QMenu>
 #include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QVariantMap>
@@ -23,12 +25,15 @@ public:
 
 protected slots:
     void redrawPlot();
+    void rescalePlot();
+    void contextMenuEvent( QContextMenuEvent* event );
 
 private slots:
     void histogramChanged( int index );
     void deltaEpsilonChanged( double value );
 
 private:
+    QMenu*                         contextMenu;
     QwtPlot*                       plot;
     QwtPlotHistogram*              hist;
     QDoubleSpinBox*                spinbox;

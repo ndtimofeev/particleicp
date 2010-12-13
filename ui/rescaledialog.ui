@@ -47,7 +47,11 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="RangeBox" name="rangeBoxX" native="true"/>
+       <widget class="RangeBox" name="rangeBoxX" native="true">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QCheckBox" name="checkBoxY">
@@ -67,7 +71,11 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="RangeBox" name="rangeBoxY" native="true"/>
+       <widget class="RangeBox" name="rangeBoxY" native="true">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -1,6 +1,9 @@
 #include <QDebug>
+#include <QFile>
 #include <QFileDialog>
 #include <QPixmap>
+#include <QTextStream>
+#include <QMdiArea>
 #include <QMenu>
 #include <QPrintDialog>
 #include <QPrinter>
@@ -34,7 +37,8 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
     {
         QwtPlotCurve* curve = new QwtPlotCurve( str );
         curve->attach( this );
-        curve->setSamples( table.getColumn( "X" )->data(), table.getColumn( str )->data(), table.getHeight() );
+        curve->setSamples( table.getColumn( "X" )->data(),
+                            table.getColumn( str )->data(), table.getHeight() );
     }
 
 // Очень некрасиво!
@@ -69,7 +73,7 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, c
     this->contextMenu->addAction(
                            tr( "&Export image" ), this, SLOT( exportImage() ) );
 
-    this->contextMenu->addAction( tr("Export &data") );
+    this->contextMenu->addAction( tr("Export &data"), this, SLOT( exportData() ) );
 
     this->addActions( this->contextMenu->actions() );
 }
@@ -99,16 +103,18 @@ void SpectrumWindow::start()
         tbl = edt::filtertable( tbl, this->settings );
         tbl = edt::correcttable( tbl, this->settings );
 
-        double n = tbl.getHeight() / ( this->settings["UpTime"].toDouble() - this->settings["DownTime"].toDouble() );
+        double n = tbl.getHeight() / ( this->settings["UpTime"].toDouble()
+                                    - this->settings["DownTime"].toDouble() );
         HistogramWindow* hw = new HistogramWindow( tbl, this->settings );
-        hw->show();
+        QMdiArea* area = (QMdiArea*) this->parent()->parent()->parent();
+        area->addSubWindow( hw )->showMaximized();
     }
 }
 
 void SpectrumWindow::rescalePlot()
 {
-    RescaleDialog* rd = new RescaleDialog( this, this );
-    rd->show();
+    RescaleDialog::rescale( this, this );
+    this->replot();
 }
 
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
@@ -128,7 +134,17 @@ void SpectrumWindow::exportImage()
         this, tr("Save image as"), QString(), tr("PNG(*.png);;JPEG(*.jpeg)") );
 
     if ( ! filename.isEmpty() )
-    {
         pixmap.save( filename );
-    }
+}
+
+void SpectrumWindow::exportData()
+{
+    QString filename = QFileDialog::getSaveFileName(
+                    this, tr("Save data as"), QString(), tr("JY files(*.jy)") );
+
+    QFile file( filename );
+    if (!file.open( QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+    QTextStream stream( &file );
 }
