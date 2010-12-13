@@ -12,41 +12,35 @@
 #include <QContextMenuEvent>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
+#include "ui_spectrumwindow.h"
+#include "jycomposer.h"
 #include "edittable.h"
 #include "rescaledialog.h"
 #include "spectrumwindow.h"
 #include "histogramwindow.h"
 #include "spectrumsettingswizard.h"
 
-SpectrumWindow::SpectrumWindow( const VectorTable& table, const QString& path, const QSet<QString>& head, QWidget* parent ) :
-    QwtPlot( parent ), table( new VectorTable( table ) )
+SpectrumWindow::SpectrumWindow( const VectorTable& table, QWidget* parent ) :
+    QWidget( parent ), table( new VectorTable( table ) ), plot( NULL )
 {
-    this->setWindowTitle( path );
-    this->setAttribute(Qt::WA_DeleteOnClose);
-    QwtLegend* legend = new QwtLegend;
-    legend->setItemMode( QwtLegend::CheckableItem );
+    Ui::SpectrumWindow ui;
+    ui.setupUi( this );
+
+    this->plot = ui.plot;
 
     QSet<QString> set = head;
     set.remove( "X" );
 
-    this->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
-    this->setAxisTitle( QwtPlot::xBottom, "t, sec" );
-    this->insertLegend( legend, QwtPlot::RightLegend );
+    this->plot->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
+    this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec" );
 
     foreach( QString str, set )
     {
         QwtPlotCurve* curve = new QwtPlotCurve( str );
-        curve->attach( this );
+        curve->attach( this->plot );
         curve->setSamples( table.getColumn( "X" )->data(),
                             table.getColumn( str )->data(), table.getHeight() );
     }
-
-// Очень некрасиво!
-    foreach( QWidget* w, legend->legendItems() )
-        ((QwtLegendItem*)w)->setChecked( true );
-
-    connect( this, SIGNAL( legendChecked( QwtPlotItem*, bool ) ),
-             this, SLOT( toggleCurve( QwtPlotItem*, bool ) ) );
 
     this->limits["MinTime"] = table.getColumn("X")->first();
     this->limits["MaxTime"] = table.getColumn("X")->last();
@@ -83,6 +77,19 @@ SpectrumWindow::~SpectrumWindow()
     delete this->table;
 }
 
+QVariantMap getSettings( const VectorTable& table )
+{
+    QVariantMap settings;
+    settings["Time"] = table.getTags().first();
+    settings["Curves"] = fp::tail( table.getTags() );
+    settings["UpTime"] = table.getColumn( settings["Time"].toString() )->first();
+    return settings;
+}
+
+QVariantMap getLimits( const VectorTable& table )
+{
+}
+
 void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
 {
     this->contextMenu->exec( event->globalPos() );
@@ -113,14 +120,14 @@ void SpectrumWindow::start()
 
 void SpectrumWindow::rescalePlot()
 {
-    RescaleDialog::rescale( this, this );
-    this->replot();
+    RescaleDialog::rescale( this->plot, this );
+    this->plot->replot();
 }
 
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
 {
     curve->setVisible( on );
-    this->replot();
+    this->plot->replot();
 }
 
 void SpectrumWindow::printdlg()
@@ -146,5 +153,8 @@ void SpectrumWindow::exportData()
     if (!file.open( QIODevice::WriteOnly | QIODevice::Text))
         return;
 
-    QTextStream stream( &file );
+        QTextStream stream( &file );
+        JYComposer( this->table, stream );
+
+    file.close();
 }

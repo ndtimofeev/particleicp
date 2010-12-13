@@ -12,6 +12,7 @@ INCLUDEPATH += . src src/reuseable src/spectrum src/histogram src/math
 
 # Input
 HEADERS += src/editmenu.h \
+		   src/jycomposer.h \
            src/jyparser.h \
            src/mainwindow.h \
            src/parsersettingsdialog.h \
@@ -39,8 +40,10 @@ FORMS += ui/curvesettings.ui \
 		 ui/histogram.ui \
          ui/parsersettingsdialog.ui \
 		 ui/rescaledialog.ui \
-         ui/spectrumsettings.ui
+         ui/spectrumsettings.ui \
+		 ui/spectrumwindow.ui
 SOURCES += src/editmenu.cpp \
+		   src/jycomposer.cpp \
            src/jyparser.cpp \
            src/main.cpp \
            src/mainwindow.cpp \
