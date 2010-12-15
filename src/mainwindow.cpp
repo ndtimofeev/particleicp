@@ -67,7 +67,7 @@ void MainWindow::openFile( const QString& path )
         QTextStream stream( &file );
 
         SpectrumWindow* sw =
-                new SpectrumWindow( JYParser( head, stream ), path, head, this );
+                new SpectrumWindow( JYParser( head, stream ), this );
 
         this->mdiarea->addSubWindow( sw )->showMaximized();
 

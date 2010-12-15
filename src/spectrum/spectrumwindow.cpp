@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QVariantMap>
 #include <QFile>
 #include <QFileDialog>
 #include <QPixmap>
@@ -12,6 +13,7 @@
 #include <QContextMenuEvent>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
+#include "falgorithms.h"
 #include "ui_spectrumwindow.h"
 #include "jycomposer.h"
 #include "edittable.h"
@@ -21,42 +23,30 @@
 #include "spectrumsettingswizard.h"
 
 SpectrumWindow::SpectrumWindow( const VectorTable& table, QWidget* parent ) :
-    QWidget( parent ), table( new VectorTable( table ) ), plot( NULL )
+    QWidget( parent ),
+    settings( SpectrumWindow::getSettings( table ) ),
+    limits( SpectrumWindow::getLimits( table ) ),
+    contextMenu( NULL ),
+    table( new VectorTable( table ) ),
+    plot( NULL )
 {
     Ui::SpectrumWindow ui;
     ui.setupUi( this );
 
     this->plot = ui.plot;
 
-    QSet<QString> set = head;
-    set.remove( "X" );
-
     this->plot->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
     this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec" );
 
-    foreach( QString str, set )
+    foreach( QString str, this->settings["Spectrums"].toStringList() )
     {
         QwtPlotCurve* curve = new QwtPlotCurve( str );
         curve->attach( this->plot );
-        curve->setSamples( table.getColumn( "X" )->data(),
-                            table.getColumn( str )->data(), table.getHeight() );
-    }
-
-    this->limits["MinTime"] = table.getColumn("X")->first();
-    this->limits["MaxTime"] = table.getColumn("X")->last();
-
-    this->settings["UpTime"] = this->limits["MaxTime"];
-    this->settings["DownTime"] = this->limits["MinTime"];
-    QStringList list = set.values();
-    this->settings["Curves"] = list;
-
-    QMap<QString,QVariant> map;
-    foreach( QString str, set )
-    {
-        this->settings[QString("%1_MaxNoise").arg(str)] = 0.0;
-        this->settings[QString("%1_AverageNoise").arg(str)] = 0.0;
-        this->settings[QString("%1_DeltaEpsilon").arg(str)] = 0.0;
-        this->settings[QString("%1_State").arg(str)] = true;
+        curve->setSamples(
+                table.getColumn( this->settings["Time"].toString() )->data(),
+                table.getColumn( str )->data(),
+                table.getHeight()
+                );
     }
 
     this->contextMenu = new QMenu( this );
@@ -77,17 +67,37 @@ SpectrumWindow::~SpectrumWindow()
     delete this->table;
 }
 
-QVariantMap getSettings( const VectorTable& table )
+QVariantMap SpectrumWindow::getSettings( const VectorTable& table )
 {
     QVariantMap settings;
-    settings["Time"] = table.getTags().first();
-    settings["Curves"] = fp::tail( table.getTags() );
-    settings["UpTime"] = table.getColumn( settings["Time"].toString() )->first();
+
+    settings["Time"]      = table.getTags().first();
+    settings["Spectrums"] = fp::tail( table.getTags() );
+    settings["UpTime"]    = table.getColumn(
+                                        settings["Time"].toString() )->first();
+
+    settings["DownTime"]  = table.getColumn(
+                                        settings["Time"].toString() )->last();
+
+    foreach( QString str, settings["Spectrums"].toStringList() )
+    {
+        settings[QString("%1_MaxNoise").arg(str)] = 0.0;
+        settings[QString("%1_AverageNoise").arg(str)] = 0.0;
+        settings[QString("%1_DeltaEpsilon").arg(str)] = 0.0;
+        settings[QString("%1_State").arg(str)] = true;
+    }
+
     return settings;
 }
 
-QVariantMap getLimits( const VectorTable& table )
+QVariantMap SpectrumWindow::getLimits( const VectorTable& table )
 {
+    QVariantMap limits;
+
+    limits["MaxTime"] = table.getColumn( table.getTags().first() )->first();
+    limits["MinTime"] = table.getColumn( table.getTags().first() )->last();
+
+    return limits;
 }
 
 void SpectrumWindow::contextMenuEvent( QContextMenuEvent* event )
@@ -127,6 +137,7 @@ void SpectrumWindow::rescalePlot()
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
 {
     curve->setVisible( on );
+    this->settings[QString("%1_State").arg(curve->title().text())] = on;
     this->plot->replot();
 }
 
