@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QtSvg>
 #include <QVariantMap>
 #include <QFile>
 #include <QFileDialog>
@@ -13,6 +14,7 @@
 #include <QContextMenuEvent>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
+#include <qwt_plot_renderer.h>
 #include "falgorithms.h"
 #include "ui_spectrumwindow.h"
 #include "jycomposer.h"
@@ -38,6 +40,10 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, QWidget* parent ) :
     this->plot->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
     this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec" );
 
+    QwtLegend* legend = new QwtLegend( this->plot );
+    legend->setItemMode( QwtLegend::CheckableItem );
+    this->plot->insertLegend( legend );
+
     foreach( QString str, this->settings["Spectrums"].toStringList() )
     {
         QwtPlotCurve* curve = new QwtPlotCurve( str );
@@ -60,6 +66,9 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, QWidget* parent ) :
     this->contextMenu->addAction( tr("Export &data"), this, SLOT( exportData() ) );
 
     this->addActions( this->contextMenu->actions() );
+
+    connect( this->plot, SIGNAL( legendChecked( QwtPlotItem*, bool ) ),
+             this,       SLOT( toggleCurve( QwtPlotItem*, bool ) ) );
 }
 
 SpectrumWindow::~SpectrumWindow()
@@ -74,10 +83,10 @@ QVariantMap SpectrumWindow::getSettings( const VectorTable& table )
     settings["Time"]      = table.getTags().first();
     settings["Spectrums"] = fp::tail( table.getTags() );
     settings["UpTime"]    = table.getColumn(
-                                        settings["Time"].toString() )->first();
+                                        settings["Time"].toString() )->last();
 
     settings["DownTime"]  = table.getColumn(
-                                        settings["Time"].toString() )->last();
+                                        settings["Time"].toString() )->first();
 
     foreach( QString str, settings["Spectrums"].toStringList() )
     {
@@ -94,8 +103,8 @@ QVariantMap SpectrumWindow::getLimits( const VectorTable& table )
 {
     QVariantMap limits;
 
-    limits["MaxTime"] = table.getColumn( table.getTags().first() )->first();
-    limits["MinTime"] = table.getColumn( table.getTags().first() )->last();
+    limits["MaxTime"] = table.getColumn( table.getTags().first() )->last();
+    limits["MinTime"] = table.getColumn( table.getTags().first() )->first();
 
     return limits;
 }
@@ -136,6 +145,7 @@ void SpectrumWindow::rescalePlot()
 
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
 {
+    on = on ? false : true;
     curve->setVisible( on );
     this->settings[QString("%1_State").arg(curve->title().text())] = on;
     this->plot->replot();
@@ -147,12 +157,14 @@ void SpectrumWindow::printdlg()
 
 void SpectrumWindow::exportImage()
 {
-    QPixmap pixmap =   QPixmap::grabWidget( this, this->geometry() );
     QString filename = QFileDialog::getSaveFileName(
-        this, tr("Save image as"), QString(), tr("PNG(*.png);;JPEG(*.jpeg)") );
+        this, tr("Save image as"), QString(), tr("PNG(*.png);;JPEG(*.jpeg);;PDF(*.pdf)") );
 
     if ( ! filename.isEmpty() )
-        pixmap.save( filename );
+    {
+        QwtPlotRenderer renderer;
+        renderer.renderDocument( this->plot, filename, QSizeF( 300, 200 ), 85 );
+    }
 }
 
 void SpectrumWindow::exportData()
@@ -164,8 +176,21 @@ void SpectrumWindow::exportData()
     if (!file.open( QIODevice::WriteOnly | QIODevice::Text))
         return;
 
+        VectorTable tbl = edt::cuttable(
+                                *this->table,
+                                this->plot->canvasMap( QwtPlot::xBottom ).s1(),
+                                this->plot->canvasMap( QwtPlot::xBottom ).s2()
+                                );
+
         QTextStream stream( &file );
-        JYComposer( this->table, stream );
+
+        QStringList columns( this->settings["Time"].toString() );
+
+        foreach( QString str, this->settings["Spectrums"].toStringList() )
+            if ( this->settings[QString("%1_State").arg(str)].toBool() )
+                columns += str;
+
+        JYComposer( &tbl, stream, columns );
 
     file.close();
 }

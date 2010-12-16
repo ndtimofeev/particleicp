@@ -1,15 +1,16 @@
-#include <QDebug>
-#include <QString>
+#include <QtGui>
 #include <qwt_plot_curve.h>
-#include <qwt_interval.h>
 #include <qwt_series_data.h>
+#include <qwt_plot_renderer.h>
+#include "jycomposer.h"
 #include "rescaledialog.h"
 #include "histogramwindow.h"
 #include "falgorithms.h"
 #include "ui_histogram.h"
 
 HistogramWindow::HistogramWindow( const VectorTable& table,
-    const QVariantMap& settings, QWidget* parent ) : QWidget( parent ), hist( NULL )
+    const QVariantMap& settings, QWidget* parent ) :
+    QWidget( parent ), hist( NULL ), e_data( NULL )
 {
     Ui::Histogram ui;
     ui.setupUi( this );
@@ -21,7 +22,7 @@ HistogramWindow::HistogramWindow( const VectorTable& table,
     this->hist = new QwtPlotHistogram;
     this->hist->attach( this->plot );
 
-    foreach( QString tag, fp::tail( table.getTags() ) )
+    foreach( QString tag, settings["Spectrums"].toStringList() )
     {
         this->combobox->addItem(tag, settings[QString("%1_DeltaEpsilon").arg(tag)]);
         this->s_data[tag] = new QVector<double>( *table.getColumn( tag ) );
@@ -48,14 +49,16 @@ HistogramWindow::HistogramWindow( const VectorTable& table,
     this->contextMenu->addAction( tr("&Rescale spectrum"), this,
                                                            SLOT(rescalePlot()));
 
-    this->contextMenu->addAction( tr("&Export image") );
-    this->contextMenu->addAction( tr("Export &data") );
+    this->contextMenu->addAction(tr("&Export image"), this, SLOT(exportImage()));
+    this->contextMenu->addAction(tr("Export &data"), this, SLOT(exportData()));
 
     this->addActions( this->contextMenu->actions() );
 }
 
 HistogramWindow::~HistogramWindow()
 {
+    if ( this->e_data )
+        delete this->e_data;
 }
 
 void HistogramWindow::rescalePlot()
@@ -74,7 +77,10 @@ void HistogramWindow::redrawPlot()
     double deltaEpsilon =
         this->combobox->itemData( this->combobox->currentIndex() ).toDouble();
 
-    QVector<QwtIntervalSample> data;
+    if ( this->e_data )
+        delete this->e_data;
+
+    this->e_data = new QVector<QwtIntervalSample>;
 
     if ( deltaEpsilon )
     {
@@ -89,18 +95,57 @@ void HistogramWindow::redrawPlot()
                 v++;
             else
             {
-                data << QwtIntervalSample( v, s, s + deltaEpsilon );
+                *(this->e_data) << QwtIntervalSample( v, s, s + deltaEpsilon );
                 s += deltaEpsilon;
                 v = 1;
             }
         }
 
         if ( v )
-            data << QwtIntervalSample( v, s, s + deltaEpsilon );
+            *(this->e_data) << QwtIntervalSample( v, s, s + deltaEpsilon );
     }
 
-    hist->setSamples( data );
+    hist->setSamples( *(this->e_data) );
     this->plot->replot();
+}
+
+void HistogramWindow::exportData()
+{
+    QString filename = QFileDialog::getSaveFileName(
+                    this, tr("Save data as"), QString(), tr("JY files(*.jy)") );
+
+    QFile file( filename );
+    if (!file.open( QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+        QStringList list;
+        list << "I" << "N";
+
+        VectorTable tbl( list );
+
+        foreach( QwtIntervalSample interval, *(this->e_data) )
+        {
+            QVector<double> vec;
+            vec << interval.interval.minValue() << interval.value;
+            tbl << vec;
+        }
+
+        QTextStream stream( &file );
+        JYComposer( &tbl, stream );
+
+    file.close();
+}
+
+void HistogramWindow::exportImage()
+{
+    QString filename = QFileDialog::getSaveFileName(
+        this, tr("Save image as"), QString(), tr("PNG(*.png);;JPEG(*.jpeg);;PDF(*.pdf)") );
+
+    if ( ! filename.isEmpty() )
+    {
+        QwtPlotRenderer renderer;
+        renderer.renderDocument( this->plot, filename, QSizeF( 300, 200 ), 85 );
+    }
 }
 
 void HistogramWindow::histogramChanged( int index )

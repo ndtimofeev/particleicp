@@ -7,7 +7,7 @@ SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<QString,QVariant>& se
                                                 const QMap<QString,QVariant>& limits,
                                                 QWidget* parent ) :
     QWizard( parent ),
-    pages( settings["Curves"].toStringList() ),
+    pages( settings["Spectrums"].toStringList() ),
     settings( settings )
 {
     this->setModal( true );

@@ -31,6 +31,8 @@ ParserSettingsDialog::ParserSettingsDialog( QTextStream& stream, QWidget* parent
         ui.verticalLayout_3->addWidget( cb );
     }
 
+    ui.verticalLayout_3->addStretch();
+
     connect( this->group, SIGNAL( buttonPressed( QAbstractButton* ) ),
              this,        SLOT( stateCatcher( QAbstractButton* ) ) );
 }

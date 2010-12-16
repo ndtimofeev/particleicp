@@ -11,6 +11,7 @@
 #include <QVariantMap>
 #include <qwt_plot.h>
 #include <qwt_plot_histogram.h>
+#include <qwt_interval.h>
 #include "vectortable.h"
 
 class HistogramWindow : public QWidget
@@ -26,6 +27,8 @@ public:
 protected slots:
     void redrawPlot();
     void rescalePlot();
+    void exportData();
+    void exportImage();
     void contextMenuEvent( QContextMenuEvent* event );
 
 private slots:
@@ -40,6 +43,7 @@ private:
     QComboBox*                     combobox;
     QStringList                    tags;
     QMap<QString,QVector<double>*> s_data;
+    QVector<QwtIntervalSample>*    e_data;
 
 };
 

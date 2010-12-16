@@ -28,7 +28,7 @@ SpectrumSettings::SpectrumSettings( const QMap<QString,QVariant>& settings,
 
     group->setExclusive( false );
 
-    foreach( QString str, settings["Curves"].toStringList() )
+    foreach( QString str, settings["Spectrums"].toStringList() )
     {
         QCheckBox* cb = new QCheckBox( str, this );
 
