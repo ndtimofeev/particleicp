@@ -7,8 +7,16 @@
 вынести функции разбора файлов и сортировки данных в отдельные потоки чтобы
 сохранять отзывчивочть интерфейса.
 
-сделать экспорт спектров в svg, jpeg и png
+сделать экспорт спектров в svg
 
 исправить вызов контекстного меню в HistogramWindow
 
 исправить вызов HistogramWindow (parent()->parent()->parent())
+
+parrots change with /a.u.
+
+change grey background with transtittance one
+
+add figure: number - dt
+
+chto sprashivaem? otkuda i dokuda vremennuyu os' rassmatrivat' budem? tochki vishe kakogo znacheniya mi schitaem pikom? (ochen' klassno menyat shkalu OX v malen'kom okoshechke)
