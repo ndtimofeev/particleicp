@@ -1,11 +1,7 @@
 #ifndef SPECTRUMWINDOW_H
 #define SPECTRUMWINDOW_H
 
-#include <QMap>
-#include <QMenu>
-#include <QMdiSubWindow>
-#include <QVector>
-#include <QWidget>
+#include <QtGui>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include "vectortable.h"

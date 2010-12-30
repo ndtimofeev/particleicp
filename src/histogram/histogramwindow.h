@@ -1,14 +1,7 @@
 #ifndef HISTOGRAMWINDOW_H
 #define HISTOGRAMWINDOW_H
 
-#include <QWidget>
-#include <QContextMenuEvent>
-#include <QVector>
-#include <QMap>
-#include <QMenu>
-#include <QDoubleSpinBox>
-#include <QComboBox>
-#include <QVariantMap>
+#include <QtGui>
 #include <qwt_plot.h>
 #include <qwt_plot_histogram.h>
 #include <qwt_interval.h>

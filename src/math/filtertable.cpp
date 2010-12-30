@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QVector>
 #include <QString>
 #include <QMap>
@@ -19,6 +20,9 @@ VectorTable edt::filtertable( const VectorTable& table, const QVariantMap& setti
             limits[tag] = settings[QString("%1_MaxNoise").arg(tag)].toDouble();
         }
     }
+
+    qDebug() << limits;
+    qDebug() << settings;
 
     for ( int i = 0, j = table.getHeight(); i < j; i++ )
     {

@@ -1,17 +1,4 @@
-#include <QDebug>
-#include <QtSvg>
-#include <QVariantMap>
-#include <QFile>
-#include <QFileDialog>
-#include <QPixmap>
-#include <QTextStream>
-#include <QMdiArea>
-#include <QMenu>
-#include <QPrintDialog>
-#include <QPrinter>
-#include <QMdiArea>
 #include <QtAlgorithms>
-#include <QContextMenuEvent>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
 #include <qwt_plot_renderer.h>
@@ -22,6 +9,7 @@
 #include "rescaledialog.h"
 #include "spectrumwindow.h"
 #include "histogramwindow.h"
+#include "hnywindow.h"
 #include "spectrumsettingswizard.h"
 
 SpectrumWindow::SpectrumWindow( const VectorTable& table, QWidget* parent ) :
@@ -122,6 +110,8 @@ void SpectrumWindow::start()
     {
         this->settings = new_settings;
 
+        qDebug() << this->settings;
+
         VectorTable tbl = edt::cuttable( *this->table,
                                          this->settings["DownTime"].toDouble(),
                                          this->settings["UpTime"].toDouble() );
@@ -131,9 +121,15 @@ void SpectrumWindow::start()
 
         double n = tbl.getHeight() / ( this->settings["UpTime"].toDouble()
                                     - this->settings["DownTime"].toDouble() );
+
         HistogramWindow* hw = new HistogramWindow( tbl, this->settings );
-        QMdiArea* area = (QMdiArea*) this->parent()->parent()->parent();
+        HNYWindow* hnyw     = new HNYWindow( tbl, this->settings );
+
+        QMdiArea* area =
+                    static_cast<QMdiArea*>( this->parent()->parent()->parent() );
+
         area->addSubWindow( hw )->showMaximized();
+        area->addSubWindow( hnyw )->showMaximized();
     }
 }
 

@@ -1,5 +1,3 @@
-#include <QtGui>
-#include <qwt_plot_curve.h>
 #include <qwt_series_data.h>
 #include <qwt_plot_renderer.h>
 #include "jycomposer.h"
@@ -10,7 +8,7 @@
 
 HistogramWindow::HistogramWindow( const VectorTable& table,
     const QVariantMap& settings, QWidget* parent ) :
-    QWidget( parent ), hist( NULL ), e_data( NULL )
+    QWidget( parent ), hist( new QwtPlotHistogram ), e_data( NULL )
 {
     Ui::Histogram ui;
     ui.setupUi( this );
@@ -19,7 +17,6 @@ HistogramWindow::HistogramWindow( const VectorTable& table,
     this->spinbox  = ui.doubleSpinBox;
     this->combobox = ui.comboBox;
 
-    this->hist = new QwtPlotHistogram;
     this->hist->attach( this->plot );
 
     foreach( QString tag, settings["Spectrums"].toStringList() )

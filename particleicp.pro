@@ -17,6 +17,7 @@ HEADERS += src/editmenu.h \
            src/mainwindow.h \
            src/parsersettingsdialog.h \
            src/histogram/histogramwindow.h \
+           src/histogram/hnywindow.h \
            src/math/edittable.h \
            src/reuseable/dmenu.h \
            src/reuseable/dmenu_p.h \
@@ -39,6 +40,7 @@ HEADERS += src/editmenu.h \
 FORMS += ui/curvesettings.ui \
          ui/mainwindow.ui \
 		 ui/histogram.ui \
+		 ui/hny.ui \
          ui/parsersettingsdialog.ui \
 		 ui/rescaledialog.ui \
 		 ui/signalswindow.ui \
@@ -51,6 +53,7 @@ SOURCES += src/editmenu.cpp \
            src/mainwindow.cpp \
            src/parsersettingsdialog.cpp \
            src/histogram/histogramwindow.cpp \
+           src/histogram/hnywindow.cpp \
            src/math/correcttable.cpp \
            src/math/cuttable.cpp \
            src/math/filtertable.cpp \
