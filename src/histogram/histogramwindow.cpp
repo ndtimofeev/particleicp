@@ -1,5 +1,6 @@
 #include <qwt_series_data.h>
 #include <qwt_plot_renderer.h>
+#include "exportplotimage.h"
 #include "jycomposer.h"
 #include "rescaledialog.h"
 #include "histogramwindow.h"
@@ -135,14 +136,7 @@ void HistogramWindow::exportData()
 
 void HistogramWindow::exportImage()
 {
-    QString filename = QFileDialog::getSaveFileName(
-        this, tr("Save image as"), QString(), tr("PNG(*.png);;JPEG(*.jpeg);;PDF(*.pdf)") );
-
-    if ( ! filename.isEmpty() )
-    {
-        QwtPlotRenderer renderer;
-        renderer.renderDocument( this->plot, filename, QSizeF( 300, 200 ), 85 );
-    }
+    exportPlotImage( this->plot, this );
 }
 
 void HistogramWindow::histogramChanged( int index )

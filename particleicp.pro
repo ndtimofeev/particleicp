@@ -11,7 +11,8 @@ DEPENDPATH += . src ui src/histogram src/math src/reuseable src/spectrum
 INCLUDEPATH += . src src/reuseable src/spectrum src/histogram src/math
 
 # Input
-HEADERS += src/editmenu.h \
+HEADERS += src/datawindow.h \
+		   src/editmenu.h \
 		   src/jycomposer.h \
            src/jyparser.h \
            src/mainwindow.h \
@@ -21,6 +22,7 @@ HEADERS += src/editmenu.h \
            src/math/edittable.h \
            src/reuseable/dmenu.h \
            src/reuseable/dmenu_p.h \
+		   src/reuseable/exportplotimage.h \
            src/reuseable/falgorithms.h \
            src/reuseable/history.h \
 		   src/reuseable/plotrect.h \
@@ -46,7 +48,8 @@ FORMS += ui/curvesettings.ui \
 		 ui/signalswindow.ui \
          ui/spectrumsettings.ui \
 		 ui/spectrumwindow.ui
-SOURCES += src/editmenu.cpp \
+SOURCES += src/datawindow.cpp \
+		   src/editmenu.cpp \
 		   src/jycomposer.cpp \
            src/jyparser.cpp \
            src/main.cpp \
@@ -59,6 +62,7 @@ SOURCES += src/editmenu.cpp \
            src/math/filtertable.cpp \
            src/reuseable/dmenu.cpp \
            src/reuseable/dmenu_p.cpp \
+		   src/reuseable/exportplotimage.cpp \
            src/reuseable/history.cpp \
 		   src/reuseable/plotrect.cpp \
            src/reuseable/rangebox.cpp \

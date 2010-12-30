@@ -3,6 +3,7 @@
 #include <qwt_legend_item.h>
 #include <qwt_plot_renderer.h>
 #include "falgorithms.h"
+#include "exportplotimage.h"
 #include "ui_spectrumwindow.h"
 #include "jycomposer.h"
 #include "edittable.h"
@@ -153,14 +154,7 @@ void SpectrumWindow::printdlg()
 
 void SpectrumWindow::exportImage()
 {
-    QString filename = QFileDialog::getSaveFileName(
-        this, tr("Save image as"), QString(), tr("PNG(*.png);;JPEG(*.jpeg);;PDF(*.pdf)") );
-
-    if ( ! filename.isEmpty() )
-    {
-        QwtPlotRenderer renderer;
-        renderer.renderDocument( this->plot, filename, QSizeF( 300, 200 ), 85 );
-    }
+    exportPlotImage( this->plot, this );
 }
 
 void SpectrumWindow::exportData()
