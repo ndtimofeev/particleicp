@@ -3,20 +3,22 @@
 #include "spectrumsettings.h"
 #include "curvesettings.h"
 
-SpectrumSettingsWizard::SpectrumSettingsWizard( const QMap<QString,QVariant>& settings,
-                                                const QMap<QString,QVariant>& limits,
-                                                QWidget* parent ) :
+SpectrumSettingsWizard::SpectrumSettingsWizard( const QVariantMap& settings,
+    const QVariantMap& limits, QWidget* parent ) :
     QWizard( parent ),
     pages( settings["Spectrums"].toStringList() ),
     settings( settings )
 {
     this->setModal( true );
-    this->setOptions( QWizard::NoBackButtonOnStartPage | QWizard::HaveHelpButton );
+    this->setOptions(
+            QWizard::NoBackButtonOnStartPage | QWizard::HaveHelpButton );
+
     this->addPage( new SpectrumSettings( settings, limits, this ) );
 
     foreach( QString str, this->pages )
         if ( settings[QString("%1_State").arg(str)].toBool() )
-            this->setPage( this->getPageId( str ), new CurveSettings( str, settings, this ) );
+            this->setPage( this->getPageId( str ),
+                                    new CurveSettings( str, settings, this ) );
 
     connect( this->page( 0 ), SIGNAL( pageStateChanged( QString ) ),
              this,            SLOT( wizardEdit( QString ) ) );
@@ -31,12 +33,11 @@ SpectrumSettingsWizard::~SpectrumSettingsWizard()
 {
 }
 
-QMap<QString,QVariant>
-SpectrumSettingsWizard::getSpectrumSettings( const QMap<QString,QVariant>& settings,
-                                             const QMap<QString,QVariant>& limits,
-                                             QWidget* parent )
+QVariantMap
+SpectrumSettingsWizard::getSpectrumSettings( const QVariantMap& settings,
+    const QVariantMap& limits, QWidget* parent )
 {
-    QMap<QString,QVariant> value;
+    QVariantMap value;
     SpectrumSettingsWizard dlg( settings, limits, parent );
 
     if ( dlg.exec() == QDialog::Accepted )
@@ -45,7 +46,7 @@ SpectrumSettingsWizard::getSpectrumSettings( const QMap<QString,QVariant>& setti
     return value;
 }
 
-QMap<QString,QVariant> SpectrumSettingsWizard::getState() const
+QVariantMap SpectrumSettingsWizard::getState() const
 {
     return this->settings;
 }
@@ -86,7 +87,7 @@ void SpectrumSettingsWizard::saveState()
     this->settings["UpTime"] = this->field("UpTime");
     this->settings["DownTime"] = this->field("DownTime");
 
-    foreach( QString str, this->settings["Curves"].toStringList() )
+    foreach( QString str, this->settings["Spectrums"].toStringList() )
     {
         if ( this->settings[QString("%1_State").arg(str)].toBool() )
         {
@@ -94,7 +95,7 @@ void SpectrumSettingsWizard::saveState()
                             this->field(QString("%1_AverageNoise").arg(str));
 
             this->settings[QString("%1_MaxNoise").arg(str)] =
-                            this->field(QString("%1_MaxNoise").arg(str));
+                                this->field(QString("%1_MaxNoise").arg(str));
 
             this->settings[QString("%1_DeltaEpsilon").arg(str)] =
                             this->field(QString("%1_DeltaEpsilon").arg(str));

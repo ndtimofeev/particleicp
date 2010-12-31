@@ -26,8 +26,8 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, QWidget* parent ) :
 
     this->plot = ui.plot;
 
-    this->plot->setAxisTitle( QwtPlot::yLeft, "I, parrots" );
-    this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec" );
+    this->plot->setAxisTitle( QwtPlot::yLeft, "I, a.u." );
+    this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec." );
 
     QwtLegend* legend = new QwtLegend( this->plot );
     legend->setItemMode( QwtLegend::CheckableItem );
@@ -49,10 +49,12 @@ SpectrumWindow::SpectrumWindow( const VectorTable& table, QWidget* parent ) :
                                                         SLOT( rescalePlot() ) );
 
     this->contextMenu->addAction( tr( "S&tart" ), this, SLOT( start() ) );
+
     this->contextMenu->addAction(
                            tr( "&Export image" ), this, SLOT( exportImage() ) );
 
-    this->contextMenu->addAction( tr("Export &data"), this, SLOT( exportData() ) );
+    this->contextMenu->addAction( tr("Export &data"), this,
+                                                        SLOT( exportData() ) );
 
     this->addActions( this->contextMenu->actions() );
 

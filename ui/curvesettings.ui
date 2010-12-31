@@ -33,7 +33,7 @@
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="maximumNoiseDoubleSpinBox">
         <property name="suffix">
-         <string> parrots</string>
+         <string> a.u.</string>
         </property>
         <property name="decimals">
          <number>5</number>
@@ -53,7 +53,7 @@
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="averageNoiseDoubleSpinBox">
         <property name="suffix">
-         <string> parrots</string>
+         <string> a.u.</string>
         </property>
         <property name="decimals">
          <number>5</number>
@@ -73,7 +73,7 @@
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="deltaEpsilonDoubleSpinBox">
         <property name="suffix">
-         <string> parrots</string>
+         <string> a.u.</string>
         </property>
         <property name="decimals">
          <number>5</number>

@@ -11,8 +11,7 @@ DEPENDPATH += . src ui src/histogram src/math src/reuseable src/spectrum
 INCLUDEPATH += . src src/reuseable src/spectrum src/histogram src/math
 
 # Input
-HEADERS += src/datawindow.h \
-		   src/editmenu.h \
+HEADERS += src/editmenu.h \
 		   src/jycomposer.h \
            src/jyparser.h \
            src/mainwindow.h \
@@ -48,8 +47,7 @@ FORMS += ui/curvesettings.ui \
 		 ui/signalswindow.ui \
          ui/spectrumsettings.ui \
 		 ui/spectrumwindow.ui
-SOURCES += src/datawindow.cpp \
-		   src/editmenu.cpp \
+SOURCES += src/editmenu.cpp \
 		   src/jycomposer.cpp \
            src/jyparser.cpp \
            src/main.cpp \

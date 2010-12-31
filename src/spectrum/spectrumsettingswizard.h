@@ -1,11 +1,7 @@
 #ifndef SPECTRUMSETTINGSWIZARD_H
 #define SPECTRUMSETTINGSWIZARD_H
 
-#include <QStringList>
-#include <QString>
-#include <QWizard>
-#include <QWidget>
-#include <QVariant>
+#include <QtGui>
 
 class SpectrumSettingsWizard : public QWizard
 {

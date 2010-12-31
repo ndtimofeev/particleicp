@@ -13,9 +13,11 @@ public:
     DataWindow( const VectorTable* table, QWidget* parent = 0 );
     virtual ~DataWindow() = 0;
 
+    virtual void drawCurves();
+
 protected:
-    QPointer<QwtPlot> plot;
-    VectorTable*      table;
+    QPointer<QwtPlot>  plot;
+    const VectorTable* table;
 };
 
 #endif /* DATAWINDOW_H */

@@ -18,6 +18,10 @@ HNYWindow::HNYWindow( const VectorTable& table, const QVariantMap& settings,
 
     this->plot     = ui.qwtPlot;
     this->spinbox  = ui.doubleSpinBox;
+
+    this->plot->setAxisTitle( QwtPlot::yLeft, "N, units" );
+    this->plot->setAxisTitle( QwtPlot::xBottom, "t, sec" );
+
     this->hist->attach( this->plot );
     this->spinbox->setValue( 0 );
     this->redrawPlot();
