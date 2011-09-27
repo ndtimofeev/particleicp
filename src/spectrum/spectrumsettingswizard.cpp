@@ -10,8 +10,7 @@ SpectrumSettingsWizard::SpectrumSettingsWizard( const QVariantMap& settings,
     settings( settings )
 {
     this->setModal( true );
-    this->setOptions(
-            QWizard::NoBackButtonOnStartPage | QWizard::HaveHelpButton );
+    this->setOptions( QWizard::NoBackButtonOnStartPage );
 
     this->addPage( new SpectrumSettings( settings, limits, this ) );
 

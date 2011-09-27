@@ -39,7 +39,7 @@ void MainWindow::selectFile()
 {
     QString path =
         QFileDialog::getOpenFileName( this, tr("Open File"), QString(),
-                            tr("JY Files(*.jy)"), 0, QFileDialog::ReadOnly );
+            tr("JY Files(*.jy)"), 0, QFileDialog::ReadOnly );
 
     if ( ! path.isEmpty() )
         openFile( path );
@@ -54,8 +54,8 @@ void MainWindow::openFile( const QString& path )
 
     QTextStream stream( &file );
 
-    QSet<QString> head = ParserSettingsDialog::getSettings(
-                                    stream, path, this, Settings::instance() );
+    QSet<QString> head =
+        ParserSettingsDialog::getSettings( stream, path, this, Settings::instance() );
 
     if ( head.size() > 1 )
     {
@@ -66,8 +66,7 @@ void MainWindow::openFile( const QString& path )
 
         QTextStream stream( &file );
 
-        SpectrumWindow* sw =
-                new SpectrumWindow( JYParser( head, stream ), this );
+        SpectrumWindow* sw = new SpectrumWindow( JYParser( head, stream ), this );
 
         this->mdiarea->addSubWindow( sw )->showMaximized();
 

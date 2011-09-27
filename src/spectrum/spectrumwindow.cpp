@@ -128,6 +128,7 @@ void SpectrumWindow::start()
         HistogramWindow* hw = new HistogramWindow( tbl, this->settings );
         HNYWindow* hnyw     = new HNYWindow( tbl, this->settings );
 
+        // Бляяяя...
         QMdiArea* area =
                     static_cast<QMdiArea*>( this->parent()->parent()->parent() );
 
@@ -144,6 +145,7 @@ void SpectrumWindow::rescalePlot()
 
 void SpectrumWindow::toggleCurve( QwtPlotItem* curve, bool on )
 {
+    // Ещё один ад и пиздец
     on = on ? false : true;
     curve->setVisible( on );
     this->settings[QString("%1_State").arg(curve->title().text())] = on;

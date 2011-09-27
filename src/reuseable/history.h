@@ -67,6 +67,7 @@ void History<T>::push( const T& value )
            *this = fp::take( this->length_v, *this );
     }
 }
+
 /*
 template <typename T>
 History<T> History<T>::mid( int pos, int length ) const
@@ -74,5 +75,6 @@ History<T> History<T>::mid( int pos, int length ) const
     return History<T>( this->mid( pos, length ), this->length_v );
 }
 */
+
 #endif /* HISTORY_H */
 
