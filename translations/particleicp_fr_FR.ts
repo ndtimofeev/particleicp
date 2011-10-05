@@ -22,7 +22,7 @@
         <location filename="../ui/curvesettings.ui" line="36"/>
         <location filename="../ui/curvesettings.ui" line="56"/>
         <location filename="../ui/curvesettings.ui" line="76"/>
-        <source> parrots</source>
+        <source> a.u.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -50,10 +50,89 @@
     </message>
 </context>
 <context>
+    <name>HNY</name>
+    <message>
+        <location filename="../ui/hny.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/hny.ui" line="25"/>
+        <source> sec</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HNYWindow</name>
+    <message>
+        <location filename="../src/histogram/hnywindow.cpp" line="33"/>
+        <source>&amp;Rescale spectrum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/hnywindow.cpp" line="36"/>
+        <source>&amp;Export image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/hnywindow.cpp" line="39"/>
+        <source>Export &amp;data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/hnywindow.cpp" line="104"/>
+        <source>Save data as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/hnywindow.cpp" line="104"/>
+        <source>JY files(*.jy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/hnywindow.cpp" line="131"/>
+        <source>Save image as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/hnywindow.cpp" line="131"/>
+        <source>PNG(*.png);;JPEG(*.jpeg);;PDF(*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Histogram</name>
     <message>
         <location filename="../ui/histogram.ui" line="14"/>
         <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistogramWindow</name>
+    <message>
+        <location filename="../src/histogram/histogramwindow.cpp" line="50"/>
+        <source>&amp;Rescale spectrum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/histogramwindow.cpp" line="53"/>
+        <source>&amp;Export image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/histogramwindow.cpp" line="54"/>
+        <source>Export &amp;data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/histogramwindow.cpp" line="116"/>
+        <source>Save data as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/histogram/histogramwindow.cpp" line="116"/>
+        <source>JY files(*.jy)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -131,6 +210,19 @@
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../src/reuseable/exportplotimage.cpp" line="8"/>
+        <source>Save image as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/reuseable/exportplotimage.cpp" line="10"/>
+        <source>PNG(*.png);;JPEG(*.jpeg);;PDF(*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RescaleDialog</name>
     <message>
         <location filename="../ui/rescaledialog.ui" line="20"/>
@@ -153,12 +245,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/rescaledialog.ui" line="55"/>
+        <location filename="../ui/rescaledialog.ui" line="59"/>
         <source>Autorescale Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/rescaledialog.ui" line="65"/>
+        <location filename="../ui/rescaledialog.ui" line="69"/>
         <source>Range Y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -168,6 +260,14 @@
     <message>
         <location filename="../src/reuseable/selectrecentmenu_p.cpp" line="77"/>
         <source>&amp;Clear List</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SignalsWindow</name>
+    <message>
+        <location filename="../ui/signalswindow.ui" line="14"/>
+        <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -193,33 +293,38 @@
 <context>
     <name>SpectrumWindow</name>
     <message>
-        <location filename="../src/spectrum/spectrumwindow.cpp" line="65"/>
+        <location filename="../src/spectrum/spectrumwindow.cpp" line="48"/>
         <source>&amp;Rescale spectrum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrum/spectrumwindow.cpp" line="68"/>
+        <location filename="../src/spectrum/spectrumwindow.cpp" line="51"/>
         <source>S&amp;tart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrum/spectrumwindow.cpp" line="70"/>
+        <location filename="../src/spectrum/spectrumwindow.cpp" line="54"/>
         <source>&amp;Export image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrum/spectrumwindow.cpp" line="72"/>
+        <location filename="../src/spectrum/spectrumwindow.cpp" line="56"/>
         <source>Export &amp;data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrum/spectrumwindow.cpp" line="128"/>
-        <source>Save image as</source>
+        <location filename="../src/spectrum/spectrumwindow.cpp" line="167"/>
+        <source>Save data as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/spectrum/spectrumwindow.cpp" line="128"/>
-        <source>PNG(*.png);;JPEG(*.jpeg)</source>
+        <location filename="../src/spectrum/spectrumwindow.cpp" line="167"/>
+        <source>JY files(*.jy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/spectrumwindow.ui" line="14"/>
+        <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

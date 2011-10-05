@@ -94,7 +94,6 @@ void HNYWindow::redrawPlot()
     }
 
     hist->setSamples( *(this->h_data) );
-    qDebug() << *this->data;
     this->plot->replot();
 }
 

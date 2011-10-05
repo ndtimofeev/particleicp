@@ -113,8 +113,6 @@ void SpectrumWindow::start()
     {
         this->settings = new_settings;
 
-        qDebug() << this->settings;
-
         VectorTable tbl = edt::cuttable( *this->table,
                                          this->settings["DownTime"].toDouble(),
                                          this->settings["UpTime"].toDouble() );
