@@ -4,10 +4,10 @@
 #include <QVariantMap>
 #include "vectortable.h"
 
-// Функции данного пространства имён производят операции над таблицами чисел
-// двойной точности (double) имеющими именованные столбцы. При чтении входного
-// файла программа преобразует данные в такую таблицу, где столбцы - данные для
-// различных элементов.
+// the functions of this name space perform the operations with numeric tables
+// of double accuracy (double) which contain named columns. Reading the in-put
+// file the program convert the data to the table, where the columns represent
+// the data for different elements.
 
 namespace edt {
 
@@ -18,4 +18,3 @@ namespace edt {
 }
 
 #endif /* EDITTABLE_H */
-

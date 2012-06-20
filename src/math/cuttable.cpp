@@ -1,60 +1,56 @@
 #include "edittable.h"
 
-// Функция выделяет из таблицы (table) заданную подтаблицу соответствующую определённому
-// интервалу значений по Х, заданнаму начальным значением (start) и конечным
-// значением (finish).
+// The function substract from the table (table) the defined subtable, which
+// corresponds to the X interval, defining by beginning (start) and final
+// (finish) values.
 
 VectorTable edt::cuttable( const VectorTable& table, double start, double finish )
 {
-// В начале проверяем заданный интервал на корректность. Если начальное значение больше
-// или равно конечному...
+// At the beginning, the defined interval is verified. If the beginning value
+// more or equal to the final value...
     if ( start >= finish )
-// ...то программа немедленно завершается.
+// ...the program immidiately closes.
         qFatal( "cuttable: start >= finish" );
 
-// Получаем доступ на чтение памяти в которой хранится первый столбец таблицы (в
-// котором храняться значения по X). Доступ осуществляется посредством
-// константного указателя на QVector<double>. Указатель получается посредством
-// вызова соответствующей функции класса VectorTable.
+// The acces to read the file with first column of the table is obtained (where
+// the X values are kept). The access is performed due to the constant reference
+// to QVector<double>. This reference is made by the invocation of VectorTable
+// function.
     const QVector<double>* scale = table.getColumn( table.getTags().first() );
 
-// Инициализируем значением -1 переменные pos в которой будет храниться номер
-// строки таблицы с которого начнётся искомая подтаблица и length в которой
-// будет храниться длинна искомой подтаблицы.
     int pos = -1, length = -1;
 
-// Пусть i указывает на первую ячейку столбца хранящего значения по X, j - на
-// последнюю ячейку того же столбца, k равен начальному значению i. Тогда
-// перебираем все ячейки этого столбца пока i не равен j.
+// Define: i is a first cell of the column, which contains X values; j is the
+// last cell of the same column; k is equal to first i value. Check all cells of
+// the column untill i < j.
     for ( QVector<double>::const_iterator i = scale->begin(), j = scale->end(),
                                                             k = i; i != j; i++ )
     {
-// Для каждой ячейки...
+// For each cell…
 //
-// Если номер первой строки искомой подтаблицы не менялся с начала поиска (то
-// есть всё ещё равен -1) и значение рассматриваемой ячейки больше значения
-// начала интервала...
+// If the the number of the firs cell does not change from the beginning of
+// searching (e.g. equal to -1) and the value of the cell of interest is higher
+// than the interval beginning...
         if (( pos == -1 ) && ( *i > start ))
-// ..то номер первой строки искомой подтаблицы становится равен числу переходов
-// от начальной к текущей ячейке (использована особая магия итераторов, про неё
-// читать в умных книгах).
+// ...than the number of the first line of the small cell is equal to the number
+// of gaps between first cell and current cell.
             pos = i - k;
 
-// Если номер первой строки искомой подтаблицы изменился с начала поиска (то
-// есть не равен -1) и значение рассматриваемой ячейки больше значения конца
-// интервала...
+// If the the number of the firs cell does change from the beginning of
+// searching (e.g. does not equal to -1) and the value of the cess of interest
+// is higher than the end of the interval...
         if (( pos != -1 ) && ( *i > finish ))
         {
-// ..то длинна искомой таблицы становится равна положению текущей ячейки, минус
-// положение начальной ячейки, минус номер первой строки искомой подтаблицы
-// минус один (как это объяснять, я вообще не знаю, нарисуй),
+// ...than the lengths of the obtained table is equal to the cell of interest
+// position, minus the position of the first (start) cell, minus 1...
             length = i - k - pos - 1;
-// а поиск немедленно прекращается.
+// ...and searching is immidiately finishes.
             break;
         }
     }
 
-// Возвращаем сечение входной таблицы начиная со строки pos и длинной length.
-// Сечение осуществляется при помощи функции встроенной в контейнер.
+// The table (converted from the original table) started from pos line and with
+// lengths lengths is created. The section of the table is performed due to the
+// internal function.
     return table.mid( pos, length );
 }

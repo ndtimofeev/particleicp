@@ -6,65 +6,67 @@
 #include "falgorithms.h"
 #include "edittable.h"
 
-// Функция создаёт подтаблицу содержащую все значения из входной таблицыш (table),
-// превышающие значения максимального шума, передаваемые в виде специального
-// объект (settings).
+// The function creates the subtable, which contains all values of in-put table
+// (table) greater than the maximal background deviation (settings).
 
 VectorTable edt::filtertable( const VectorTable& table, const QVariantMap& settings )
 {
-// Создаём пустую подтаблицу из списка имён столбцов входной таблицы.
+// The empty subtable, containing the names of columns from the original table,
+// is created. 
     VectorTable result( table.getTags() );
 
-// Объявляем список строк для хранения имён фильтруемых столбцов входной
-// таблицы.
+// Define the list of lines, which keep the names of the chosen columns of
+// in-put table.
     QStringList tags;
 
-// Объявляем список пар ключ-значение для хранения значений максимального шума
-// ассоциированных с именами столбцов входной таблицы.
+// Define the list of pairs key-value for keeping of maximal background
+// deviation associated with in-put table colums names.
     QMap<QString,double> limits;
 
-// Для каждого имени столбца из всего списка имён столбцов входной таблицы кроме
-// первого (там у нас значения по X, которые нас не интересуют)...
+// For each column name from whole lists of column names of in-put table (exept
+// first column, where do we have the X values, which are out of our
+// interest)...
     foreach( QString tag, fp::tail( table.getTags() ) )
     {
-// ...если в настройках указано, что для этого столбца нужно искать сигналы...
+// ...if it is marked in settings that the signals should be analysed...
         if ( settings[QString("%1_State").arg(tag)].toBool() )
         {
-// ...то добавить имя этого столбца к списку имён фильтруемых столбцов входной
-// таблицы...
+// ...to add the column name to the list of chosen column of the in-put table...
             tags << tag;
-// ...и ассоциировать значение предела для этого столбца (извлечённое из
-// настроек) с именем этого столбца.
+// ...and associate the limit value for this column (taken from settings) with
+// the name of this column.
             limits[tag] = settings[QString("%1_MaxNoise").arg(tag)].toDouble();
         }
     }
 
-// Для каждой строки входной таблицы...
+// For each line of the in-put table...
     for ( int i = 0, j = table.getHeight(); i < j; i++ )
     {
-// ...полагаем что в любой строке таблицы храниться сигнал
+// ...we assume that into the each cell the signal value is contained
         bool check = true;
 
-// Для каждого столбца из числа рассматриваемых...
+// For each column of interest...
         foreach( QString tag, tags )
         {
-// ...если значение ячейки на пересечении рассматриваемой строки и рассматриваемого
-// столбца меньше чем максимальный шум для даннойго столбца...
+// ...if the value in the cell on the intersection of the cell of interest and
+// column of interest is lower than the background deviation for the respective
+// column...
             if ( table.getColumn(tag)->at(i) < limits[tag] )
             {
-// ...то содержимое всех ячеек строки считается шумом...
+// ...the signal value of all cell of this line corresponds to the background
+// deviation...
                 check = false;
-// ...а поиск продолжается со следующей строки.
+// ...and the searching continious through the next line.
                 break;
             }
         }
 
-// Если ячейки строки содержит сигнал...
+// If the cells contain the measured signal...
         if ( check )
-// ...то строка добавляется к искомой подтаблице
+// ...than the line is added to the out-put subtable
             result << table.getRow(i);
     }
 
-// Возвращается искомая подтаблица
+// The out-put small-table is created.
     return result;
 }

@@ -9,6 +9,7 @@ TRANSLATIONS += translations/particleicp_ru_RU.ts \
 TARGET =
 DEPENDPATH += . src ui src/histogram src/math src/reuseable src/spectrum
 INCLUDEPATH += . src src/reuseable src/spectrum src/histogram src/math
+QMAKE_CXXFLAGS += -Wall -Wextra -Wunreachable-code -pedantic -Wold-style-cast -Winit-self -O2
 
 # Input
 HEADERS += src/editmenu.h \

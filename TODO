@@ -1,22 +1,9 @@
-завершить History<T>
-
-изучить баг с неправельным поведением QFileDialog при быстром выборе файла
-
-изучить баг с передачей диапазона значений в RangeBox
-
-вынести функции разбора файлов и сортировки данных в отдельные потоки чтобы
-сохранять отзывчивочть интерфейса.
-
-сделать экспорт спектров в svg
-
-исправить вызов контекстного меню в HistogramWindow
-
-исправить вызов HistogramWindow (parent()->parent()->parent())
-
-parrots change with /a.u.
-
-change grey background with transtittance one
-
-add figure: number - dt
-
-chto sprashivaem? otkuda i dokuda vremennuyu os' rassmatrivat' budem? tochki vishe kakogo znacheniya mi schitaem pikom? (ochen' klassno menyat shkalu OX v malen'kom okoshechke)
+* Complete History<T> class
+* Study the bug of incorrect behaviour QFileDialog during quick file utilization 
+* Study the bug with data transfer into RangeBox 
+* Distinguish the parsing function and data sorting into the separate thread for keepeng the interface sensitivity
+* Make spectra transfer into svg 
+* Change the context menu invocation for HistogramWindow
+* Change invocation of HistogramWindow (parent()->parent()->parent()) 
+* change grey background with transtittance one 
+* add figure: number - dt 
